@@ -8,6 +8,7 @@
     extraConfig = {
       init.defaultBranch = "master";
       credential.helper = "store --file ~/.git-credentials";
+      safe.directory = "*"; # https://github.com/NixOS/nixpkgs/issues/169193
       pull.rebase = "false";
     };
   };
