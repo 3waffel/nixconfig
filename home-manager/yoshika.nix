@@ -12,6 +12,8 @@
   };
 
   home.packages = with pkgs; [
+    neovim
+
     cachix
     bat
 
