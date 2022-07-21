@@ -32,6 +32,7 @@
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
     };
+    vscode-server.url = "github:msteen/nixos-vscode-server";
   };
 
   outputs = {
@@ -39,8 +40,6 @@
     nixpkgs,
     devshell,
     flake-utils,
-    vscode-marketplace,
-    nixos-wsl,
     ...
   } @ inputs:
     {
