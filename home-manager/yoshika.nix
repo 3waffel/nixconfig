@@ -12,27 +12,27 @@
   };
 
   home.packages = with pkgs; [
-    neovim
+    cachix # Managing binary cache
 
-    cachix
     bat
-
-    bottom
-    exa
-    fd
-    httpie
+    bottom # System viewer
+    ncdu # TUI disk usage
+    exa # Better ls
+    fd # Better find
+    httpie # Better curl
 
     neofetch
 
     alejandra
-
-    rnix-lsp
-    nixfmt
-    statix
+    rnix-lsp # Nix LSP
+    deadnix # Nix dead code locator
+    nixfmt # Nix formatter
+    statix # Nix linter
   ];
 
   imports = [
     ./modules/fish.nix
     ./modules/git.nix
+    ./modules/nvim
   ];
 }

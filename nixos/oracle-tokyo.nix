@@ -6,10 +6,12 @@
   modulesPath,
   nixpkgs,
   nixos-hardware,
+  vscode-server,
   ...
 }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    vscode-server.nixosModule
 
     ./modules/nix.nix
   ];

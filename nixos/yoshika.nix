@@ -7,11 +7,13 @@
   nixpkgs,
   nixos-hardware,
   nixos-wsl,
+  vscode-server,
   ...
 }: {
   imports = [
     "${modulesPath}/profiles/minimal.nix"
     nixos-wsl.nixosModules.wsl
+    vscode-server.nixosModule
 
     ./modules/nix.nix
   ];
@@ -25,11 +27,18 @@
     automountPath = "/mnt";
     defaultUser = "wafu";
     startMenuLaunchers = true;
+    wslConf.network.generateResolvConf = false;
 
     # Enable integration with Docker Desktop (needs to be installed)
     docker-native.enable = true;
   };
 
+  environment.etc."resolv.conf" = {
+    enable = true;
+    source = pkgs.writeText "resolv.conf" ''
+      nameserver 8.8.8.8
+    '';
+  };
   environment.variables.EDITOR = "nano";
   environment.systemPackages = with pkgs; [
     curl
