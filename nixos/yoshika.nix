@@ -34,10 +34,7 @@
   };
 
   environment.etc."resolv.conf" = {
-    enable = true;
-    source = pkgs.writeText "resolv.conf" ''
-      nameserver 8.8.8.8
-    '';
+    text = "nameserver 1.1.1.1";
   };
   environment.variables.EDITOR = "nano";
   environment.systemPackages = with pkgs; [

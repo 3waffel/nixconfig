@@ -30,6 +30,9 @@
       fish_greeting = "";
       wh = "readlink -f (which $argv)";
       r = "avahi-resolve-host-name $argv | cut -f2";
+
+      pxy = "set -xg all_proxy socks5://(ip route | grep default | awk '{print $3}'):10810";
+      nopxy = "set -e all_proxy";
     };
     interactiveShellInit =
       # Use vim bindings and cursors
