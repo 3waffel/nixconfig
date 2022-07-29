@@ -19,4 +19,5 @@
   });
 in {
   yoshika = hmConfig {modules = [./yoshika.nix];};
+  oracle-tokyo = hmConfig {modules = [./oracle-tokyo.nix];};
 }

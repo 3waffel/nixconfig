@@ -28,11 +28,14 @@
     deadnix # Nix dead code locator
     nixfmt # Nix formatter
     statix # Nix linter
+
+    git-crypt
+    sops
+    neovim
   ];
 
   imports = [
     ./modules/fish
     ./modules/git
-    ./modules/nvim
   ];
 }

@@ -15,7 +15,7 @@
     nixos-wsl.nixosModules.wsl
     vscode-server.nixosModule
 
-    ./modules/nix.nix
+    ./modules/nix
   ];
 
   system.stateVersion = "22.05";

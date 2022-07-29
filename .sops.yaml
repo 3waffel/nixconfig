@@ -1,0 +1,10 @@
+keys:
+  - &yoshika age1ft38svumy94e9ksrvjea5lhjesfcrk0xualfs9jkxmcfzw44tqsqes262t
+  - &oracle-tokyo age17wk9httlw504ndxcmkd6dvfyz2a4sjyzpk4rfj6sqcw6xcre7ums0csdre
+
+creation_rules:
+  - path_regex: nixos/modules/sops/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *yoshika
+      - *oracle-tokyo

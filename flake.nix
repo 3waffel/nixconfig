@@ -13,6 +13,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware";
     };
@@ -33,6 +37,9 @@
       url = "github:nix-community/NixOS-WSL";
     };
     vscode-server.url = "github:msteen/nixos-vscode-server";
+    simple-mailserver = {
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    };
   };
 
   outputs = {

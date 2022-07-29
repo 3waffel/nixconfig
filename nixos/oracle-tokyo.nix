@@ -10,10 +10,12 @@
   ...
 }: {
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
+    "${modulesPath}/profiles/qemu-guest.nix"
     vscode-server.nixosModule
 
-    ./modules/nix.nix
+    ./modules/nix
+    ./modules/services
+    ./modules/sops
   ];
 
   boot.loader.grub = {
@@ -37,6 +39,7 @@
 
   system.stateVersion = "22.05";
   networking.hostName = "oracle-tokyo";
+  networking.firewall.allowedTCPPorts = [22 80 443];
   services.openssh.enable = true;
   services.vscode-server.enable = true;
 
@@ -60,7 +63,7 @@
     isNormalUser = true;
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6yTJcWoh18GkIsUQTw+nDyIu2LHbJlTItoU6rnDvw5LvD0l+0Zkh8ysZPo033X3hI7LvGZjBfdavMHGJZyfBdp0GcGDYieaIZcpNpaCqpEBdRhuPAgGzFAsmHmctziNpVhbberskXSneZ2DIJCneatHCOAWRFQ7uUnVIDvqEROR86Nacsr4WJWP+x+sGEGqZ5ZLvMYLOEm6N8MBc8uBloCfkcrA4rliGisVSwesFQelOQG4TCWF1xAON5qz+hyqnufBzxcOihuthgVAeYrtmQyoxjc1NMfPFfDtAnyFtlWclmkXSFoeRocWBvwIHD+gyy/ohaK6w9i4jE6iUDRCOVvDAT/6FgICvx7qOS1LmSTQggP5+RI1PlBchXmHE2oVY5Uyl4i4hw7TeXv4rvGYC3op7l5CE8KRUoW24sbXBX4XOfqoYTOulmplovoTVP0rvYuV/1bPzdq2IlCI8WgawJ2AnEL3KBPeVdNNwxW7Gg9PrsP6lzHKeGbROr6/oLRPE= oracle-tokyo"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFJXw7Yj6zMg3pllJr4uG5QLhcaHVE+HYArfCMZ6qMjN oracle-tokyo"
     ];
   };
 }
