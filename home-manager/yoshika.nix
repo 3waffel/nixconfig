@@ -28,6 +28,8 @@
     deadnix # Nix dead code locator
     nixfmt # Nix formatter
     statix # Nix linter
+
+    sops
   ];
 
   imports = [

@@ -1,12 +1,25 @@
 {
   config,
   pkgs,
+  lib,
   ...
-}: {
+}:
+with lib; {
   imports = [
     ./gitea.nix
-    ./mail.nix
+    ./mailserver.nix
   ];
 
-  config.custom_modules.gitea.enable = true;
+  config.mods = {
+    gitea.enable = true;
+  };
+
+  config.services.caddy = with config.mods; {
+    enable = true;
+    extraConfig = ''
+      ${gitea.vhost} {
+        reverse_proxy localhost:${toString gitea.port}
+      }
+    '';
+  };
 }

@@ -35,7 +35,10 @@
   };
 
   boot.cleanTmpDir = true;
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    memoryPercent = 150;
+  };
 
   system.stateVersion = "22.05";
   networking.hostName = "oracle-tokyo";
