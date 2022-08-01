@@ -8,18 +8,11 @@ with lib; {
   imports = [
     ./gitea.nix
     ./mailserver.nix
+    ./misskey.nix
   ];
 
-  config.mods = {
+  config.mods = mkIf (config.networking.hostName == "oracle-tokyo") {
     gitea.enable = true;
-  };
-
-  config.services.caddy = with config.mods; {
-    enable = true;
-    extraConfig = ''
-      ${gitea.vhost} {
-        reverse_proxy localhost:${toString gitea.port}
-      }
-    '';
+    misskey.enable = true;
   };
 }

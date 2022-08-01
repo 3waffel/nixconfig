@@ -44,6 +44,15 @@ in
         #   };
       };
 
+      services.caddy = {
+        enable = true;
+        virtualHosts."${cfg.vhost}" = {
+          extraConfig = ''
+            reverse_proxy localhost:${toString cfg.port}
+          '';
+        };
+      };
+
       # services.nginx = {
       #   enable = true;
       #   virtualHosts."${cfg.vhost}" = {

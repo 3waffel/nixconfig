@@ -32,14 +32,13 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
-    vscode-marketplace.url = "github:AmeerTaweel/nix-vscode-marketplace";
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
     };
     vscode-server.url = "github:msteen/nixos-vscode-server";
-    simple-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
-    };
+    vscode-marketplace.url = "github:AmeerTaweel/nix-vscode-marketplace";
+    simple-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    misskey.url = "github:3waffel/misskey-flake";
   };
 
   outputs = {
