@@ -1,6 +1,9 @@
 {nixpkgs, ...} @ inputs: let
-  nixosConfig = {extraModules ? []}: (nixpkgs.lib.nixosSystem {
-    system = "x86_64-linux";
+  nixosConfig = {
+    extraModules ? [],
+    system ? "x86_64-linux",
+  }: (nixpkgs.lib.nixosSystem {
+    system = system;
     specialArgs = inputs;
     modules =
       []
@@ -12,5 +15,9 @@ in {
   };
   oracle-tokyo = nixosConfig {
     extraModules = [./oracle-tokyo.nix];
+  };
+  raspi = nixosConfig {
+    system = "aarch64-linux";
+    extraModules = [./raspi.nix];
   };
 }

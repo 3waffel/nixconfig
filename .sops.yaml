@@ -1,10 +1,24 @@
 keys:
   - &yoshika age1ft38svumy94e9ksrvjea5lhjesfcrk0xualfs9jkxmcfzw44tqsqes262t
   - &oracle-tokyo age17wk9httlw504ndxcmkd6dvfyz2a4sjyzpk4rfj6sqcw6xcre7ums0csdre
+  - &raspi age1wuz4uphtcdkym5prw2pfljcpksft96q0ta2am69czq9g7p8y0ptq4e9rf7
 
 creation_rules:
+  - path_regex: nixos/modules/sops/secrets.yaml$
+    key_groups:
+    - age:
+      - *yoshika
+      - *oracle-tokyo
+
+  - path_regex: nixos/modules/sops/config.yaml$
+    key_groups:
+    - age:
+      - *yoshika
+      - *raspi
+
   - path_regex: nixos/modules/sops/[^/]+\.yaml$
     key_groups:
     - age:
       - *yoshika
       - *oracle-tokyo
+      - *raspi
