@@ -28,4 +28,8 @@
     nixfmt # Nix formatter
     statix # Nix linter
   ];
+
+  programs.nix-index = {
+    enable = true;
+  };
 }

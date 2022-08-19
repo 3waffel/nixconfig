@@ -4,10 +4,12 @@
   ...
 }: {
   home.packages = with pkgs;
-  [
+    [
       tree
       gcc
       binutils
+      openssl
+      pkg-config
       cachix
       direnv
       rustup
@@ -18,7 +20,6 @@
     ++ (with pkgs.nodePackages; [
       node2nix
       npm
-      pnpm
     ]);
 
   programs.direnv = {

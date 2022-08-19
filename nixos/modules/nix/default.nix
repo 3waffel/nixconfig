@@ -5,6 +5,8 @@
   nixpkgs,
   ...
 }: {
+  imports = [./mirrors.nix];
+
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = ''
@@ -20,8 +22,6 @@
     settings = {
       auto-optimise-store = true;
       substituters = lib.mkBefore [
-        "https://mirrors.ustc.edu.cn/nix-channels/store"
-        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
         "https://nix-community.cachix.org"
         "https://3waffel.cachix.org"
       ];
