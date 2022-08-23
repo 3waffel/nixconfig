@@ -1,0 +1,34 @@
+name: Build Home
+
+on:
+    workflow_dispatch:
+    pull_request:
+    push:
+        branches:
+            - master
+        paths:
+            - ".github/workflows/home.yml"
+            - "home-manager/**"
+            - "flake.nix"
+            - "flake.lock"
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2.3.2
+
+            - name: Install Nix
+              uses: cachix/install-nix-action@v15
+
+            - name: Install Cachix
+              uses: cachix/cachix-action@v10
+              with:
+                  name: 3waffel
+                  authToken: "${{secrets.CACHIX_AUTH_TOKEN}}"
+
+            - name: Set priority flag
+              run: nix-env --set-flag priority 0 cachix
+
+            - name: Build home-manager config
+              run: nix build .#homeConfigurations.yoshika.activationPackage --impure
