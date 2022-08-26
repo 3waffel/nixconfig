@@ -5,6 +5,7 @@
 }: {
   home.packages = with pkgs;
     [
+      act
       cachix
       binutils
       direnv
@@ -15,6 +16,7 @@
       openssl
       pkg-config
       rustup
+      rust-analyzer
       tree
       treefmt
       trunk
