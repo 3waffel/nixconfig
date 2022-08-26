@@ -15,9 +15,14 @@ on:
 
 jobs:
     build:
+        strategy:
+          matrix:
+            host:
+              - yoshika
+              - oracle-tokyo
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2.3.2
+            - uses: actions/checkout@v3
 
             - name: Install Nix
               uses: cachix/install-nix-action@v17
@@ -32,7 +37,7 @@ jobs:
               run: nix-env --set-flag priority 0 cachix
 
             - name: Build home-manager config
-              run: nix build .#homeConfigurations.yoshika.activationPackage --impure
+              run: nix build .#homeConfigurations.${{ matrix.host }}.activationPackage --impure
 
             - name: Build NixOS config
-              run: nix build -L --no-link .#nixosConfigurations.yoshika.config.system.build.toplevel
+              run: nix build -L --no-link .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
