@@ -1,4 +1,4 @@
-name: Build Home
+name: Build Config
 
 on:
     workflow_dispatch:
@@ -7,8 +7,9 @@ on:
         branches:
             - master
         paths:
-            - ".github/workflows/home.yml"
+            - ".github/workflows/ci.yml"
             - "home-manager/**"
+            - "nixos/**"
             - "flake.nix"
             - "flake.lock"
 
@@ -32,3 +33,6 @@ jobs:
 
             - name: Build home-manager config
               run: nix build .#homeConfigurations.yoshika.activationPackage --impure
+
+            - name: Build NixOS config
+              run: nix build -L --no-link .#nixosConfigurations.yoshika.config.system.build.toplevel

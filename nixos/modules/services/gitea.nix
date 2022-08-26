@@ -26,13 +26,15 @@ in
       services.gitea = {
         enable = true;
         lfs.enable = true;
-        cookieSecure = true;
-        disableRegistration = true;
         database.type = "postgres";
         appName = "Yoshika Gitea";
         httpPort = cfg.port;
         domain = "${cfg.vhost}";
         rootUrl = "https://${cfg.vhost}";
+        settings = {
+          service.DISABLE_REGISTRATION = true;
+          session.COOKIE_SECURE = true;
+        };
         # }
         # // mkIf mail.enable {
         #   mailerPasswordFile = config.sops.secrets.gitea-mail.path;

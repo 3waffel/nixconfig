@@ -16,7 +16,12 @@
     ./modules/nix
     ./modules/services
     ./modules/sops
+    ./modules/hm
   ];
+  mods = {
+    gitea.enable = true;
+    misskey.enable = true;
+  };
 
   boot.loader.grub = {
     efiSupport = true;

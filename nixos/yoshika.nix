@@ -16,6 +16,7 @@
     vscode-server.nixosModule
 
     ./modules/nix
+    ./modules/hm
   ];
   mods.mirrors.enable = true;
 
