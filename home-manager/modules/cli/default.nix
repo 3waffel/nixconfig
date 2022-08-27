@@ -7,6 +7,7 @@
     ./fish
     ./git
     ./nvim
+    ./nix-index
   ];
 
   home.packages = with pkgs; [
@@ -28,8 +29,4 @@
     nixfmt # Nix formatter
     statix # Nix linter
   ];
-
-  programs.nix-index = {
-    enable = true;
-  };
 }
