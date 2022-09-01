@@ -23,8 +23,17 @@ in {
   oracle-tokyo = nixosConfig {
     extraModules = [./oracle-tokyo.nix];
   };
-  raspi = nixosConfig {
+  raspi = nixosSystem {
     system = "aarch64-linux";
-    extraModules = [./raspi.nix];
+    specialArgs = inputs;
+    modules =
+      [
+        ./raspi.nix
+        {
+          home-manager.users.wafu =
+            import "${self}/home-manager/yoshika.nix";
+        }
+      ]
+      ++ commonModules;
   };
 }

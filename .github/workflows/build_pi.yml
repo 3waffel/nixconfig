@@ -1,11 +1,11 @@
-name: Build Config
+name: Build Pi Config
 
 on:
     workflow_dispatch:
     pull_request:
     push:
         branches:
-            - master
+            - raspi
         paths:
             - ".github/workflows/ci.yml"
             - "home-manager/**"
@@ -18,14 +18,27 @@ jobs:
         strategy:
           matrix:
             host:
-              - yoshika
-              - oracle-tokyo
+              - raspi
         runs-on: ubuntu-latest
         steps:
+            - name: Install cross-compilation deps
+              run: |
+                sudo apt update
+                sudo apt install -q -y \
+                  binfmt-support \
+                  gcc-aarch64-linux-gnu \
+                  qemu-system-aarch64 \
+                  qemu-user-static
+
             - uses: actions/checkout@v3
 
             - name: Install Nix
               uses: cachix/install-nix-action@v17
+              with:
+                extra_nix_config: |
+                  extra-platforms = aarch64-linux
+                  max-jobs = auto
+                  system-features = big-parallel kvm
 
             - name: Install Cachix
               uses: cachix/cachix-action@v10
@@ -36,8 +49,6 @@ jobs:
             - name: Set priority flag
               run: nix-env --set-flag priority 0 cachix
 
-            - name: Build home-manager config
-              run: nix build .#homeConfigurations.${{ matrix.host }}.activationPackage --impure
-
             - name: Build NixOS config
-              run: nix build -L --no-link .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+              run: |
+                nix build -L --no-link --max-jobs 4 .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
