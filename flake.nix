@@ -34,9 +34,13 @@
     };
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     vscode-server.url = "github:msteen/nixos-vscode-server";
-    vscode-marketplace.url = "github:AmeerTaweel/nix-vscode-marketplace";
+    vscode-marketplace = {
+      url = "github:AmeerTaweel/nix-vscode-marketplace";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     simple-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     misskey.url = "github:3waffel/misskey-flake";
   };

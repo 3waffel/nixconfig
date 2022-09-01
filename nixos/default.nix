@@ -1,17 +1,24 @@
-{nixpkgs, ...} @ inputs: let
-  nixosConfig = {
-    extraModules ? [],
-    system ? "x86_64-linux",
-  }: (nixpkgs.lib.nixosSystem {
-    system = system;
-    specialArgs = inputs;
-    modules =
-      []
-      ++ extraModules;
-  });
+inputs: let
+  inherit (inputs) self nixpkgs;
+  inherit (nixpkgs.lib) nixosSystem;
+
+  commonModules = [
+    inputs.home-manager.nixosModules.home-manager
+  ];
+  nixosConfig = {extraModules ? []}:
+    nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = inputs;
+      modules = extraModules ++ commonModules;
+    };
 in {
   yoshika = nixosConfig {
-    extraModules = [./yoshika.nix];
+    extraModules = [
+      ./yoshika.nix
+      {
+        home-manager.users.wafu = import "${self}/home-manager/yoshika.nix";
+      }
+    ];
   };
   oracle-tokyo = nixosConfig {
     extraModules = [./oracle-tokyo.nix];

@@ -16,7 +16,9 @@
     vscode-server.nixosModule
 
     ./modules/nix
+    ./modules/hm
   ];
+  mods.mirrors.enable = true;
 
   system.stateVersion = "22.05";
   networking.hostName = "yoshika";
