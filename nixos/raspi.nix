@@ -91,20 +91,20 @@
     ];
   };
 
-  services.xserver = {
-    enable = true;
-    desktopManager.plasma5.enable = true;
-    displayManager = {
-      lightdm.enable = true;
-      autoLogin.enable = true;
-      autoLogin.user = "wafu";
-    };
-    wacom.enable = true;
-  };
-  services.xrdp = {
-    enable = true;
-    defaultWindowManager = "startplasma-x11";
-  };
+  # services.xserver = {
+  #   enable = true;
+  #   desktopManager.plasma5.enable = true;
+  #   displayManager = {
+  #     lightdm.enable = true;
+  #     autoLogin.enable = true;
+  #     autoLogin.user = "wafu";
+  #   };
+  #   wacom.enable = true;
+  # };
+  # services.xrdp = {
+  #   enable = true;
+  #   defaultWindowManager = "startplasma-x11";
+  # };
 
   services.vscode-server.enable = true;
   services.openssh.enable = true;
