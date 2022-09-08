@@ -11,7 +11,9 @@ in {
     haskell-vim
     {
       plugin = pgsql-vim;
-      config = "let g:sql_type_default = 'pgsql'";
+      config = ''
+        let g:sql_type_default = 'pgsql'
+      '';
     }
     {
       plugin = nvim-treesitter.withPlugins (p: attrValues (removeAttrs p ["tree-sitter-nix"]));

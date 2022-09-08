@@ -4,31 +4,38 @@
   pkgs,
   modulesPath,
   vscode-server,
+  nixos-hardware,
   ...
 }: {
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
     vscode-server.nixosModule
+    nixos-hardware.nixosModules.raspberry-pi-4
 
     ./modules/nix
     ./modules/sops
     ./modules/rpi
+    ./modules/hm
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci"];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = [];
-  boot.extraModulePackages = [];
-  boot.loader.grub.enable = false;
-  boot.loader.generic-extlinux-compatible.enable = true;
+  boot = {
+    loader.generic-extlinux-compatible.enable = true;
+    initrd.availableKernelModules = ["xhci_pci"];
+    tmpOnTmpfs = true;
+    kernelModules = ["bcm2835-v4l2"];
+    kernelParams = [
+      "8250.nr_uarts=1"
+      "console=ttyAMA0,115200"
+      "console=tty1"
+      "cma=128M"
+    ];
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
     fsType = "ext4";
   };
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
-
-  swapDevices = [];
   zramSwap = {
     enable = true;
     memoryPercent = 100;
@@ -36,20 +43,24 @@
 
   time.timeZone = "Asia/Shanghai";
   system.stateVersion = "22.05";
-  networking.hostName = "raspi";
-  networking.wireless.enable = false;
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "raspi";
+    wireless.enable = false;
+    networkmanager.enable = true;
+    useDHCP = false;
+    firewall.enable = false;
+    proxy = {
+      allProxy = "socks5://127.0.0.1:10808";
+      httpProxy = "http://127.0.0.1:10809";
+      noProxy = "127.0.0.1,localhost,internal.domain";
+    };
+  };
 
-  networking.proxy.allProxy = "socks5://127.0.0.1:10808";
-  networking.proxy.httpProxy = "http://127.0.0.1:10809";
-  networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  networking.useDHCP = false;
-  networking.firewall.enable = false;
-
-  hardware.bluetooth.enable = true;
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  hardware = {
+    bluetooth.enable = true;
+    pulseaudio.enable = true;
+  };
 
   environment.variables.EDITOR = "nano";
   environment.systemPackages = with pkgs; [
@@ -105,6 +116,10 @@
   #   enable = true;
   #   defaultWindowManager = "startplasma-x11";
   # };
+
+  services.udev.extraRules = ''
+    SUBSYSTEMS=="gpio", MODE="0666"
+  '';
 
   services.vscode-server.enable = true;
   services.openssh.enable = true;
