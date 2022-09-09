@@ -45,10 +45,12 @@
   system.stateVersion = "22.05";
   networking = {
     hostName = "raspi";
-    wireless.enable = false;
-    networkmanager.enable = true;
     useDHCP = false;
     firewall.enable = false;
+    wireless.enable = false;
+    nameservers = ["1.1.1.1"];
+    networkmanager.enable = true;
+    networkmanager.dns = "none";
     proxy = {
       allProxy = "socks5://127.0.0.1:10808";
       httpProxy = "http://127.0.0.1:10809";

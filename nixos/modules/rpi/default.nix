@@ -21,6 +21,7 @@
 in {
   imports = [
     ./ngrok.nix
+    ./srun.nix
   ];
   # systemd.services.powerd = mkService {
   #   ExecStart = "${(pkgs.python3.withPackages (ps: with ps; [libgpiod flask]))}/bin/python ${./powerd.py}";
