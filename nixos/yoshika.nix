@@ -17,8 +17,11 @@
 
     ./modules/nix
     ./modules/hm
+    ./modules/services
+    ./modules/sops
   ];
   mods.mirrors.enable = true;
+  mods.tailscale.enable = true;
   services.vscode-server.enable = true;
 
   system.stateVersion = "22.05";
