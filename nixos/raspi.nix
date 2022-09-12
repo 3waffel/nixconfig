@@ -16,7 +16,9 @@
     ./modules/sops
     ./modules/rpi
     ./modules/hm
+    ./modules/services
   ];
+  mods.tailscale.enable = true;
 
   boot = {
     loader.generic-extlinux-compatible.enable = true;
