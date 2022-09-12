@@ -27,6 +27,7 @@ in
         acceptTerms = true;
         defaults.email = "me@${cfg.domain}";
       };
+      sops.secrets.hashed-email-password = {};
       mailserver = {
         enable = true;
         fqdn = "mail.${cfg.domain}";
@@ -49,6 +50,5 @@ in
         };
         certificateScheme = 3;
       };
-      sops.secrets.hashed-email-password = {};
     };
   }
