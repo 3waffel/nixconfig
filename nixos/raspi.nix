@@ -22,7 +22,6 @@
 
   boot = {
     loader.generic-extlinux-compatible.enable = true;
-    initrd.availableKernelModules = ["xhci_pci"];
     tmpOnTmpfs = true;
     kernelModules = ["bcm2835-v4l2"];
     kernelParams = [
@@ -50,9 +49,9 @@
     useDHCP = false;
     firewall.enable = false;
     wireless.enable = false;
-    nameservers = ["1.1.1.1"];
     networkmanager.enable = true;
-    networkmanager.dns = "none";
+    networkmanager.insertNameservers = ["8.8.8.8" "101.6.6.6" "100.100.100.100"];
+    resolvconf.enable = false;
     proxy = {
       allProxy = "socks5://127.0.0.1:10808";
       httpProxy = "http://127.0.0.1:10809";
