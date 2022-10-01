@@ -20,29 +20,28 @@
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware";
     };
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-    };
     nixgl = {
       url = "github:guibou/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    devshell.url = "github:numtide/devshell";
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
     };
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vscode-server.url = "github:msteen/nixos-vscode-server";
-    vscode-marketplace = {
-      url = "github:AmeerTaweel/nix-vscode-marketplace";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     simple-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     misskey.url = "github:3waffel/misskey-flake";
+  };
+
+  inputs = {
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+    };
+    devshell.url = "github:numtide/devshell";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
   };
 
   outputs = {

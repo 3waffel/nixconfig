@@ -46,7 +46,7 @@
   };
 
   system.stateVersion = "22.05";
-  networking.hostName = "oracle-tokyo";
+  networking.hostName = "oracle";
   networking.firewall.allowedTCPPorts = [22 80 443];
   services.openssh.enable = true;
   services.vscode-server.enable = true;
