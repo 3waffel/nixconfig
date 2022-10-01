@@ -7,25 +7,23 @@
   nixpkgs,
   nixos-hardware,
   nixos-wsl,
-  vscode-server,
   ...
 }: {
   imports = [
     "${modulesPath}/profiles/minimal.nix"
     nixos-wsl.nixosModules.wsl
-    vscode-server.nixosModule
 
-    ./modules/nix
+    ./modules/common
     ./modules/hm
-    ./modules/services
+    ./modules/infra
+    ./modules/nix
     ./modules/sops
+    ./modules/vscode-server
   ];
-  mods.mirrors.enable = true;
-  mods.tailscale.enable = true;
-  services.vscode-server.enable = true;
-
-  system.stateVersion = "22.05";
-  networking.hostName = "yoshika";
+  _mods = {
+    mirrors.enable = true;
+    tailscale.enable = true;
+  };
 
   wsl = {
     enable = true;
@@ -44,24 +42,7 @@
     '';
   };
   environment.variables.EDITOR = "nano";
-  environment.systemPackages = with pkgs; [
-    curl
-    direnv
-    dmenu
-    git
-    home-manager
-    htop
-    konsole
-    nodejs
-    vim
-    unrar
-    unzip
-    wget
-  ];
 
-  users.users.wafu = {
-    extraGroups = ["wheel" "disk" "vboxusers" "cdrom" "docker"];
-    isNormalUser = true;
-    shell = pkgs.fish;
-  };
+  system.stateVersion = "22.05";
+  networking.hostName = "yoshika";
 }

@@ -3,10 +3,10 @@
   lib,
   ...
 }: let
-  cfg = config.mods.dendrite;
+  cfg = config._mods.dendrite;
 in
   with lib; {
-    options.mods.dendrite = {
+    options._mods.dendrite = {
       enable = mkOption {
         type = types.bool;
         default = false;

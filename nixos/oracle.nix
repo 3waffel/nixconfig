@@ -6,19 +6,20 @@
   modulesPath,
   nixpkgs,
   nixos-hardware,
-  vscode-server,
   ...
 }: {
   imports = [
     "${modulesPath}/profiles/qemu-guest.nix"
-    vscode-server.nixosModule
 
-    ./modules/nix
-    ./modules/services
-    ./modules/sops
+    ./modules/common
     ./modules/hm
+    ./modules/infra
+    ./modules/nix
+    ./modules/sops
+    ./modules/ssh
+    ./modules/vscode-server
   ];
-  mods = {
+  _mods = {
     gitea.enable = true;
     misskey.enable = true;
   };
@@ -48,30 +49,4 @@
   system.stateVersion = "22.05";
   networking.hostName = "oracle";
   networking.firewall.allowedTCPPorts = [22 80 443];
-  services.openssh.enable = true;
-  services.vscode-server.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    curl
-    direnv
-    dmenu
-    git
-    home-manager
-    htop
-    konsole
-    nodejs
-    vim
-    unrar
-    unzip
-    wget
-  ];
-
-  users.users.wafu = {
-    extraGroups = ["wheel" "disk" "vboxusers" "cdrom" "docker"];
-    isNormalUser = true;
-    shell = pkgs.fish;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFJXw7Yj6zMg3pllJr4uG5QLhcaHVE+HYArfCMZ6qMjN oracle-tokyo"
-    ];
-  };
 }

@@ -4,10 +4,10 @@
   lib,
   ...
 }: let
-  cfg = config.mods.tor;
+  cfg = config._mods.tor;
 in
   with lib; {
-    options.mods.tor = {
+    options._mods.tor = {
       enable = mkOption {
         type = types.bool;
         default = false;

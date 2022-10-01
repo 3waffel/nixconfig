@@ -4,10 +4,10 @@
   lib,
   ...
 }: let
-  cfg = config.mods.tailscale;
+  cfg = config._mods.tailscale;
 in
   with lib; {
-    options.mods.tailscale = {
+    options._mods.tailscale = {
       enable = mkOption {
         type = types.bool;
         default = false;
