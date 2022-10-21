@@ -18,11 +18,12 @@
     ./modules/infra
     ./modules/nix
     ./modules/sops
-    ./modules/vscode-server
   ];
+
   _mods = {
     mirrors.enable = true;
     tailscale.enable = true;
+    vscode-server.enable = true;
   };
 
   wsl = {

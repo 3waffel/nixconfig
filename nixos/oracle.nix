@@ -17,11 +17,12 @@
     ./modules/nix
     ./modules/sops
     ./modules/ssh
-    ./modules/vscode-server
   ];
+
   _mods = {
     gitea.enable = true;
     misskey.enable = true;
+    vscode-server.enable = true;
   };
 
   boot.loader.grub = {
