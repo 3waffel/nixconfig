@@ -8,6 +8,8 @@ with lib; {
     ./gitea.nix
     ./mailserver.nix
     ./misskey.nix
-    ./network/tailscale.nix
+    ./netdata.nix
+    ./vscode-server.nix
+    ./network
   ];
 }

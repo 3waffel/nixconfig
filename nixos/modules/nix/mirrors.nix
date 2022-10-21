@@ -3,18 +3,18 @@
   lib,
   ...
 }: let
-  cfg = config.mods.mirrors;
+  cfg = config._mods.mirrors;
 in
   with lib; {
-    options.mods.mirrors = {
+    options._mods.mirrors = {
       enable = mkOption {
         type = types.bool;
         default = false;
       };
       substituters = mkOption {
         default = [
-          "https://mirrors.ustc.edu.cn/nix-channels/store"
           "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+          "https://mirror.sjtu.edu.cn/nix-channels/store"
         ];
       };
     };

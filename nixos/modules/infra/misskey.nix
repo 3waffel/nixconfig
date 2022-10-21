@@ -4,11 +4,11 @@
   misskey,
   ...
 }: let
-  cfg = config.mods.misskey;
+  cfg = config._mods.misskey;
 in
   with lib; {
     imports = [misskey.nixosModule];
-    options.mods.misskey = {
+    options._mods.misskey = {
       enable = mkOption {
         type = types.bool;
         default = false;

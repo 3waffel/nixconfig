@@ -4,14 +4,14 @@
   simple-mailserver,
   ...
 }: let
-  cfg = config.mods.mailserver;
+  cfg = config._mods.mailserver;
 in
   with lib; {
     imports = [
       simple-mailserver.nixosModule
     ];
 
-    options.mods.mailserver = {
+    options._mods.mailserver = {
       enable = mkOption {
         description = "";
         type = types.bool;

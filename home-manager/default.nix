@@ -4,7 +4,6 @@
   home-manager,
   nixpkgs-wayland,
   nixgl,
-  vscode-marketplace,
   ...
 } @ inputs: let
   hmConfig = {
@@ -19,5 +18,5 @@
   });
 in {
   yoshika = hmConfig {modules = [./yoshika.nix];};
-  oracle-tokyo = hmConfig {modules = [./oracle-tokyo.nix];};
+  oracle = hmConfig {modules = [./oracle.nix];};
 }

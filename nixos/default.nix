@@ -20,8 +20,8 @@ in {
       }
     ];
   };
-  oracle-tokyo = nixosConfig {
-    extraModules = [./oracle-tokyo.nix];
+  oracle = nixosConfig {
+    extraModules = [./oracle.nix];
   };
   raspi = nixosSystem {
     system = "aarch64-linux";

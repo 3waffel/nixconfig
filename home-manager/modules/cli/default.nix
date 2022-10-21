@@ -8,6 +8,7 @@
     ./git
     ./nvim
     ./nix-index
+    ./ssh
   ];
 
   home.packages = with pkgs; [
