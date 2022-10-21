@@ -20,6 +20,7 @@
   ];
 
   _mods = {
+    gitea.enable = true;
     netdata.enable = true;
     tailscale.enable = true;
     vscode-server.enable = true;
