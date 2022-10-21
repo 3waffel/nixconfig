@@ -26,7 +26,7 @@ in
         config = {
           global = {
             "default port" = toString cfg.port;
-            "bind to" = "127.0.0.1";
+            "bind to" = "*";
           };
         };
       };

@@ -3,22 +3,27 @@
   lib,
   pkgs,
   modulesPath,
-  vscode-server,
   nixos-hardware,
   ...
 }: {
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
-    vscode-server.nixosModule
     nixos-hardware.nixosModules.raspberry-pi-4
 
+    ./modules/common
+    ./modules/hm
+    ./modules/infra
     ./modules/nix
     ./modules/sops
+    ./modules/ssh
     ./modules/rpi
-    ./modules/hm
-    ./modules/services
   ];
-  mods.tailscale.enable = true;
+
+  _mods = {
+    netdata.enable = true;
+    tailscale.enable = true;
+    vscode-server.enable = true;
+  };
 
   boot = {
     loader.generic-extlinux-compatible.enable = true;
@@ -49,15 +54,16 @@
     useDHCP = false;
     firewall.enable = false;
     wireless.enable = false;
+    nameservers = ["100.100.100.100" "8.8.8.8" "1.1.1.1"];
     networkmanager.enable = true;
-    networkmanager.insertNameservers = ["8.8.8.8" "101.6.6.6" "100.100.100.100"];
-    resolvconf.enable = false;
     proxy = {
       allProxy = "socks5://127.0.0.1:10808";
       httpProxy = "http://127.0.0.1:10809";
       noProxy = "127.0.0.1,localhost,internal.domain";
     };
   };
+
+  services.resolved.fallbackDns = config.networking.nameservers;
 
   sound.enable = true;
   hardware = {
@@ -66,21 +72,7 @@
   };
 
   environment.variables.EDITOR = "nano";
-  environment.systemPackages = with pkgs; [
-    chromium
-    curl
-    direnv
-    dmenu
-    git
-    home-manager
-    htop
-    konsole
-    nodejs
-    vim
-    unrar
-    unzip
-    wget
-  ];
+
   virtualisation.docker.enable = true;
   virtualisation.docker.daemon.settings = {
     "registry-mirrors" = [
@@ -91,10 +83,6 @@
   };
 
   users.users.wafu = {
-    description = "wafu using NixOS on Raspi";
-    extraGroups = ["wheel" "disk" "vboxusers" "cdrom" "docker"];
-    isNormalUser = true;
-    shell = pkgs.fish;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQJL0vS5No+QxMIzmeBJwVCpNAMKglXUc6XtfsfL5NB raspi"
     ];
@@ -123,9 +111,6 @@
   services.udev.extraRules = ''
     SUBSYSTEMS=="gpio", MODE="0666"
   '';
-
-  services.vscode-server.enable = true;
-  services.openssh.enable = true;
 
   sops.secrets.v2ray-config = {};
   services.v2ray = {
