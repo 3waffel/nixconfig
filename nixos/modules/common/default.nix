@@ -20,7 +20,6 @@
     konsole
     nodejs
     vim
-    unrar
     unzip
     wget
   ];

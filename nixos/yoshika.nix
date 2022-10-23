@@ -21,7 +21,7 @@
   ];
 
   _mods = {
-    mirrors.enable = true;
+    mirrors.enable = false;
     tailscale.enable = true;
     vscode-server.enable = true;
   };

@@ -1,13 +1,30 @@
-inputs: let
+{
+  helix,
+  nil,
+  ...
+} @ inputs: let
   inherit (inputs) self nixpkgs;
   inherit (nixpkgs.lib) nixosSystem;
 
   commonModules = [
     inputs.home-manager.nixosModules.home-manager
   ];
-  nixosConfig = {extraModules ? []}:
+
+  nixosConfig = {extraModules ? []}: let
+    system = "x86_64-linux";
+  in let
+    pkgs = import nixpkgs rec {
+      inherit system;
+      overlays = [
+        (final: prev: {
+          helix = helix.packages.${system}.default;
+          nil = nil.packages.${system}.default;
+        })
+      ];
+    };
+  in
     nixosSystem {
-      system = "x86_64-linux";
+      inherit pkgs system;
       specialArgs = inputs;
       modules = extraModules ++ commonModules;
     };

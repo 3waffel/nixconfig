@@ -5,10 +5,6 @@
 }: {
   imports = [./ui.nix ./lsp.nix ./syntax.nix];
 
-  home = {
-    sessionVariables.EDITOR = "nvim";
-  };
-
   programs.neovim = {
     enable = true;
     extraConfig =

@@ -31,6 +31,12 @@
     vscode-server.url = "github:msteen/nixos-vscode-server";
     simple-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     misskey.url = "github:3waffel/misskey-flake";
+    helix.url = "github:helix-editor/helix";
+    nil = {
+      url = "github:oxalica/nil";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
   inputs = {
