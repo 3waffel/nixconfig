@@ -37,7 +37,13 @@ jobs:
               run: nix-env --set-flag priority 0 cachix
 
             - name: Build home-manager config
-              run: nix build .#homeConfigurations.${{ matrix.host }}.activationPackage --impure
+              run: nix build -L .#homeConfigurations.${{ matrix.host }}.activationPackage --impure
+      
+            - name: Push home-manager cache
+              run: nix eval --impure --json ".#homeConfigurations.${{ matrix.host }}.activationPackage.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
 
             - name: Build NixOS config
               run: nix build -L --no-link .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+            - name: Push NixOS cache
+              run: nix eval --json ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
