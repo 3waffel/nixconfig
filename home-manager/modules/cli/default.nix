@@ -7,7 +7,7 @@
     ./fish
     ./git
     ./helix
-    ./nvim
+    # ./nvim
     ./nix-index
     ./ssh
   ];
@@ -34,5 +34,8 @@
     deadnix # Nix dead code locator
     nixfmt # Nix formatter
     statix # Nix linter
+
+    flyctl
+    gh
   ];
 }

@@ -28,9 +28,9 @@
 
   wsl = {
     enable = true;
-    automountPath = "/mnt";
     defaultUser = "wafu";
     startMenuLaunchers = true;
+    wslConf.automount.root = "/mnt";
     wslConf.network.generateResolvConf = false;
     docker-native.enable = true;
   };
