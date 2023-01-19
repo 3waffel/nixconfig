@@ -8,7 +8,7 @@
     ./git
     ./helix
     # ./nvim
-    ./nix-index
+    # ./nix-index
     ./ssh
   ];
 

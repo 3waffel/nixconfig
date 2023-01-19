@@ -12,12 +12,13 @@
 
   environment.systemPackages = with pkgs; [
     curl
+    coreutils
     direnv
-    dmenu
+    findutils
     git
     home-manager
     htop
-    konsole
+    inetutils
     nodejs
     vim
     unzip
