@@ -1,4 +1,6 @@
 {
+  inputs,
+  self,
   config,
   lib,
   pkgs,
@@ -30,6 +32,12 @@
     unzip
     wget
   ];
+
+  home-manager = {
+    useUserPackages = true;
+    extraSpecialArgs = {inherit inputs;};
+    users.wafu = import "${self}/home-manager/${config.networking.hostName}.nix";
+  };
 
   programs.fish = {
     enable = true;

@@ -13,15 +13,12 @@
     "${modulesPath}/profiles/minimal.nix"
     nixos-wsl.nixosModules.wsl
 
-    ./modules/common
-    ./modules/hm
-    ./modules/infra
-    ./modules/nix
-    ./modules/sops
+    ./common/global
+    ./common/nix
+    ./common/sops
   ];
 
   _mods = {
-    mirrors.enable = false;
     tailscale.enable = true;
     vscode-server.enable = true;
   };

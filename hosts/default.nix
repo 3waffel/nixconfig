@@ -1,4 +1,5 @@
 {
+  outputs,
   helix,
   nil,
   ...
@@ -6,9 +7,11 @@
   inherit (inputs) self nixpkgs;
   inherit (nixpkgs.lib) nixosSystem;
 
-  commonModules = [
-    inputs.home-manager.nixosModules.home-manager
-  ];
+  commonModules =
+    [
+      inputs.home-manager.nixosModules.home-manager
+    ]
+    ++ (builtins.attrValues outputs.nixosModules);
 
   nixosConfig = {extraModules ? []}: let
     system = "x86_64-linux";
@@ -30,12 +33,7 @@
     };
 in {
   yoshika = nixosConfig {
-    extraModules = [
-      ./yoshika.nix
-      {
-        home-manager.users.wafu = import "${self}/home-manager/yoshika.nix";
-      }
-    ];
+    extraModules = [./yoshika.nix];
   };
   oracle = nixosConfig {
     extraModules = [./oracle.nix];

@@ -3,7 +3,7 @@ keys:
   - &yoshika age1ft38svumy94e9ksrvjea5lhjesfcrk0xualfs9jkxmcfzw44tqsqes262t
 
 creation_rules:
-  - path_regex: nixos/modules/sops/[^/]+\.yaml$
+  - path_regex: hosts/common/sops/[^/]+\.yaml$
     key_groups:
     - age:
       - *wafu

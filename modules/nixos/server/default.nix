@@ -10,6 +10,5 @@ with lib; {
     ./misskey.nix
     ./netdata.nix
     ./vscode-server.nix
-    ./network
   ];
 }
