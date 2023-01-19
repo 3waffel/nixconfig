@@ -4,10 +4,16 @@
   pkgs,
   ...
 }: {
+  users.mutableUsers = false;
   users.users.wafu = {
     extraGroups = ["wheel" "disk" "vboxusers" "cdrom" "docker"];
     isNormalUser = true;
     shell = pkgs.fish;
+
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFJXw7Yj6zMg3pllJr4uG5QLhcaHVE+HYArfCMZ6qMjN wafu"
+    ];
+    packages = [pkgs.home-manager];
   };
 
   environment.systemPackages = with pkgs; [
@@ -24,4 +30,13 @@
     unzip
     wget
   ];
+
+  programs.fish = {
+    enable = true;
+    vendor = {
+      completions.enable = true;
+      config.enable = true;
+      functions.enable = true;
+    };
+  };
 }
