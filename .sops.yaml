@@ -1,9 +1,11 @@
 keys:
-  - &wafu age17wk9httlw504ndxcmkd6dvfyz2a4sjyzpk4rfj6sqcw6xcre7ums0csdre
-  - &yoshika age1ft38svumy94e9ksrvjea5lhjesfcrk0xualfs9jkxmcfzw44tqsqes262t
+  - &users:
+    - &wafu age17wk9httlw504ndxcmkd6dvfyz2a4sjyzpk4rfj6sqcw6xcre7ums0csdre
+  - &hosts:
+    - &yoshika age1ft38svumy94e9ksrvjea5lhjesfcrk0xualfs9jkxmcfzw44tqsqes262t
 
 creation_rules:
-  - path_regex: hosts/common/sops/[^/]+\.yaml$
+  - path_regex: hosts/common/sops/secrets.ya?ml$
     key_groups:
     - age:
       - *wafu
