@@ -10,13 +10,9 @@
     "${modulesPath}/installer/scan/not-detected.nix"
     nixos-hardware.nixosModules.raspberry-pi-4
 
-    ./modules/common
-    ./modules/hm
-    ./modules/infra
-    ./modules/nix
-    ./modules/sops
-    ./modules/ssh
-    ./modules/rpi
+    ./common/global
+    ./common/nix
+    ./common/sops
   ];
 
   _mods = {
