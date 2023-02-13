@@ -24,7 +24,14 @@
     netdata.enable = true;
     tailscale.enable = true;
     vscode-server.enable = true;
+    ngrok = {
+      enable = true;
+      configFile = config.sops.secrets.ngrok-config.path;
+    };
+    ustreamer.enable = true;
   };
+
+  sops.secrets.ngrok-config = {};
 
   boot = {
     loader.generic-extlinux-compatible.enable = true;
@@ -58,8 +65,8 @@
     nameservers = ["100.100.100.100" "8.8.8.8" "1.1.1.1"];
     networkmanager.enable = true;
     proxy = {
-      allProxy = "socks5://127.0.0.1:10808";
-      httpProxy = "http://127.0.0.1:10809";
+      # allProxy = "socks5://127.0.0.1:10808";
+      # httpProxy = "http://127.0.0.1:10809";
       noProxy = "127.0.0.1,localhost,internal.domain";
     };
   };
@@ -113,9 +120,9 @@
     SUBSYSTEMS=="gpio", MODE="0666"
   '';
 
-  sops.secrets.v2ray-config = {};
-  services.v2ray = {
-    enable = true;
-    configFile = config.sops.secrets.v2ray-config.path;
-  };
+  # sops.secrets.v2ray-config = {};
+  # services.v2ray = {
+  #   enable = true;
+  #   configFile = config.sops.secrets.v2ray-config.path;
+  # };
 }

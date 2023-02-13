@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.mods.ngrok;
+  cfg = config._mods.ngrok;
 in
   with lib; {
-    options.mods.ngrok = {
+    options._mods.ngrok = {
       enable = mkEnableOption "Ngrok tls service";
 
       logLevel = mkOption {

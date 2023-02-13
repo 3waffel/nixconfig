@@ -15,7 +15,7 @@
           hostname = hostname;
           user = "wafu";
         };
-      }) ["oracle"]))
+      }) ["raspi" "akkocloud"]))
       // {
         "sourcehut" = {
           identityFile = ["~/.ssh/srht.id_ed25519"];

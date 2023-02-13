@@ -9,13 +9,14 @@ on:
         paths:
             - ".github/workflows/ci.yml"
             - "home-manager/**"
-            - "nixos/**"
+            - "hosts/**"
             - "flake.nix"
             - "flake.lock"
 
 jobs:
     build:
         strategy:
+          fail-fast: false
           matrix:
             host:
               - raspi
@@ -33,7 +34,7 @@ jobs:
             - uses: actions/checkout@v3
 
             - name: Install Nix
-              uses: cachix/install-nix-action@v17
+              uses: cachix/install-nix-action@v18
               with:
                 extra_nix_config: |
                   extra-platforms = aarch64-linux
@@ -41,14 +42,23 @@ jobs:
                   system-features = big-parallel kvm
 
             - name: Install Cachix
-              uses: cachix/cachix-action@v10
+              uses: cachix/cachix-action@v12
               with:
-                  name: 3waffel
-                  authToken: "${{secrets.CACHIX_AUTH_TOKEN}}"
+                name: 3waffel
+                authToken: "${{secrets.CACHIX_AUTH_TOKEN}}"
+                skipPush: true
 
             - name: Set priority flag
               run: nix-env --set-flag priority 0 cachix
 
+            - name: Build home-manager config
+              run: nix build -L .#homeConfigurations.${{ matrix.host }}.activationPackage --impure
+
+            - name: Push home-manager cache
+              run: nix eval --impure --json ".#homeConfigurations.${{ matrix.host }}.activationPackage.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
+
             - name: Build NixOS config
-              run: |
-                nix build -L --no-link --max-jobs 4 .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+              run: nix build -L --no-link .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+            - name: Push NixOS cache
+              run: nix eval --json ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel

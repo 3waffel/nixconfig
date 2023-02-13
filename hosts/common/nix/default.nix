@@ -9,11 +9,7 @@
   imports = [./mirrors.nix];
 
   nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-      warn-dirty = false
-    '';
+    package = pkgs.nixUnstable;
 
     gc = {
       automatic = true;
@@ -32,6 +28,9 @@
         "3waffel.cachix.org-1:Tm5oJGJA8klOLa4dYRJvoYWQIpItX+0w9KvoRP8Z2mc="
       ];
       trusted-users = ["root" "@wheel"];
+      experimental-features = ["nix-command" "flakes" "repl-flake"];
+      warn-dirty = false;
+      system-features = ["kvm" "big-parallel"];
     };
   };
 

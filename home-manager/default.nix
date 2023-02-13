@@ -1,9 +1,9 @@
 {
   self,
-  nixpkgs,
   home-manager,
-  nixpkgs-wayland,
-  nixgl,
+  helix,
+  nil,
+  nixpkgs,
   ...
 } @ inputs: let
   hmConfig = {
@@ -11,7 +11,12 @@
     modules ? [],
   }: let
     pkgs = import nixpkgs {
-      overlays = [];
+      overlays = [
+        (final: prev: {
+          helix = helix.packages.${system}.default;
+          nil = nil.packages.${system}.default;
+        })
+      ];
     };
   in (home-manager.lib.homeManagerConfiguration rec {
     inherit pkgs modules;

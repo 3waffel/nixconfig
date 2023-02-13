@@ -1,22 +1,18 @@
 keys:
-  - &wafu age17wk9httlw504ndxcmkd6dvfyz2a4sjyzpk4rfj6sqcw6xcre7ums0csdre
-  - &yoshika age1ft38svumy94e9ksrvjea5lhjesfcrk0xualfs9jkxmcfzw44tqsqes262t
-  - &raspi age1wuz4uphtcdkym5prw2pfljcpksft96q0ta2am69czq9g7p8y0ptq4e9rf7
+  - &users:
+    - &wafu age17wk9httlw504ndxcmkd6dvfyz2a4sjyzpk4rfj6sqcw6xcre7ums0csdre
+  - &hosts:
+    - &yoshika age1ft38svumy94e9ksrvjea5lhjesfcrk0xualfs9jkxmcfzw44tqsqes262t
+    - &raspi age1wuz4uphtcdkym5prw2pfljcpksft96q0ta2am69czq9g7p8y0ptq4e9rf7
 
 creation_rules:
-  - path_regex: nixos/modules/sops/secrets.yaml$
+  - path_regex: hosts/common/sops/secrets.ya?ml$
     key_groups:
     - age:
-      - *yoshika
       - *wafu
 
-  - path_regex: nixos/modules/sops/config.yaml$
-    key_groups:
+  - path_regex: hosts/common/sops/[^/]+\.ya?ml$
     - age:
+      - *wafu
       - *yoshika
       - *raspi
-
-  - path_regex: nixos/modules/sops/[^/]+\.yaml$
-    key_groups:
-    - age:
-      - *wafu

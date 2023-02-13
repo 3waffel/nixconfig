@@ -11,12 +11,10 @@
   imports = [
     "${modulesPath}/profiles/qemu-guest.nix"
 
-    ./modules/common
-    ./modules/hm
-    ./modules/infra
-    ./modules/nix
-    ./modules/sops
-    ./modules/ssh
+    ./common/global
+    ./common/nix
+    ./common/sops
+    ./common/ssh
   ];
 
   _mods = {

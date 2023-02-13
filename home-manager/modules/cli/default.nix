@@ -6,10 +6,15 @@
   imports = [
     ./fish
     ./git
-    ./nvim
-    ./nix-index
+    ./helix
+    # ./nvim
+    # ./nix-index
     ./ssh
   ];
+
+  home = {
+    sessionVariables.EDITOR = "hx";
+  };
 
   home.packages = with pkgs; [
     cachix # Managing binary cache
@@ -29,5 +34,8 @@
     deadnix # Nix dead code locator
     nixfmt # Nix formatter
     statix # Nix linter
+
+    flyctl
+    gh
   ];
 }

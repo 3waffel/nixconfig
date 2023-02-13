@@ -6,14 +6,17 @@
   home.packages = with pkgs;
     [
       act
-      cachix
       binutils
+      bison
+      cachix
+      cmake
       direnv
       gcc
       llvmPackages.libclang
       llvmPackages.lld
+      ninja
       nodejs
-      openssl
+      openssl_3
       pkg-config
       rustup
       rust-analyzer
@@ -39,5 +42,23 @@
   home.sessionVariables = with pkgs; {
     PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig:${udev.dev}/lib/pkgconfig";
     LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
+    RUSTUP_DIST_SERVER = "https://rsproxy.cn";
+    RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup";
+    CARGO_UNSTABLE_SPARSE_REGISTRY = "true";
+  };
+
+  home.file = {
+    ".cargo/config".text = ''
+      [source.crates-io]
+      replace-with = 'rsproxy-sparse'
+      [source.rsproxy]
+      registry = "https://rsproxy.cn/crates.io-index"
+      [source.rsproxy-sparse]
+      registry = "sparse+https://rsproxy.cn/index/"
+      [registries.rsproxy]
+      index = "https://rsproxy.cn/crates.io-index"
+      [net]
+      git-fetch-with-cli = true
+    '';
   };
 }
