@@ -6,10 +6,11 @@ on:
   push:
     branches:
       - master
+      - yoshika
     paths:
       - ".github/workflows/ci.yml"
       - "home-manager/**"
-      - "nixos/**"
+      - "hosts/**"
       - "flake.nix"
       - "flake.lock"
 
