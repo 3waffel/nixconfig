@@ -13,6 +13,7 @@
     ./common/global
     ./common/nix
     ./common/sops
+    ./common/ssh
   ];
 
   _mods = {
