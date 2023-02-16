@@ -6,7 +6,8 @@
   pkgs,
   ...
 }: {
-  users.mutableUsers = false;
+  security.sudo.wheelNeedsPassword = false;
+
   users.users.wafu = {
     extraGroups = ["wheel" "disk" "vboxusers" "cdrom" "docker"];
     isNormalUser = true;

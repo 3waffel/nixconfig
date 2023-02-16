@@ -1,0 +1,85 @@
+name: Build Config
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+      - yoshika
+    paths:
+      - ".github/workflows/ci.yml"
+      - "home-manager/**"
+      - "hosts/**"
+      - "flake.nix"
+      - "flake.lock"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - yoshika
+          - oracle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v18
+
+      - name: Install Cachix
+        uses: cachix/cachix-action@v12
+        with:
+          name: 3waffel
+          authToken: "${{secrets.CACHIX_AUTH_TOKEN}}"
+          skipPush: true
+
+      - name: Set priority flag
+        run: nix-env --set-flag priority 0 cachix
+
+      - name: Build home-manager config
+        run: nix build -L .#homeConfigurations.${{ matrix.host }}.activationPackage --impure
+
+      - name: Push home-manager cache
+        run: nix eval --impure --json ".#homeConfigurations.${{ matrix.host }}.activationPackage.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
+
+      - name: Build NixOS config
+        run: nix build -L --no-link .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+      - name: Push NixOS cache
+        run: nix eval --json ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
+
+  build-installer:
+    strategy:
+      matrix:
+        host:
+          - yoshika
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: "access-tokens = github.com=${{ github.token }}"
+
+      - name: Install Cachix
+        uses: cachix/cachix-action@v12
+        with:
+          name: 3waffel
+          authToken: "${{secrets.CACHIX_AUTH_TOKEN}}"
+          skipPush: true
+
+      - name: Build installer
+        run: nix build '.#nixosConfigurations.${{ matrix.host }}.config.system.build.installer'
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: installer-${{ matrix.host }}
+          path: result/tarball/nixos-wsl-installer.tar.gz
