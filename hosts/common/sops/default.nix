@@ -10,7 +10,5 @@
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age.keyFile = "/home/wafu/.config/sops/age/keys.txt";
-    secrets.v2ray-config.sopsFile = ./config.yaml;
-    secrets.ngrok-config.sopsFile = ./ngrok.yaml;
   };
 }

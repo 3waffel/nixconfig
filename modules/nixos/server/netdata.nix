@@ -11,12 +11,12 @@ in
         type = types.bool;
         default = false;
       };
+      port = mkOption {
+        default = 19999;
+      };
       vhost = mkOption {
         type = types.str;
         default = "netdata.kusako.de";
-      };
-      port = mkOption {
-        default = 19999;
       };
     };
 

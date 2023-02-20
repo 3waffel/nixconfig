@@ -13,11 +13,15 @@ in
         type = types.bool;
         default = false;
       };
-      vhost = mkOption {
-        default = "mk.kusako.de";
-      };
       port = mkOption {
         default = 3000;
+      };
+      enableCaddy = mkOption {
+        type = types.bool;
+        default = false;
+      };
+      vhost = mkOption {
+        default = "mk.kusako.de";
       };
     };
 
@@ -31,6 +35,7 @@ in
         };
         redis.createLocally = false;
       };
+
       services.postgresql = {
         enable = true;
         ensureDatabases = ["misskey"];
@@ -41,11 +46,13 @@ in
           }
         ];
       };
+
       services.redis.servers.misskey = {
         enable = true;
         port = 16434;
       };
-      services.caddy = {
+
+      services.caddy = mkIf cfg.enableCaddy {
         enable = true;
         virtualHosts."${cfg.vhost}" = {
           extraConfig = ''

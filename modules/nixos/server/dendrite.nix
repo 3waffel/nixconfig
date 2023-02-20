@@ -11,12 +11,16 @@ in
         type = types.bool;
         default = false;
       };
+      port = mkOption {
+        default = 8043;
+      };
+      enableCaddy = mkOption {
+        type = types.bool;
+        default = false;
+      };
       vhost = mkOption {
         type = types.str;
         default = "mx.kusako.de";
-      };
-      port = mkOption {
-        default = 8043;
       };
     };
 
@@ -42,7 +46,7 @@ in
         ];
       };
 
-      services.caddy = {
+      services.caddy = mkIf cfg.enableCaddy {
         enable = true;
         virtualHosts."${cfg.vhost}" = {
           extraConfig = ''

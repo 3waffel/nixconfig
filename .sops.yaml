@@ -13,6 +13,7 @@ creation_rules:
       - *yoshika
 
   - path_regex: hosts/common/sops/[^/]+\.ya?ml$
+    key_groups:
     - age:
       - *wafu
       - *yoshika

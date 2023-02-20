@@ -18,7 +18,6 @@
 
   _mods = {
     gitea.enable = true;
-    netdata.enable = true;
     tailscale.enable = true;
     vscode-server.enable = true;
     ngrok = {
@@ -43,7 +42,7 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
+    device = "/dev/disk/by-label/NIXOS_SD";
     fsType = "ext4";
   };
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
@@ -62,8 +61,6 @@
     nameservers = ["100.100.100.100" "8.8.8.8" "1.1.1.1"];
     networkmanager.enable = true;
     proxy = {
-      # allProxy = "socks5://127.0.0.1:10808";
-      # httpProxy = "http://127.0.0.1:10809";
       noProxy = "127.0.0.1,localhost,internal.domain";
     };
   };
@@ -116,10 +113,4 @@
   services.udev.extraRules = ''
     SUBSYSTEMS=="gpio", MODE="0666"
   '';
-
-  # sops.secrets.v2ray-config = {};
-  # services.v2ray = {
-  #   enable = true;
-  #   configFile = config.sops.secrets.v2ray-config.path;
-  # };
 }

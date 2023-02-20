@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    ./ngrok.nix
     ./ustreamer.nix
   ];
 }
