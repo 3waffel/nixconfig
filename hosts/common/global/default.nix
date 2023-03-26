@@ -37,7 +37,7 @@
   home-manager = {
     useUserPackages = true;
     extraSpecialArgs = {inherit inputs;};
-    users.wafu = import "${self}/home-manager/${config.networking.hostName}.nix";
+    users.wafu = import "${self}/home-manager/wafu.nix";
   };
 
   programs.fish = {

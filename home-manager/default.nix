@@ -22,6 +22,5 @@
     inherit pkgs modules;
   });
 in {
-  yoshika = hmConfig {modules = [./yoshika.nix];};
-  oracle = hmConfig {modules = [./oracle.nix];};
+  wafu = hmConfig {modules = [./wafu.nix];};
 }
