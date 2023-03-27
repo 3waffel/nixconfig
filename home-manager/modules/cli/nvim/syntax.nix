@@ -1,4 +1,8 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  config,
+  ...
+}: let
   inherit (builtins) attrValues removeAttrs;
 in {
   programs.neovim.plugins = with pkgs.vimPlugins; [
@@ -8,24 +12,22 @@ in {
     vim-markdown
     vim-nix
     vim-toml
+    kotlin-vim
     haskell-vim
+    pgsql-vim
+    vim-terraform
+    vim-jsx-typescript
+
     {
-      plugin = pgsql-vim;
-      config = ''
-        let g:sql_type_default = 'pgsql'
+      plugin = vimtex;
+      config = let
+        method =
+          if config.programs.zathura.enable
+          then "zathura"
+          else "general";
+      in ''
+        let g:vimtex_view_method = '${method}'
       '';
-    }
-    {
-      plugin = nvim-treesitter.withPlugins (p: attrValues (removeAttrs p ["tree-sitter-nix"]));
-      config =
-        /*
-        vim
-        */
-        ''
-          lua require('nvim-treesitter.configs').setup{highlight={enable=true}}
-          set foldmethod=expr
-          set foldexpr=nvim_treesitter#foldexpr()
-        '';
     }
   ];
 }

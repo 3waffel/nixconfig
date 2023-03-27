@@ -8,9 +8,10 @@ on:
       - master
       - yoshika
     paths:
-      - ".github/workflows/ci.yml"
+      - ".github/workflows/**"
       - "home-manager/**"
       - "hosts/**"
+      - "modules/**"
       - "flake.nix"
       - "flake.lock"
 

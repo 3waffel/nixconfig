@@ -3,167 +3,157 @@
     vim-illuminate
     vim-numbertoggle
     {
-      plugin = undotree;
+      plugin = vim-fugitive;
+      type = "viml";
       config =
         /*
         vim
         */
         ''
-          lua require('nvim-tree').setup{ renderer = { group_empty= true } }
-          let g:undotree_SetFocusWhenToggle = 1
-          nmap <C-n> :UndotreeToggle<cr>
+          nmap <space>G :Git<CR>
         '';
     }
-    undotree
     {
-      plugin = telescope-nvim;
+      plugin = nvim-bqf;
+      type = "lua";
       config =
         /*
-        vim
+        lua *
         */
         ''
-          nnoremap <space>t <cmd>Telescope find_files<cr>
-          nnoremap <space>g <cmd>Telescope live_grep<cr>
+          require('bqf').setup{}
+        '';
+    }
+    {
+      plugin = alpha-nvim;
+      type = "lua";
+      config =
+        /*
+        lua
+        */
+        ''
+          local alpha = require("alpha")
+          local dashboard = require("alpha.themes.dashboard")
 
-          lua << EOF
-          local actions = require('telescope.actions')
-          local action_state = require('telescope.actions.state')
-          local telescope_custom_actions = {}
-
-          function telescope_custom_actions._multiopen(prompt_bufnr, open_cmd)
-            local picker = action_state.get_current_picker(prompt_bufnr)
-            local selected_entry = action_state.get_selected_entry()
-            local num_selections = #picker:get_multi_selection()
-            if not num_selections or num_selections <= 1 then
-                actions.add_selection(prompt_bufnr)
-            end
-            actions.send_selected_to_qflist(prompt_bufnr)
-            vim.cmd("cfdo " .. open_cmd)
-          end
-          function telescope_custom_actions.multi_selection_open(prompt_bufnr)
-            telescope_custom_actions._multiopen(prompt_bufnr, "edit")
-          end
-
-
-          require('telescope').setup {
-            defaults = {
-              mappings = {
-                i = {
-                  ['<C-j>'] = actions.move_selection_next,
-                  ['<C-k>'] = actions.move_selection_previous,
-                  ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
-                  ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
-                  ['<cr>'] = telescope_custom_actions.multi_selection_open
-                },
-                n = {
-                  ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
-                  ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
-                  ['<cr>'] = telescope_custom_actions.multi_selection_open
-                }
-              },
-            }
+          dashboard.section.header.val = {
+                "                                                     ",
+                "  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ",
+                "  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ",
+                "  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ",
+                "  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ",
+                "  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ",
+                "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
+                "                                                     ",
           }
-          EOF
+          dashboard.section.header.opts.hl = "Title"
+
+          dashboard.section.buttons.val = {
+              dashboard.button( "n", " New file" , ":enew <BAR> startinsert <CR>"),
+              dashboard.button( "e", " Explore", ":Explore<CR>"),
+              dashboard.button( "g", " Git summary", ":Git | :only<CR>"),
+              dashboard.button( "o", " Org capture" , ":cd ~/Documents/Org | :e Capture.org<CR>"),
+              dashboard.button( "c", "  Nix config flake" , ":cd ~/Documents/NixConfig | :e flake.nix<CR>"),
+              dashboard.button( "q", "  Quit nvim", ":qa<CR>"),
+          }
+
+          alpha.setup(dashboard.opts)
+          vim.keymap.set("n", "<space>a", ":Alpha<CR>", { desc = "Open alpha dashboard" })
+        '';
+    }
+    {
+      plugin = bufferline-nvim;
+      type = "lua";
+      config =
+        /*
+        lua
+        */
+        ''
+          require('bufferline').setup{}
+        '';
+    }
+    {
+      plugin = scope-nvim;
+      type = "lua";
+      config =
+        /*
+        lua
+        */
+        ''
+          require('scope').setup{}
         '';
     }
     {
       plugin = which-key-nvim;
+      type = "lua";
       config =
         /*
-        vim
+        lua
         */
         ''
-          lua require('which-key').setup{}
+          require('which-key').setup{}
         '';
     }
     {
       plugin = range-highlight-nvim;
+      type = "lua";
       config =
         /*
-        vim
+        lua
         */
         ''
-          lua require('range-highlight').setup{}
+          require('range-highlight').setup{}
         '';
     }
     {
       plugin = indent-blankline-nvim;
+      type = "lua";
       config =
         /*
-        vim
+        lua
         */
         ''
-          lua require('indent_blankline').setup{char_highlight_list={'IndentBlankLine'}}
+          require('indent_blankline').setup{char_highlight_list={'IndentBlankLine'}}
         '';
     }
     {
       plugin = nvim-web-devicons;
+      type = "lua";
       config =
         /*
-        vim
+        lua
         */
         ''
-          lua require('nvim-web-devicons').setup{}
+          require('nvim-web-devicons').setup{}
         '';
     }
     {
       plugin = gitsigns-nvim;
+      type = "lua";
       config =
         /*
-        vim
+        lua
         */
         ''
-          lua require('gitsigns').setup()
+          require('gitsigns').setup{
+            signs = {
+              add = { text = '+' },
+              change = { text = '~' },
+              delete = { text = '_' },
+              topdelete = { text = '‾' },
+              changedelete = { text = '~' },
+            },
+          }
         '';
     }
     {
       plugin = nvim-colorizer-lua;
+      type = "lua";
       config =
         /*
-        vim
+        lua
         */
         ''
-          set termguicolors
-          lua require('colorizer').setup()
-        '';
-    }
-
-    {
-      plugin = barbar-nvim;
-      config =
-        /*
-        vim
-        */
-        ''
-          let bufferline = get(g:, 'bufferline', {})
-          let bufferline.animation = v:true
-          nmap <C-h>   :BufferPrevious<CR>
-          nmap <C-l>   :BufferNext<CR>
-          nmap <C-q>   :BufferClose<CR>
-          nmap <C-a>   :BufferPick<CR>
-          nmap <C-M-h> :BufferMovePrevious<CR>
-          nmap <C-M-l> :BufferMoveNext<CR>
-          nmap <M-1>   :BufferGoto 1<CR>
-          nmap <M-2>   :BufferGoto 2<CR>
-          nmap <M-3>   :BufferGoto 3<CR>
-          nmap <M-4>   :BufferGoto 4<CR>
-          nmap <M-5>   :BufferGoto 5<CR>
-          nmap <M-6>   :BufferGoto 6<CR>
-          nmap <M-7>   :BufferGoto 7<CR>
-          nmap <M-8>   :BufferGoto 8<CR>
-          nmap <M-9>   :BufferGoto 9<CR>
-        '';
-    }
-
-    {
-      plugin = nvim-tree-lua;
-      config =
-        /*
-        vim
-        */
-        ''
-          lua require('nvim-tree').setup{}
-          nmap <C-p> :NvimTreeToggle<CR>
+          require('colorizer').setup{}
         '';
     }
   ];

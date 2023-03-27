@@ -8,7 +8,7 @@
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
     ports = [22];
+    settings.PasswordAuthentication = false;
   };
 }

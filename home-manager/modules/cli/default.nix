@@ -7,7 +7,7 @@
     ./fish
     ./git
     ./helix
-    # ./nvim
+    ./nvim
     # ./nix-index
     ./ssh
   ];

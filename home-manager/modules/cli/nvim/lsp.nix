@@ -5,131 +5,64 @@
 }: let
   homeDir = config.home.homeDirectory;
 in {
-  # Add (some) LSP packages here (others are per-project, to avoid big stuff)
-  home.packages = with pkgs; [
-    editorconfig-checker
-    nodePackages.jsonlint
-  ];
-
   programs.neovim.plugins = with pkgs.vimPlugins; [
     # LSP
     {
       plugin = nvim-lspconfig;
+      type = "lua";
       config =
         /*
-        vim
+        lua
         */
         ''
-          nmap gD       :lua vim.lsp.buf.declaration()<CR>
-          nmap gd       :lua vim.lsp.buf.definition()<CR>
-          nmap <space>f :lua vim.lsp.buf.formatting()<CR>
+          local lspconfig = require('lspconfig')
 
-          autocmd CursorHold <buf> :lua vim.lsp.buf.hover()<CR>
-          nmap K :lua vim.lsp.buf.hover()<CR>
+          function add_lsp(binary, server, options)
+            if vim.fn.executable(binary) == 1 then server.setup(options) end
+          end
 
-          lua << EOF
-            local lspconfig = require('lspconfig')
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            -- capabilities.textDocument.completion.completionItem.snippetSupport = true
+          add_lsp("docker-langserver", lspconfig.dockerls, {})
+          add_lsp("bash-language-server", lspconfig.bashls, {})
+          add_lsp("clangd", lspconfig.clangd, {})
+          add_lsp("nil", lspconfig.nil_ls, {})
+          add_lsp("pylsp", lspconfig.pylsp, {})
+          add_lsp("dart", lspconfig.dartls, {})
+          add_lsp("haskell-language-server", lspconfig.hls, {})
+          add_lsp("kotlin-language-server", lspconfig.kotlin_language_server, {})
+          add_lsp("solargraph", lspconfig.solargraph, {})
+          add_lsp("phpactor", lspconfig.phpactor, {})
+          add_lsp("terraform-ls", lspconfig.terraformls, {})
+          add_lsp("texlab", lspconfig.texlab, {})
+          add_lsp("gopls", lspconfig.gopls, {})
+          add_lsp("tsserver", lspconfig.tsserver, {})
 
-            lspconfig.dockerls.setup{} -- Docker
-            lspconfig.bashls.setup{} -- Bash
-            lspconfig.clangd.setup{} -- C/C++
-            lspconfig.rnix.setup{} -- Nix
-            lspconfig.pylsp.setup{} -- Python
-            lspconfig.sumneko_lua.setup{cmd = {"lua-language-server"}} -- Lua
-            lspconfig.dartls.setup{} -- Dart
-            lspconfig.hls.setup{} -- Haskell
-            lspconfig.kotlin_language_server.setup{} -- Kotlin
-            lspconfig.terraformls.setup{filetypes={"terraform","tf","hcl"}} -- Terraform
-            lspconfig.solargraph.setup{} -- Ruby
-            lspconfig.jdtls.setup{cmd = {"jdt-language-server", "-data", "${homeDir}/.cache/jdtls/workspace"}} -- Java
-
-            lspconfig.rust_analyzer.setup{ -- Rust
-              settings = {
-                ["rust-analyzer"] = {
-                  checkOnSave = {
-                    command = "clippy",
-                  }
-                }
-              }
+          add_lsp("lua-lsp", lspconfig.lua_ls, {
+            cmd = { "lua-language-server" }
+          })
+          add_lsp("jdt-language-server", lspconfig.jdtls, {
+            cmd = { "jdt-language-server" }
+          })
+          add_lsp("texlab", lspconfig.texlab, {
+            chktex = {
+              onEdit = true,
+              onOpenAndSave = true
             }
-
-            local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-            for type, icon in pairs(signs) do
-              local hl = "DiagnosticSign" .. type
-              vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-            end
-          EOF
-        '';
-    }
-    {
-      plugin = null-ls-nvim;
-      config =
-        /*
-        vim
-        */
-        ''
-          lua << EOF
-            local null_ls = require("null-ls")
-            null_ls.setup({
-                sources = {
-                    -- Make
-                    null_ls.builtins.diagnostics.checkmake,
-                    -- Latex
-                    null_ls.builtins.diagnostics.chktex,
-                    -- HTML & templates
-                    null_ls.builtins.formatting.prettier,
-                    null_ls.builtins.diagnostics.curlylint,
-                    -- Markdown
-                    null_ls.builtins.diagnostics.markdownlint,
-                    null_ls.builtins.formatting.markdownlint,
-                    -- SQL
-                    null_ls.builtins.diagnostics.sqlfluff,
-                    null_ls.builtins.formatting.sqlfluff,
-                    -- JSON
-                    null_ls.builtins.formatting.jq,
-                    null_ls.builtins.diagnostics.jsonlint,
-
-                    -- Nix
-                    null_ls.builtins.diagnostics.statix,
-                    null_ls.builtins.code_actions.statix,
-                    null_ls.builtins.diagnostics.deadnix,
-
-                    -- Prose
-                    null_ls.builtins.diagnostics.proselint,
-
-                    -- General
-                    null_ls.builtins.diagnostics.editorconfig_checker.with({
-                      command = "editorconfig-checker",
-                    }),
-                    null_ls.builtins.diagnostics.trail_space.with({
-                      disabled_filetypes = { "mail" },
-                    }),
-                },
-            })
-          EOF
-        '';
-    }
-    {
-      plugin = trouble-nvim;
-      config =
-        /*
-        vim
-        */
-        ''
-          nnoremap <space>e <cmd>TroubleToggle<cr>
-          lua require('trouble').setup{}
+          })
+          add_lsp("ltex-ls", lspconfig.ltex, {})
         '';
     }
     {
       plugin = rust-tools-nvim;
+      type = "lua";
       config =
         /*
-        vim
+        lua
         */
         ''
-          lua require('rust-tools').setup{tools={autoSetHints = true}}
+          local rust_tools = require('rust-tools')
+          if vim.fn.executable("rust-analyzer") == 1 then
+            rust_tools.setup{ tools = { autoSetHints = true } }
+          end
         '';
     }
 
@@ -139,48 +72,29 @@ in {
     lspkind-nvim
     {
       plugin = nvim-cmp;
+      type = "lua";
       config =
         /*
-        vim
+        lua
         */
         ''
-          lua << EOF
-            local cmp = require('cmp')
-            local lspkind = require('lspkind')
+          local cmp = require('cmp')
 
-            cmp.setup{
-              formatting = {
-                format = lspkind.cmp_format()
-              },
-              mapping = {
-                ['<C-n>'] = cmp.mapping.select_next_item({
-                  behavior = cmp.SelectBehavior.Insert }
-                ),
-                ['<C-j>'] = cmp.mapping.select_next_item({
-                  behavior = cmp.SelectBehavior.Insert }
-                ),
-                ['<C-p>'] = cmp.mapping.select_prev_item({
-                  behavior = cmp.SelectBehavior.Insert }
-                ),
-                ['<C-k>'] = cmp.mapping.select_prev_item({
-                  behavior = cmp.SelectBehavior.Insert }
-                ),
-                ['<C-h>'] = cmp.mapping.close(),
-                ['<C-l>'] = cmp.mapping.confirm(),
-              },
-              sources = {
-                {
-                  name='buffer',
-                  option = {
-                  get_bufnrs = function()
-                    return vim.api.nvim_list_bufs()
-                  end
-                  },
-                },
-                { name='nvim_lsp' },
-              },
-            }
-          EOF
+          cmp.setup{
+            formatting = { format = require('lspkind').cmp_format() },
+            -- Same keybinds as vim's vanilla completion
+            mapping = {
+              ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+              ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+              ['<C-e>'] = cmp.mapping.close(),
+              ['<C-y>'] = cmp.mapping.confirm(),
+            },
+            sources = {
+              { name='buffer', option = { get_bufnrs = vim.api.nvim_list_bufs } },
+              { name='nvim_lsp' },
+              { name='orgmode' },
+            },
+          }
         '';
     }
   ];
