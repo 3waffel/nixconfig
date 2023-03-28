@@ -2,47 +2,39 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    sops-nix.url = "github:mic92/sops-nix";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    sops-nix = {
-      url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixos-hardware = {
-      url = "github:NixOS/nixos-hardware";
-    };
-    nixgl = {
-      url = "github:guibou/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vscode-server.url = "github:msteen/nixos-vscode-server";
-    simple-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
-    misskey.url = "github:3waffel/misskey-flake";
-    helix.url = "github:helix-editor/helix";
+    simple-mailserver = {
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nil = {
       url = "github:oxalica/nil";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    vscode-server = {
+      url = "github:msteen/nixos-vscode-server";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    misskey.url = "github:3waffel/misskey-flake";
+    helix.url = "github:helix-editor/helix";
   };
 
   inputs = {
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-    };
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = {
