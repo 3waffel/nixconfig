@@ -25,6 +25,7 @@
       configFile = config.sops.secrets.ngrok-config.path;
     };
     ustreamer.enable = true;
+    clash.enable = true;
   };
 
   sops.secrets.ngrok-config = {};
