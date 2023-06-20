@@ -19,7 +19,6 @@
       openssl_3
       pkg-config
       rustup
-      rust-analyzer
       tree
       treefmt
       trunk
