@@ -18,7 +18,10 @@
 
   _mods = {
     gitea.enable = true;
-    tailscale.enable = true;
+    tailscale = {
+      enable = true;
+      useProxy = true;
+    };
     vscode-server.enable = true;
     ngrok = {
       enable = true;
@@ -114,11 +117,11 @@
   services.udev.extraRules = ''
     SUBSYSTEMS=="gpio", MODE="0666"
   '';
-  
+
   # https://github.com/NixOS/nixpkgs/issues/180175
   systemd.services.NetworkManager-wait-online = {
     serviceConfig = {
-      ExecStart = [ "" "${pkgs.networkmanager}/bin/nm-online -q" ];
+      ExecStart = ["" "${pkgs.networkmanager}/bin/nm-online -q"];
       Restart = "on-failure";
       RestartSec = 1;
     };

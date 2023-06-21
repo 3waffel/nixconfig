@@ -12,6 +12,10 @@ in
         type = types.bool;
         default = false;
       };
+      useProxy = mkOption {
+        type = types.bool;
+        default = false;
+      };
     };
 
     config = mkIf cfg.enable {
@@ -43,6 +47,11 @@ in
         trustedInterfaces = ["tailscale0"];
         allowedUDPPorts = [config.services.tailscale.port];
         checkReversePath = "loose";
+      };
+      systemd.services.tailscaled = mkIf cfg.useProxy {
+        serviceConfig.Environment = [
+          "https_proxy=http://127.0.0.1:7890"
+        ];
       };
     };
   }
