@@ -5,7 +5,7 @@
 } @ args: {
   programs.helix = {
     enable = true;
-    languages = import ./language.nix args;
+    languages = {language = import ./language.nix args;};
     settings = {
       theme = "catppuccin_mocha";
       editor = {

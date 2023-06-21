@@ -32,7 +32,7 @@
 
   boot = {
     loader.generic-extlinux-compatible.enable = true;
-    tmpOnTmpfs = true;
+    tmp.useTmpfs = true;
     kernelModules = ["bcm2835-v4l2"];
     kernelParams = [
       "8250.nr_uarts=1"
@@ -114,4 +114,14 @@
   services.udev.extraRules = ''
     SUBSYSTEMS=="gpio", MODE="0666"
   '';
+  
+  # https://github.com/NixOS/nixpkgs/issues/180175
+  systemd.services.NetworkManager-wait-online = {
+    serviceConfig = {
+      ExecStart = [ "" "${pkgs.networkmanager}/bin/nm-online -q" ];
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
+    unitConfig.StartLimitIntervalSec = 0;
+  };
 }

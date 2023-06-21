@@ -40,10 +40,12 @@ in
         lfs.enable = true;
         database.type = "postgres";
         appName = "Yoshika Gitea";
-        httpPort = cfg.port;
-        domain = "${cfg.vhost}";
-        rootUrl = "https://${cfg.vhost}";
         settings = {
+          server = {
+            ROOT_URL = "https://${cfg.vhost}";
+            HTTP_PORT = cfg.port;
+            DOMAIN = "${cfg.vhost}";
+          };
           service = {
             DISABLE_REGISTRATION = true;
             DEFAULT_KEEP_EMAIL_PRIVATE = true;
