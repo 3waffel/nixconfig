@@ -1,6 +1,5 @@
 {
   outputs,
-  helix,
   nil,
   ...
 } @ inputs: let
@@ -20,7 +19,6 @@
       inherit system;
       overlays = [
         (final: prev: {
-          helix = helix.packages.${system}.default;
           nil = nil.packages.${system}.default;
         })
       ];

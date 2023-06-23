@@ -5,6 +5,7 @@
 }:
 with lib; {
   imports = [
+    ./cockpit.nix
     ./gitea.nix
     ./mailserver.nix
     ./minecraft.nix

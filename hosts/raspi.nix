@@ -17,18 +17,18 @@
   ];
 
   _mods = {
+    clash.enable = true;
     gitea.enable = true;
-    tailscale = {
-      enable = true;
-      useProxy = true;
-    };
-    vscode-server.enable = true;
     ngrok = {
       enable = true;
       configFile = config.sops.secrets.ngrok-config.path;
     };
+    tailscale = {
+      enable = true;
+      useProxy = true;
+    };
     ustreamer.enable = true;
-    clash.enable = true;
+    vscode-server.enable = true;
   };
 
   sops.secrets.ngrok-config = {};

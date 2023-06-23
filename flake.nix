@@ -30,7 +30,6 @@
     };
 
     misskey.url = "github:3waffel/misskey-flake";
-    helix.url = "github:helix-editor/helix";
   };
 
   inputs = {

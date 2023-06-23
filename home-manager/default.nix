@@ -1,7 +1,6 @@
 {
   self,
   home-manager,
-  helix,
   nil,
   nixpkgs,
   ...
@@ -13,7 +12,6 @@
     pkgs = import nixpkgs {
       overlays = [
         (final: prev: {
-          helix = helix.packages.${system}.default;
           nil = nil.packages.${system}.default;
         })
       ];
