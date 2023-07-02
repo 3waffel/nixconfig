@@ -39,12 +39,16 @@
   };
 
   home.sessionVariables = with pkgs; {
-    PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig:${udev.dev}/lib/pkgconfig";
+    PKG_CONFIG_PATH = "\${PKG_CONFIG_PATH}:${openssl.dev}/lib/pkgconfig:${udev.dev}/lib/pkgconfig";
     LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
     RUSTUP_DIST_SERVER = "https://rsproxy.cn";
     RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup";
     CARGO_UNSTABLE_SPARSE_REGISTRY = "true";
   };
+
+  home.sessionPath = [
+    "$HOME/.cargo/bin"
+  ];
 
   home.file = {
     ".cargo/config".text = ''

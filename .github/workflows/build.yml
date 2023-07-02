@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v18
+        uses: cachix/install-nix-action@v21
 
       - name: Install Cachix
         uses: cachix/cachix-action@v12
@@ -55,6 +55,7 @@ jobs:
         run: nix eval --json ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
 
   build-installer:
+    needs: build
     strategy:
       matrix:
         host:
@@ -67,7 +68,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v18
+        uses: cachix/install-nix-action@v21
         with:
           extra_nix_config: "access-tokens = github.com=${{ github.token }}"
 
