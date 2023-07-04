@@ -6,6 +6,8 @@
   pkgs,
   ...
 }: {
+  imports = [./nix-ld.nix];
+
   security.sudo.wheelNeedsPassword = false;
 
   users.users.wafu = {
@@ -17,6 +19,12 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFJXw7Yj6zMg3pllJr4uG5QLhcaHVE+HYArfCMZ6qMjN wafu"
     ];
     packages = [pkgs.home-manager];
+  };
+
+  home-manager = {
+    useUserPackages = true;
+    extraSpecialArgs = {inherit inputs;};
+    users.wafu = import "${self}/home-manager/wafu.nix";
   };
 
   environment.systemPackages = with pkgs; [
@@ -33,12 +41,6 @@
     unzip
     wget
   ];
-
-  home-manager = {
-    useUserPackages = true;
-    extraSpecialArgs = {inherit inputs;};
-    users.wafu = import "${self}/home-manager/wafu.nix";
-  };
 
   programs.fish = {
     enable = true;
