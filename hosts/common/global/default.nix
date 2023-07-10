@@ -6,7 +6,9 @@
   pkgs,
   ...
 }: {
-  imports = [./nix-ld.nix];
+  imports = [
+    ./nix-ld.nix
+  ];
 
   security.sudo.wheelNeedsPassword = false;
 

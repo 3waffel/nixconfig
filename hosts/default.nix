@@ -1,8 +1,4 @@
-{
-  outputs,
-  nil,
-  ...
-} @ inputs: let
+{outputs, ...} @ inputs: let
   inherit (inputs) self nixpkgs;
   inherit (nixpkgs.lib) nixosSystem;
 
@@ -10,18 +6,16 @@
     [
       inputs.home-manager.nixosModules.home-manager
     ]
-    ++ (builtins.attrValues outputs.nixosModules);
+    ++ builtins.attrValues outputs.nixosModules;
 
-  nixosConfig = {extraModules ? []}: let
-    system = "x86_64-linux";
-  in let
+  nixosConfig = {
+    extraModules ? [],
+    system,
+  }: let
     pkgs = import nixpkgs rec {
       inherit system;
-      overlays = [
-        (final: prev: {
-          nil = nil.packages.${system}.default;
-        })
-      ];
+      overlays = [];
+      config.allowUnfree = true;
     };
   in
     nixosSystem {
@@ -31,17 +25,17 @@
     };
 in {
   yoshika = nixosConfig {
+    system = "x86_64-linux";
     extraModules = [./yoshika.nix];
   };
+
   oracle = nixosConfig {
+    system = "x86_64-linux";
     extraModules = [./oracle.nix];
   };
 
-  raspi = nixosSystem {
+  raspi = nixosConfig {
     system = "aarch64-linux";
-    specialArgs = inputs;
-    modules =
-      [./raspi.nix]
-      ++ commonModules;
+    extraModules = [./raspi.nix];
   };
 }

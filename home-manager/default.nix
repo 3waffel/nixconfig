@@ -1,7 +1,6 @@
 {
   self,
   home-manager,
-  nil,
   nixpkgs,
   ...
 } @ inputs: let
@@ -10,11 +9,7 @@
     modules ? [],
   }: let
     pkgs = import nixpkgs {
-      overlays = [
-        (final: prev: {
-          nil = nil.packages.${system}.default;
-        })
-      ];
+      overlays = [];
     };
   in (home-manager.lib.homeManagerConfiguration rec {
     inherit pkgs modules;

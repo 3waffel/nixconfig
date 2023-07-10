@@ -33,8 +33,4 @@
       system-features = ["kvm" "big-parallel"];
     };
   };
-
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
 }
