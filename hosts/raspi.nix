@@ -11,9 +11,10 @@
     nixos-hardware.nixosModules.raspberry-pi-4
 
     ./common/global
-    ./common/nix
-    ./common/sops
-    ./common/ssh
+    ./common/users/wafu
+    ./common/optional/sops
+    ./common/optional/ssh
+    ./common/optional/vscode-server
   ];
 
   _mods = {
@@ -28,7 +29,6 @@
       useProxy = true;
     };
     ustreamer.enable = true;
-    vscode-server.enable = true;
   };
 
   sops.secrets.ngrok-config = {};

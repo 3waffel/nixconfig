@@ -6,13 +6,13 @@ keys:
     - &raspi age1wuz4uphtcdkym5prw2pfljcpksft96q0ta2am69czq9g7p8y0ptq4e9rf7
 
 creation_rules:
-  - path_regex: hosts/common/sops/secrets.ya?ml$
+  - path_regex: hosts/common/optional/sops/secrets.ya?ml$
     key_groups:
     - age:
       - *wafu
       - *yoshika
 
-  - path_regex: hosts/common/sops/[^/]+\.ya?ml$
+  - path_regex: hosts/common/optional/sops/[^/]+\.ya?ml$
     key_groups:
     - age:
       - *wafu

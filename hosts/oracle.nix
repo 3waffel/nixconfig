@@ -12,15 +12,15 @@
     "${modulesPath}/profiles/qemu-guest.nix"
 
     ./common/global
-    ./common/nix
-    ./common/sops
-    ./common/ssh
+    ./common/users/wafu
+    ./common/optional/sops
+    ./common/optional/ssh
+    ./common/optional/vscode-server
   ];
 
   _mods = {
     gitea.enable = true;
     misskey.enable = true;
-    vscode-server.enable = true;
   };
 
   boot.loader.grub = {

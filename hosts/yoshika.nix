@@ -14,13 +14,13 @@
     nixos-wsl.nixosModules.wsl
 
     ./common/global
-    ./common/nix
-    ./common/sops
+    ./common/users/wafu
+    ./common/optional/sops
+    ./common/optional/vscode-server
   ];
 
   _mods = {
     tailscale.enable = true;
-    vscode-server.enable = true;
   };
 
   wsl = {

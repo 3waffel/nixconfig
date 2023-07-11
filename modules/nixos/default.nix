@@ -1,5 +1,6 @@
 {
+  hardware = import ./hardware;
   network = import ./network;
-  server = import ./server;
-  raspi = import ./raspi;
+  panel = import ./panel;
+  social = import ./social;
 }
