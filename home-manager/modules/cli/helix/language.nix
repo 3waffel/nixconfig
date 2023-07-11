@@ -22,6 +22,8 @@ with pkgs; [
   {
     name = "nix";
     language-server = {command = "${nil}/bin/nil";};
+    auto-format = true;
+    formatter.command = "${alejandra}/bin/alejandra";
   }
   {
     name = "clojure";
@@ -35,5 +37,10 @@ with pkgs; [
       tab-width = 2;
       unit = "  ";
     };
+  }
+  {
+    name = "toml";
+    auto-format = true;
+    formatter.command = "${taplo}/bin/taplo fmt -";
   }
 ]

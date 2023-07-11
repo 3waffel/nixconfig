@@ -18,6 +18,16 @@
           select = "underline";
         };
         indent-guides.render = true;
+        lsp = {
+          display-messages = true;
+          display-inlay-hints = true;
+        };
+        file-picker.hidden = false;
+        statusline = {
+          left = ["mode" "spinner"];
+          center = ["file-name"];
+          right = ["diagnostics" "selections" "position-percentage" "position"];
+        };
       };
       keys.normal.space.u = {
         f = ":format"; # format using LSP formatter

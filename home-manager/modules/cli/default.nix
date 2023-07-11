@@ -26,8 +26,8 @@
     exa # Better ls
     fd # Better find
     httpie # Better curl
-
     neofetch
+
     sops # Deployment secrets tool
     alejandra
     rnix-lsp # Nix LSP

@@ -19,6 +19,7 @@
       openssl_3
       pkg-config
       rustup
+      taplo-cli
       tree
       treefmt
       trunk
