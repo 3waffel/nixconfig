@@ -12,6 +12,7 @@
 
     ./common/global
     ./common/users/wafu
+    ./common/optional/webcode
     ./common/optional/sops
     ./common/optional/ssh
     ./common/optional/vscode-server
@@ -20,6 +21,7 @@
   _mods = {
     clash.enable = true;
     gitea.enable = true;
+    glances.enable = true;
     ngrok = {
       enable = true;
       configFile = config.sops.secrets.ngrok-config.path;
@@ -42,6 +44,10 @@
       "console=ttyAMA0,115200"
       "console=tty1"
       "cma=128M"
+      # https://github.com/k3s-io/k3s/issues/2067
+      "cgroup_enable=cpuset"
+      "cgroup_memory=1"
+      "cgroup_enable=memory"
     ];
   };
 
@@ -65,6 +71,7 @@
     nameservers = ["100.100.100.100" "8.8.8.8" "1.1.1.1"];
     networkmanager.enable = true;
     proxy = {
+      allProxy = "http://127.0.0.1:7890";
       noProxy = "127.0.0.1,localhost,internal.domain";
     };
   };
@@ -79,14 +86,14 @@
 
   environment.variables.EDITOR = "nano";
 
-  virtualisation.docker.enable = true;
-  virtualisation.docker.daemon.settings = {
-    "registry-mirrors" = [
-      "https://docker.mirrors.ustc.edu.cn"
-      "https://hub-mirror.c.163.com"
-      "https://mirror.baidubce.com"
-    ];
-  };
+  # virtualisation.docker.enable = true;
+  # virtualisation.docker.daemon.settings = {
+  #   "registry-mirrors" = [
+  #     "https://docker.mirrors.ustc.edu.cn"
+  #     "https://hub-mirror.c.163.com"
+  #     "https://mirror.baidubce.com"
+  #   ];
+  # };
 
   users.users.wafu = {
     openssh.authorizedKeys.keys = [
