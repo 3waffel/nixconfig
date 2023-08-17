@@ -12,10 +12,10 @@
 
     ./common/global
     ./common/users/wafu
-    ./common/optional/webcode
     ./common/optional/sops
     ./common/optional/ssh
     ./common/optional/vscode-server
+    ./common/optional/webcode
   ];
 
   _mods = {
@@ -76,15 +76,21 @@
     };
   };
 
-  services.resolved.fallbackDns = config.networking.nameservers;
-
   sound.enable = true;
   hardware = {
     bluetooth.enable = true;
     pulseaudio.enable = true;
   };
 
-  environment.variables.EDITOR = "nano";
+  environment.variables.EDITOR = lib.mkDefault "nano";
+
+  services = {
+    resolved.fallbackDns = config.networking.nameservers;
+    dae.enable = true;
+    udev.extraRules = ''
+      SUBSYSTEMS=="gpio", MODE="0666"
+    '';
+  };
 
   # virtualisation.docker.enable = true;
   # virtualisation.docker.daemon.settings = {
@@ -95,15 +101,11 @@
   #   ];
   # };
 
-  users.users.wafu = {
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQJL0vS5No+QxMIzmeBJwVCpNAMKglXUc6XtfsfL5NB raspi"
-    ];
-  };
-  users.users.root = {
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQJL0vS5No+QxMIzmeBJwVCpNAMKglXUc6XtfsfL5NB raspi"
-    ];
+  users.users = let
+    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQJL0vS5No+QxMIzmeBJwVCpNAMKglXUc6XtfsfL5NB raspi";
+  in {
+    wafu.openssh.authorizedKeys.keys = [pubKey];
+    root.openssh.authorizedKeys.keys = [pubKey];
   };
 
   # services.xserver = {
@@ -120,10 +122,6 @@
   #   enable = true;
   #   defaultWindowManager = "startplasma-x11";
   # };
-
-  services.udev.extraRules = ''
-    SUBSYSTEMS=="gpio", MODE="0666"
-  '';
 
   # https://github.com/NixOS/nixpkgs/issues/180175
   systemd.services.NetworkManager-wait-online = {

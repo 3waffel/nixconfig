@@ -1,7 +1,7 @@
 {...}: {
   imports = [
     ./gitea.nix
-    ./mailserver.nix
+    # ./mailserver.nix
     ./minecraft.nix
     ./misskey.nix
   ];

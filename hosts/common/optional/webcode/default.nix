@@ -10,7 +10,4 @@
     host = "0.0.0.0";
     withoutConnectionToken = true;
   };
-  nixpkgs.config.permittedInsecurePackages = [
-    "nodejs-16.20.0"
-  ];
 }

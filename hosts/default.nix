@@ -15,7 +15,12 @@
     pkgs = import nixpkgs rec {
       inherit system;
       overlays = [];
-      config.allowUnfree = true;
+      config = {
+        allowUnfree = true;
+        permittedInsecurePackages = [
+          "nodejs-16.20.2"
+        ];
+      };
     };
   in
     nixosSystem {
