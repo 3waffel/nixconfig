@@ -6,10 +6,6 @@
 }: let
   cfg = config._mods.gitea;
   # mail = config._mods.mailserver;
-  gitea-agatheme = pkgs.fetchurl {
-    url = "https://git.lain.faith/attachments/4c2c2237-1e67-458e-8acd-92a20d382777";
-    sha256 = "sha256-uwtg6BAR5J28Ls3naQkJg7xBEfZPXVS5INH+bsVn4Uk=";
-  };
   gitea-nord = pkgs.fetchurl {
     url = "https://gist.githubusercontent.com/3waffel/6d80f0670d41c51bfabfd9a95c237844/raw/1630f7d5d8f8c8a21f604e6665ad2062bc0a9abf/theme-nord.css";
     sha256 = "sha256-8yR5fhxet0majmvivxFs0/8NY0CchlkTBzLeIH6npLo=";
@@ -52,7 +48,7 @@ in
             LANDING_PAGE = "explore";
           };
           ui = {
-            THEMES = "gitea,arc-green,agatheme,nord";
+            THEMES = "gitea,arc-green,nord";
             DEFAULT_THEME = "nord";
           };
           session.COOKIE_SECURE = true;
@@ -74,8 +70,7 @@ in
       in
         lib.stringAfter ["var"] ''
           mkdir -p ${target_dir}
-          ln -s ${gitea-agatheme} "${target_dir}/theme-agatheme.css"
-          ln -s ${gitea-nord} "${target_dir}/theme-nord.css"
+          ln -sf ${gitea-nord} "${target_dir}/theme-nord.css"
         '';
 
       services.caddy = mkIf cfg.enableCaddy {

@@ -12,10 +12,12 @@
 
     ./common/global
     ./common/users/wafu
+    ./common/optional/dae
     ./common/optional/sops
     ./common/optional/ssh
     ./common/optional/vscode-server
     ./common/optional/webcode
+    ./common/optional/spi
   ];
 
   _mods = {
@@ -86,7 +88,6 @@
 
   services = {
     resolved.fallbackDns = config.networking.nameservers;
-    dae.enable = true;
     udev.extraRules = ''
       SUBSYSTEMS=="gpio", MODE="0666"
     '';
