@@ -12,6 +12,7 @@
       cmake
       direnv
       gcc
+      gnumake
       llvmPackages.libclang
       llvmPackages.lld
       ninja

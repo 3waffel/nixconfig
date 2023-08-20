@@ -4,20 +4,21 @@
   pkgs,
   modulesPath,
   nixos-hardware,
+  st7789-dev,
   ...
 }: {
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
     nixos-hardware.nixosModules.raspberry-pi-4
+    st7789-dev.nixosModules.default
 
     ./common/global
     ./common/users/wafu
-    ./common/optional/dae
     ./common/optional/sops
+    ./common/optional/spi
     ./common/optional/ssh
     ./common/optional/vscode-server
     ./common/optional/webcode
-    ./common/optional/spi
   ];
 
   _mods = {
@@ -83,11 +84,16 @@
     bluetooth.enable = true;
     pulseaudio.enable = true;
   };
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk
+  ];
 
   environment.variables.EDITOR = lib.mkDefault "nano";
 
   services = {
     resolved.fallbackDns = config.networking.nameservers;
+    st7789-dev.enable = true;
     udev.extraRules = ''
       SUBSYSTEMS=="gpio", MODE="0666"
     '';

@@ -25,6 +25,7 @@
     };
 
     misskey.url = "github:3waffel/misskey-flake";
+    st7789-dev.url = "github:3waffel/st7789-dev";
   };
 
   inputs = {

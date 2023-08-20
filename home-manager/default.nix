@@ -10,6 +10,7 @@
   }: let
     pkgs = import nixpkgs {
       overlays = [];
+      config.allowUnfree = true;
     };
   in (home-manager.lib.homeManagerConfiguration rec {
     inherit pkgs modules;
