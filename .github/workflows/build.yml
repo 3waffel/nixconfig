@@ -80,10 +80,12 @@ jobs:
           skipPush: true
 
       - name: Build installer
-        run: nix build '.#nixosConfigurations.${{ matrix.host }}.config.system.build.tarballBuilder'
+        run: |
+          nix build '.#nixosConfigurations.${{ matrix.host }}.config.system.build.tarballBuilder'
+          sudo ./result/bin/nixos-wsl-tarball-builder nixos-wsl.tar.gz
 
       - name: Upload installer
         uses: actions/upload-artifact@v3
         with:
-          name: installer-${{ matrix.host }}
-          path: result/tarball/nixos-wsl.tar.gz
+          name: tarball-${{ matrix.host }}
+          path: nixos-wsl.tar.gz
