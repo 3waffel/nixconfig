@@ -33,7 +33,7 @@
 
   virtualisation.docker.enable = true;
 
-  environment.variables.EDITOR = "nano";
+  environment.noXlibs = lib.mkForce false;
 
   system.stateVersion = "22.05";
   networking.hostName = "yoshika";
