@@ -29,8 +29,9 @@
     startMenuLaunchers = true;
     wslConf.automount.root = "/mnt";
     wslConf.network.generateResolvConf = false;
-    docker-native.enable = true;
   };
+
+  virtualisation.docker.enable = true;
 
   environment.variables.EDITOR = "nano";
 

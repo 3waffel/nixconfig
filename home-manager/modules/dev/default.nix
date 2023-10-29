@@ -27,6 +27,7 @@
       wasm-pack
     ]
     ++ (with pkgs.nodePackages; [
+      typescript-language-server
       node2nix
       npm
       yarn

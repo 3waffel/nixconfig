@@ -23,7 +23,7 @@
     bat
     bottom # System viewer
     ncdu # TUI disk usage
-    exa # Better ls
+    eza # Better ls
     fd # Better find
     httpie # Better curl
     neofetch
