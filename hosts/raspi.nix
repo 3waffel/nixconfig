@@ -22,15 +22,16 @@
   ];
 
   _mods = {
-    gitea.enable = true;
+    forgejo = {
+      enable = true;
+      vhost = "raspi.fish-mahi.ts.net";
+    };
     glances.enable = true;
     ngrok = {
       enable = true;
       configFile = config.sops.secrets.ngrok-config.path;
     };
-    tailscale = {
-      enable = true;
-    };
+    tailscale.enable = true;
     ustreamer.enable = true;
   };
 
@@ -122,4 +123,14 @@
   #   enable = true;
   #   defaultWindowManager = "startplasma-x11";
   # };
+
+  # github.com/NixOS/nixpkgs/issues/180175
+  systemd.services.NetworkManager-wait-online = {
+    serviceConfig = {
+      ExecStart = ["" "${pkgs.networkmanager}/bin/nm-online -q"];
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
+    unitConfig.StartLimitIntervalSec = 0;
+  };
 }

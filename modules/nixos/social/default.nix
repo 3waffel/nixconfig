@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./gitea.nix
+    ./forgejo.nix
     ./minecraft.nix
   ];
 }
