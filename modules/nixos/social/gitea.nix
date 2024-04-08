@@ -5,7 +5,6 @@
   ...
 }: let
   cfg = config._mods.gitea;
-  # mail = config._mods.mailserver;
   gitea-nord = pkgs.fetchurl {
     url = "https://gist.githubusercontent.com/3waffel/6d80f0670d41c51bfabfd9a95c237844/raw/1630f7d5d8f8c8a21f604e6665ad2062bc0a9abf/theme-nord.css";
     sha256 = "sha256-8yR5fhxet0majmvivxFs0/8NY0CchlkTBzLeIH6npLo=";
@@ -54,15 +53,6 @@ in
           session.COOKIE_SECURE = true;
           repository.ENABLE_PUSH_CREATE_USER = true;
         };
-        # }
-        # // mkIf mail.enable {
-        #   mailerPasswordFile = config.sops.secrets.gitea-mail.path;
-        #   settings.mailer = {
-        #     ENABLED = true;
-        #     FROM = "gitea@${mail.domain}";
-        #     USER = "gitea@${mail.domain}";
-        #     HOST = "${mail.domain}:${mail.port}";
-        #   };
       };
 
       system.activationScripts.gitea-theme = let
@@ -81,16 +71,5 @@ in
           '';
         };
       };
-
-      # services.nginx = {
-      #   enable = true;
-      #   virtualHosts."${cfg.vhost}" = {
-      #     forceSSL = true;
-      #     enableACME = true;
-      #     locations."/" = {
-      #       proxyPass = "http://localhost:${toString cfg.port}";
-      #     };
-      #   };
-      # };
     };
   }

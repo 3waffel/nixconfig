@@ -1,6 +1,4 @@
 {
-  description = "A very basic flake";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -15,16 +13,11 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    simple-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     vscode-server = {
       url = "github:msteen/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    misskey.url = "github:3waffel/misskey-flake";
     st7789-dev.url = "github:3waffel/st7789-dev";
   };
 

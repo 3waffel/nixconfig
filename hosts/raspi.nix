@@ -22,7 +22,6 @@
   ];
 
   _mods = {
-    clash.enable = true;
     gitea.enable = true;
     glances.enable = true;
     ngrok = {

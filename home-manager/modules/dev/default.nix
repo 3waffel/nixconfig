@@ -19,6 +19,7 @@
       nodejs
       openssl_3
       pkg-config
+      poetry
       rustup
       taplo-cli
       tree

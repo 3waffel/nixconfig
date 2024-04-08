@@ -2,11 +2,12 @@
   programs.git = {
     package = pkgs.gitAndTools.gitFull;
     enable = true;
-    userName = "ワフ";
+    userName = "3waffel";
     userEmail = "45911671+3waffel@users.noreply.github.com";
     ignores = ["*~" "*.swp" ".direnv" "result"];
     extraConfig = {
-      init.defaultBranch = "master";
+      init.defaultBranch = "main";
+      safe.directory = "*";
       credential.helper = "store --file ~/.git-credentials";
       pull.rebase = "false";
     };

@@ -34,11 +34,6 @@ in {
     extraModules = [./yoshika.nix];
   };
 
-  oracle = nixosConfig {
-    system = "x86_64-linux";
-    extraModules = [./oracle.nix];
-  };
-
   raspi = nixosConfig {
     system = "aarch64-linux";
     extraModules = [./raspi.nix];

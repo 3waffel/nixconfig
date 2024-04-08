@@ -30,9 +30,7 @@
 
     sops # Deployment secrets tool
     alejandra
-    rnix-lsp # Nix LSP
     deadnix # Nix dead code locator
-    nixfmt # Nix formatter
     statix # Nix linter
 
     flyctl
