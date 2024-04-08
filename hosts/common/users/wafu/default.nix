@@ -15,6 +15,7 @@
     packages = [pkgs.home-manager];
   };
 
+  time.timeZone = "Europe/Berlin";
   home-manager = {
     useUserPackages = true;
     extraSpecialArgs = {inherit inputs;};

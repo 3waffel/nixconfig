@@ -98,7 +98,7 @@ in {
   # sure that the appropriate drivers are loaded on boot.
   hardware.deviceTree = {
     enable = true;
-    filter = "*rpi*.dtb";
+    filter = lib.mkDefault "*rpi-4-*.dtb";
     overlays = [
       {
         name = "spi";
@@ -106,4 +106,9 @@ in {
       }
     ];
   };
+
+  users.groups.spi = {};
+  services.udev.extraRules = ''
+    SUBSYSTEM=="spidev", KERNEL=="spidev0.0", GROUP="spi", MODE="0660"
+  '';
 }

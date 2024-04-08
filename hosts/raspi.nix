@@ -14,8 +14,8 @@
 
     ./common/global
     ./common/users/wafu
+    ./common/optional/rpi-spi
     ./common/optional/sops
-    ./common/optional/spi
     ./common/optional/ssh
     ./common/optional/vscode-server
     ./common/optional/webcode
@@ -30,7 +30,6 @@
     };
     tailscale = {
       enable = true;
-      useProxy = true;
     };
     ustreamer.enable = true;
   };
@@ -46,7 +45,7 @@
       "console=ttyAMA0,115200"
       "console=tty1"
       "cma=128M"
-      # https://github.com/k3s-io/k3s/issues/2067
+      # github.com/k3s-io/k3s/issues/2067
       "cgroup_enable=cpuset"
       "cgroup_memory=1"
       "cgroup_enable=memory"
@@ -63,7 +62,6 @@
     memoryPercent = 100;
   };
 
-  time.timeZone = "Asia/Shanghai";
   system.stateVersion = "22.05";
   networking = {
     hostName = "raspi";
@@ -73,7 +71,7 @@
     nameservers = ["100.100.100.100" "8.8.8.8" "1.1.1.1"];
     networkmanager.enable = true;
     proxy = {
-      allProxy = "http://127.0.0.1:7890";
+      # allProxy = "http://127.0.0.1:7890";
       noProxy = "127.0.0.1,localhost,internal.domain";
     };
   };
@@ -82,13 +80,25 @@
   hardware = {
     bluetooth.enable = true;
     pulseaudio.enable = true;
+    raspberry-pi."4".fkms-3d.enable = true;
+    raspberry-pi."4".apply-overlays-dtmerge.enable = true;
   };
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk
   ];
 
-  environment.variables.EDITOR = lib.mkDefault "nano";
+  environment.systemPackages = with pkgs; [
+    libraspberrypi
+    raspberrypi-eeprom
+  ];
+
+  users.users = let
+    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQJL0vS5No+QxMIzmeBJwVCpNAMKglXUc6XtfsfL5NB raspi";
+  in {
+    wafu.openssh.authorizedKeys.keys = [pubKey];
+    root.openssh.authorizedKeys.keys = [pubKey];
+  };
 
   services = {
     resolved.fallbackDns = config.networking.nameservers;
@@ -96,22 +106,6 @@
     udev.extraRules = ''
       SUBSYSTEMS=="gpio", MODE="0666"
     '';
-  };
-
-  # virtualisation.docker.enable = true;
-  # virtualisation.docker.daemon.settings = {
-  #   "registry-mirrors" = [
-  #     "https://docker.mirrors.ustc.edu.cn"
-  #     "https://hub-mirror.c.163.com"
-  #     "https://mirror.baidubce.com"
-  #   ];
-  # };
-
-  users.users = let
-    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQJL0vS5No+QxMIzmeBJwVCpNAMKglXUc6XtfsfL5NB raspi";
-  in {
-    wafu.openssh.authorizedKeys.keys = [pubKey];
-    root.openssh.authorizedKeys.keys = [pubKey];
   };
 
   # services.xserver = {
@@ -128,14 +122,4 @@
   #   enable = true;
   #   defaultWindowManager = "startplasma-x11";
   # };
-
-  # https://github.com/NixOS/nixpkgs/issues/180175
-  systemd.services.NetworkManager-wait-online = {
-    serviceConfig = {
-      ExecStart = ["" "${pkgs.networkmanager}/bin/nm-online -q"];
-      Restart = "on-failure";
-      RestartSec = 1;
-    };
-    unitConfig.StartLimitIntervalSec = 0;
-  };
 }
