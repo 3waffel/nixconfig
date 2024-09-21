@@ -9,7 +9,7 @@
   imports = [./mirrors.nix];
 
   nix = {
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
 
     gc = {
       automatic = true;
@@ -28,7 +28,7 @@
         "3waffel.cachix.org-1:Tm5oJGJA8klOLa4dYRJvoYWQIpItX+0w9KvoRP8Z2mc="
       ];
       trusted-users = ["root" "@wheel"];
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
+      experimental-features = ["nix-command" "flakes"];
       warn-dirty = false;
       system-features = ["kvm" "big-parallel"];
     };

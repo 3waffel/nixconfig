@@ -32,6 +32,7 @@
     alejandra
     deadnix # Nix dead code locator
     statix # Nix linter
+    nix-inspect
 
     flyctl
     gh
