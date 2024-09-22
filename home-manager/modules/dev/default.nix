@@ -12,7 +12,9 @@
       cmake
       direnv
       gcc
+      glibc
       gnumake
+      libcec
       llvmPackages.libclang
       llvmPackages.lld
       ninja
@@ -43,8 +45,21 @@
   };
 
   home.sessionVariables = with pkgs; {
-    PKG_CONFIG_PATH = "\${PKG_CONFIG_PATH}:${openssl.dev}/lib/pkgconfig:${udev.dev}/lib/pkgconfig";
-    LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
+    OPENSSL_DIR = "${pkgs.openssl.dev}";
+    OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
+    OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
+    PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";
+    # https://github.com/rust-lang/rust-bindgen#environment-variables
+    LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
+    # Add glibc, clang, glib, and other headers to bindgen search path
+    BINDGEN_EXTRA_CLANG_ARGS =
+      lib.concatStringsSep " "
+      ((builtins.map (a: ''-I"${a}/include"'') [glibc.dev])
+        ++ [
+          ''-I"${llvmPackages.libclang.lib}/lib/clang/${llvmPackages.libclang.version}/include"''
+          ''-I"${glib.dev}/include/glib-2.0"''
+          ''-I${glib.out}/lib/glib-2.0/include/''
+        ]);
   };
 
   home.sessionPath = [
@@ -52,7 +67,7 @@
   ];
 
   home.file = {
-    ".cargo/config".text = ''
+    ".cargo/config.toml".text = ''
       [net]
       git-fetch-with-cli = true
     '';
