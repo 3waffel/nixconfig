@@ -110,5 +110,6 @@ in {
   users.groups.spi = {};
   services.udev.extraRules = ''
     SUBSYSTEM=="spidev", KERNEL=="spidev0.0", GROUP="spi", MODE="0660"
+    SUBSYSTEM=="gpio", MODE="0660"
   '';
 }

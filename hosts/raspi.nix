@@ -7,25 +7,25 @@
   st7789-dev,
   ...
 }: {
-  imports = [
-    "${modulesPath}/installer/scan/not-detected.nix"
-    nixos-hardware.nixosModules.raspberry-pi-4
-    st7789-dev.nixosModules.default
+  imports =
+    [
+      "${modulesPath}/installer/scan/not-detected.nix"
+      nixos-hardware.nixosModules.raspberry-pi-4
+      st7789-dev.nixosModules.default
 
-    ./common/global
-    ./common/users/wafu
-    ./common/optional/rpi-spi
-    ./common/optional/sops
-    ./common/optional/ssh
-    ./common/optional/vscode-server
-    ./common/optional/webcode
-  ];
+      ./common/global
+      ./common/users/wafu
+      ./common/optional/rpi-spi
+      ./common/optional/sops
+      ./common/optional/ssh
+      ./common/optional/vscode-server
+    ]
+    ++ [
+      (import ./common/optional/forgejo {})
+      (import ./common/optional/openvscode {})
+    ];
 
   _mods = {
-    forgejo = {
-      enable = true;
-      vhost = "raspi.fish-mahi.ts.net";
-    };
     glances.enable = true;
     ngrok = {
       enable = true;
@@ -103,25 +103,7 @@
   services = {
     resolved.fallbackDns = config.networking.nameservers;
     st7789-dev.enable = true;
-    udev.extraRules = ''
-      SUBSYSTEMS=="gpio", MODE="0666"
-    '';
   };
-
-  # services.xserver = {
-  #   enable = true;
-  #   desktopManager.plasma5.enable = true;
-  #   displayManager = {
-  #     lightdm.enable = true;
-  #     autoLogin.enable = true;
-  #     autoLogin.user = "wafu";
-  #   };
-  #   wacom.enable = true;
-  # };
-  # services.xrdp = {
-  #   enable = true;
-  #   defaultWindowManager = "startplasma-x11";
-  # };
 
   # github.com/NixOS/nixpkgs/issues/180175
   systemd.services.NetworkManager-wait-online = {

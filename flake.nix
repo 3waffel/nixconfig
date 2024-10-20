@@ -46,16 +46,10 @@
       };
     in {
       devShells.default = pkgs.mkShell {
-        NIX_CONFIG = "extra-experimental-features = nix-command flakes";
-        nativeBuildInputs = with pkgs; [
-          nix
-          home-manager
-          git
-
-          sops
-          gnupg
-          age
-        ];
+        packages = with pkgs; [sops gnupg age];
+        env = {
+          NIX_CONFIG = "extra-experimental-features = nix-command flakes";
+        };
       };
     });
 }
