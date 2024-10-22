@@ -25,17 +25,21 @@
       (import ./common/optional/openvscode {})
     ];
 
-  _mods = {
-    glances.enable = true;
-    ngrok = {
+  services = {
+    resolved.fallbackDns = config.networking.nameservers;
+    st7789-dev.enable = true;
+
+    _glances.enable = true;
+    _ngrok = {
       enable = true;
       configFile = config.sops.secrets.ngrok-config.path;
     };
-    tailscale.enable = true;
-    ustreamer.enable = true;
+    _tailscale = {
+      enable = true;
+      tokenFile = config.sops.secrets.tailscale-authkey.path;
+    };
+    _ustreamer.enable = true;
   };
-
-  sops.secrets.ngrok-config = {};
 
   boot = {
     loader.generic-extlinux-compatible.enable = true;
@@ -98,11 +102,6 @@
   in {
     wafu.openssh.authorizedKeys.keys = [pubKey];
     root.openssh.authorizedKeys.keys = [pubKey];
-  };
-
-  services = {
-    resolved.fallbackDns = config.networking.nameservers;
-    st7789-dev.enable = true;
   };
 
   # github.com/NixOS/nixpkgs/issues/180175

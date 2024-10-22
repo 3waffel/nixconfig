@@ -4,11 +4,15 @@
   lib,
   ...
 }: let
-  cfg = config._mods.ustreamer;
+  cfg = config.services._ustreamer;
 in
   with lib; {
-    options._mods.ustreamer = {
+    options.services._ustreamer = {
       enable = mkEnableOption "Ustreamer service";
+      port = mkOption {
+        type = types.port;
+        default = 8080;
+      };
     };
 
     config = mkIf cfg.enable {
@@ -19,7 +23,7 @@ in
         serviceConfig = {
           DynamicUser = true;
           Restart = "always";
-          ExecStart = "${pkgs.ustreamer}/bin/ustreamer -r 1920x1080 -s :: -p 8080";
+          ExecStart = "${pkgs.ustreamer}/bin/ustreamer -r 1920x1080 -s :: -p ${toString cfg.port}";
           SupplementaryGroups = ["video"];
         };
         wantedBy = ["multi-user.target"];

@@ -4,10 +4,10 @@
   lib,
   ...
 }: let
-  cfg = config._mods.glances;
+  cfg = config.services._glances;
 in
   with lib; {
-    options._mods.glances = {
+    options.services._glances = {
       enable = mkEnableOption "Glances service";
       port = mkOption {
         type = types.port;

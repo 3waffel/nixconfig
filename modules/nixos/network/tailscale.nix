@@ -4,24 +4,24 @@
   lib,
   ...
 }: let
-  cfg = config._mods.tailscale;
+  cfg = config.services._tailscale;
 in
   with lib; {
-    options._mods.tailscale = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-      };
+    options.services._tailscale = {
+      enable = mkEnableOption "tailscale autoconnect service";
       useProxy = mkOption {
         type = types.bool;
         default = false;
+      };
+      tokenFile = mkOption {
+        type = types.str;
+        default = "";
       };
     };
 
     config = mkIf cfg.enable {
       services.tailscale.enable = true;
       environment.systemPackages = [pkgs.tailscale];
-      sops.secrets.tailscale-authkey = {};
       systemd.services.tailscale-autoconnect = {
         description = "Automatic connection to Tailscale";
         after = ["network-pre.target" "tailscale.service"];
@@ -39,7 +39,7 @@ in
           fi
 
           # otherwise authenticate with tailscale
-          tskey="$(cat ${config.sops.secrets.tailscale-authkey.path})"
+          tskey="$(cat ${cfg.tokenFile})"
           ${tailscale}/bin/tailscale up -authkey $tskey
         '';
       };

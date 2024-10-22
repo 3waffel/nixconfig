@@ -19,8 +19,11 @@
     ./common/optional/vscode-server
   ];
 
-  _mods = {
-    tailscale.enable = true;
+  services = {
+    _tailscale = {
+      enable = true;
+      tokenFile = config.sops.secrets.tailscale-authkey.path;
+    };
   };
 
   wsl = {
