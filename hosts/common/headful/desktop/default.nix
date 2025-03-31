@@ -67,10 +67,4 @@
     xserver.enable = true;
     xserver.xkb.layout = "us";
   };
-
-  environment.systemPackages = with pkgs; [
-    firefox
-    kdePackages.kate
-    vscode
-  ];
 }

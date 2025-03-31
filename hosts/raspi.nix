@@ -15,14 +15,14 @@
 
       ./common/global
       ./common/users/wafu
-      ./common/optional/rpi-spi
       ./common/optional/sops
-      ./common/optional/ssh
-      ./common/optional/vscode-server
+      ./common/headless/rpi-spi
+      ./common/headless/ssh
+      ./common/headless/vscode-server
     ]
     ++ [
-      (import ./common/optional/forgejo {})
-      (import ./common/optional/openvscode {})
+      (import ./common/headless/forgejo {})
+      (import ./common/headless/openvscode {})
     ];
 
   services = {

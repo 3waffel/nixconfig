@@ -42,15 +42,11 @@
       homeConfigurations = import ./home-manager _inputs;
     }
     // flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs {
-        inherit system;
-      };
+      pkgs = import nixpkgs {inherit system;};
     in {
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [sops gnupg age];
-        env = {
-          NIX_CONFIG = "extra-experimental-features = nix-command flakes";
-        };
+        env.NIX_CONFIG = "extra-experimental-features = nix-command flakes";
       };
     });
 }

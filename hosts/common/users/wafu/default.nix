@@ -1,7 +1,7 @@
 {
-  inputs,
   self,
   pkgs,
+  pkgs-unstable,
   ...
 }: {
   users.users.wafu = {
@@ -26,7 +26,7 @@
   time.timeZone = "Europe/Berlin";
   home-manager = {
     useUserPackages = true;
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = {inherit pkgs pkgs-unstable;};
     users.wafu = import "${self}/home-manager/wafu.nix";
   };
 }

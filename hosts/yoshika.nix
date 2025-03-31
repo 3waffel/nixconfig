@@ -16,7 +16,7 @@
     ./common/global
     ./common/users/wafu
     ./common/optional/sops
-    ./common/optional/vscode-server
+    ./common/headless/vscode-server
   ];
 
   services = {

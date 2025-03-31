@@ -3,32 +3,23 @@
   inherit (nixpkgs.lib) nixosSystem;
 
   commonModules =
-    [
-      inputs.home-manager.nixosModules.home-manager
-    ]
-    ++ builtins.attrValues outputs.nixosModules;
+    builtins.attrValues outputs.nixosModules
+    ++ [inputs.home-manager.nixosModules.home-manager];
 
   nixosConfig = {
     extraModules ? [],
     system,
   }: let
-    pkgs = import nixpkgs rec {
-      inherit system;
-      config = {
-        allowUnfree = true;
-        permittedInsecurePackages = [
-          "nodejs-16.20.2"
-        ];
-      };
-    };
-    pkgs-unstable = import nixpkgs-unstable {
+    pkgsConfig = {
       inherit system;
       config.allowUnfree = true;
     };
+    pkgs = import nixpkgs pkgsConfig;
+    pkgs-unstable = import nixpkgs-unstable pkgsConfig;
   in
     nixosSystem {
       inherit pkgs system;
-      specialArgs = inputs // {inherit pkgs-unstable;};
+      specialArgs = {inherit pkgs-unstable;} // inputs;
       modules = extraModules ++ commonModules;
     };
 in {

@@ -1,4 +1,5 @@
 {
+  self,
   config,
   lib,
   pkgs,
@@ -17,9 +18,12 @@
 
     ./common/global
     ./common/users/wafu
-    ./common/optional/gui
+    ./common/headful/desktop
+    ./common/headful/steam
     # ./common/optional/sops
   ];
+
+  home-manager.users.wafu = import "${self}/home-manager/modules/graphical";
 
   console.earlySetup = true;
   boot = {
