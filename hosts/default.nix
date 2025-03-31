@@ -1,5 +1,5 @@
 {outputs, ...} @ inputs: let
-  inherit (inputs) self nixpkgs;
+  inherit (inputs) self nixpkgs nixpkgs-unstable;
   inherit (nixpkgs.lib) nixosSystem;
 
   commonModules =
@@ -14,7 +14,6 @@
   }: let
     pkgs = import nixpkgs rec {
       inherit system;
-      overlays = [];
       config = {
         allowUnfree = true;
         permittedInsecurePackages = [
@@ -22,10 +21,14 @@
         ];
       };
     };
+    pkgs-unstable = import nixpkgs-unstable {
+      inherit system;
+      config.allowUnfree = true;
+    };
   in
     nixosSystem {
       inherit pkgs system;
-      specialArgs = inputs;
+      specialArgs = inputs // {inherit pkgs-unstable;};
       modules = extraModules ++ commonModules;
     };
 in {
@@ -37,5 +40,10 @@ in {
   raspi = nixosConfig {
     system = "aarch64-linux";
     extraModules = [./raspi.nix];
+  };
+
+  bern = nixosConfig {
+    system = "x86_64-linux";
+    extraModules = [./bern.nix];
   };
 }

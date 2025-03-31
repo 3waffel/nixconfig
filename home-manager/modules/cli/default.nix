@@ -28,10 +28,11 @@
     httpie # Better curl
     neofetch
 
-    sops # Deployment secrets tool
     alejandra
     deadnix # Nix dead code locator
+    sops # Deployment secrets tool
     statix # Nix linter
+    nil
     nix-inspect
 
     flyctl

@@ -36,7 +36,7 @@
 
   virtualisation.docker.enable = true;
 
-  environment.noXlibs = lib.mkForce false;
+  #   environment.noXlibs = lib.mkForce false;
 
   system.stateVersion = "22.05";
   networking.hostName = "yoshika";

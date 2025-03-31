@@ -87,10 +87,6 @@
     raspberry-pi."4".fkms-3d.enable = true;
     raspberry-pi."4".apply-overlays-dtmerge.enable = true;
   };
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-  ];
 
   environment.systemPackages = with pkgs; [
     libraspberrypi
