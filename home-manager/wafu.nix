@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   home = {
     stateVersion = "22.05";
     username = "wafu";
@@ -12,6 +8,7 @@
   imports = [
     ./modules/cli
     ./modules/dev
+    # ./modules/graphical
   ];
 
   # let HM manage itself when in standalone mode

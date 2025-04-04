@@ -1,11 +1,8 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs-unstable, ...}: {
   programs.vscode = {
-    package = pkgs.vscode;
-    extensions = with pkgs.vscode-extensions; [
+    enable = true;
+    package = pkgs-unstable.vscode;
+    extensions = with pkgs-unstable.vscode-extensions; [
       jnoortheen.nix-ide
       rust-lang.rust-analyzer
       ms-vscode-remote.remote-ssh
@@ -15,5 +12,9 @@
       github.vscode-github-actions
       wakatime.vscode-wakatime
     ];
+    userSettings = {
+      "workbench.colorTheme" = "Dracula Theme";
+      # "wakatime.apiKey" = {};
+    };
   };
 }

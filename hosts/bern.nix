@@ -1,6 +1,5 @@
 {
   self,
-  config,
   lib,
   pkgs,
   modulesPath,
@@ -102,6 +101,7 @@
 
   # Enable sound with pipewire.
   security.rtkit.enable = true;
+  services.blueman.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;

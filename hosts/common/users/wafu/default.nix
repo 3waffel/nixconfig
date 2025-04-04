@@ -25,7 +25,9 @@
 
   time.timeZone = "Europe/Berlin";
   home-manager = {
+    useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "backup";
     extraSpecialArgs = {inherit pkgs pkgs-unstable;};
     users.wafu = import "${self}/home-manager/wafu.nix";
   };

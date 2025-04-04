@@ -7,18 +7,20 @@
     name = "fetch-nix-index-database";
     runtimeInputs = with pkgs; [wget coreutils];
     text = ''
-      filename="index-x86_64-linux"
-      mkdir -p ~/.cache/nix-index
-      cd ~/.cache/nix-index
-      wget -N "https://github.com/Mic92/nix-index-database/releases/latest/download/$filename"
-      ln -f "$filename" files
+      filename="index-$(uname -m | sed 's/^arm64$/aarch64/')-$(uname | tr A-Z a-z)"
+      mkdir -p ~/.cache/nix-index && cd ~/.cache/nix-index
+      wget -q -N https://github.com/nix-community/nix-index-database/releases/latest/download/$filename
+      ln -f $filename files
     '';
   };
 in {
-  programs.nix-index.enable = true;
+  programs.nix-index = {
+    enable = true;
+    enableFishIntegration = true;
+  };
 
   systemd.user.services.nix-index-database-sync = {
-    Unit = {Description = "fetch mic92/nix-index-database";};
+    Unit = {Description = "fetch nix-community/nix-index-database";};
     Service = {
       Type = "oneshot";
       ExecStart = "${update-script}/bin/fetch-nix-index-database";
@@ -27,7 +29,7 @@ in {
     };
   };
   systemd.user.timers.nix-index-database-sync = {
-    Unit = {Description = "Automatic github:mic92/nix-index-database fetching";};
+    Unit = {Description = "Automatic github:nix-community/nix-index-database fetching";};
     Timer = {
       OnBootSec = "10m";
       OnUnitActiveSec = "24h";
