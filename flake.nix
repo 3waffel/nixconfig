@@ -1,4 +1,14 @@
 {
+  outputs = {self, ...} @ inputs: let
+    _inputs = inputs // {inherit (self) outputs;};
+  in {
+    nixosModules = import ./modules/nixos;
+    homeManagerModules = import ./modules/home-manager;
+
+    nixosConfigurations = import ./hosts _inputs;
+    homeConfigurations = import ./home-manager _inputs;
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -25,28 +35,4 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
   };
-
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-    ...
-  } @ inputs: let
-    _inputs = inputs // {inherit (self) outputs;};
-  in
-    {
-      nixosModules = import ./modules/nixos;
-      homeManagerModules = import ./modules/home-manager;
-
-      nixosConfigurations = import ./hosts _inputs;
-      homeConfigurations = import ./home-manager _inputs;
-    }
-    // flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs {inherit system;};
-    in {
-      devShells.default = pkgs.mkShell {
-        packages = with pkgs; [sops gnupg age];
-        env.NIX_CONFIG = "extra-experimental-features = nix-command flakes";
-      };
-    });
 }

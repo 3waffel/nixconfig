@@ -12,7 +12,8 @@
       ];
       exec-once = [
         "swww-daemon"
-        "hyprsunset"
+        "wlsunset -S 6:00 -s 21:00"
+        "wl-paste --watch cliphist store"
         "systemctl --user enable --now waybar.service"
         "systemctl --user enable --now hypridle.service"
       ];
@@ -122,6 +123,28 @@
               )
               9)
         );
+      # repeat when held and work for lockscreen
+      bindel = [
+        # Volume
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 6.25%+"
+        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 6.25%-"
+        # Brightness
+        # ", XF86MonBrightnessDown, exec, hyprctl hyprsunset gamma -10"
+        # ", XF86MonBrightnessUp, exec, hyprctl hyprsunset gamma +10"
+      ];
+      # work for lockscreen
+      bindl = [
+        # Media
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioPrev, exec, playerctl previous"
+        ", XF86AudioNext, exec, playerctl next"
+      ];
+      # mouse movement
+      bindm = [
+        "SUPER, mouse:272, movewindow"
+      ];
+      windowrulev2 = "suppressevent maximize, class:.*";
     };
   };
 }

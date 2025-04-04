@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgs-unstable,
+  ...
+}: {
   imports = [
     ./dunst
     ./fuzzel
@@ -8,21 +12,34 @@
     ./waybar
   ];
 
-  home.packages = with pkgs; [
-    alacritty
-    brave
-    libreoffice
-    obsidian
+  home.packages = with pkgs;
+    [
+      brightnessctl
+      cliphist # clipboard
+      grimblast
+      pavucontrol # volume control
+      playerctl
+      swww # animated wallpaper
+      wlsunset
+      wl-clipboard
+    ]
+    ++ (with pkgs-unstable; [
+      alacritty
+      brave
+      libreoffice
+      obsidian
 
-    brightnessctl
-    cliphist # clipboard
-    fuzzel # launcher
-    hyprsunset # gamma adjustments
-    pavucontrol # volume control
-    playerctl
-    qutebrowser
-    swww # animated wallpaper
-  ];
+      bitwarden-desktop
+      discord
+      telegram-desktop
+      protonvpn-gui
+    ]);
+
+  services.cliphist.enable = true;
+  programs.firefox = {
+    enable = true;
+    package = pkgs-unstable.firefox;
+  };
 
   home.sessionVariables = {
     XMODIFIERS = "@im=fcitx";
@@ -45,10 +62,5 @@
   qt = {
     enable = true;
     platformTheme.name = "adwaita";
-  };
-
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox;
   };
 }

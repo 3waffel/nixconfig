@@ -48,7 +48,7 @@
       ];
       input-field = [
         {
-          monitor = "";
+          position = "0, -50";
           shadow_passes = 2;
           fade_on_empty = false;
           font_color = "rgb(202, 211, 245)";
@@ -56,6 +56,22 @@
           outer_color = "rgb(24, 25, 38)";
           placeholder_text = "Password...";
           fail_text = "$FAIL<b>($ATTEMPTS)</b>";
+        }
+      ];
+      label = [
+        {
+          text = "$TIME";
+          font_size = 60;
+          position = "0, 150";
+          valign = "center";
+          halign = "center";
+        }
+        {
+          text = "cmd[update:3600000] date +'%a %b %d'";
+          font_size = 20;
+          position = "0, 50";
+          valign = "center";
+          halign = "center";
         }
       ];
     };

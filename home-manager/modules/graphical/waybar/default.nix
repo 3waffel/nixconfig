@@ -98,7 +98,7 @@
           format = "{icon} {percent}%";
           format-icons = ["" "" "" "" "" "" "" "" ""];
           on-scroll-up = "${pkgs.brightnessctl}/bin/brightnessctl s 5%+";
-          on-scroll-down = "${pkgs.brightnessctl}/bin/brightnessctl s 1%";
+          on-scroll-down = "${pkgs.brightnessctl}/bin/brightnessctl s 1";
         };
         battery = {
           states = {

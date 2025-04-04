@@ -57,10 +57,10 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v2
 
       - name: Build home-manager config
-        run: nix build -L .#homeConfigurations.${{ matrix.user }}.activationPackage --impure
+        run: nix build -L .#homeConfigurations.${{ matrix.user }}.activationPackage
 
       - name: Push home-manager cache
-        run: nix eval --impure --json ".#homeConfigurations.${{ matrix.user }}.activationPackage.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
+        run: nix eval --json ".#homeConfigurations.${{ matrix.user }}.activationPackage.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
 
       - name: Build NixOS config
         run: nix build -L --no-link .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
