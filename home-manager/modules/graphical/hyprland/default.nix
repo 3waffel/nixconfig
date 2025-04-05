@@ -20,7 +20,7 @@
 
       general = {
         gaps_in = 5;
-        gaps_out = 20;
+        gaps_out = 10;
         border_size = 2;
         "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         "col.inactive_border" = "rgba(A58A8D30)";
@@ -92,23 +92,18 @@
       bind =
         [
           # Launch programs.
-          "SUPER, Space, exec, $launcher"
-          "ALT, W, exec, $browser"
-          "SUPER, Return, exec, $terminal"
-          # Quit current program.
-          "SUPER, Q, killactive"
-          # Toggle fullscreen.
-          "ALT, F, fullscreen"
+          "$mod, Space, exec, $launcher"
+          "$mod, Return, exec, $terminal"
+          # Compositor
+          "$mod, Q, killactive"
+          "$mod, F, fullscreen"
+          "$mod, L, exec, loginctl lock-session"
+          "$mod, M, exit"
           # Focus windows.
-          "ALT, up, movefocus, u"
-          "ALT, down, movefocus, d"
-          "ALT, left, movefocus, l"
-          "ALT, right, movefocus, r"
-          # Focus prev/next workspace.
-          "CTRL, left, workspace, r-1"
-          "CTRL, right, workspace, r+1"
-          # Quit Hyprland.
-          "SUPER, M, exit"
+          "$mod, up, movefocus, u"
+          "$mod, down, movefocus, d"
+          "$mod, left, movefocus, l"
+          "$mod, right, movefocus, r"
         ]
         ++ (
           with builtins;
@@ -117,7 +112,7 @@
                 i: let
                   ws = toString (i + 1);
                 in [
-                  "ALT, ${ws}, workspace, ${ws}"
+                  "$mod, ${ws}, workspace, ${ws}"
                   "ALT SHIFT, ${ws}, movetoworkspace, ${ws}"
                 ]
               )
@@ -142,9 +137,25 @@
       ];
       # mouse movement
       bindm = [
-        "SUPER, mouse:272, movewindow"
+        "$mod, mouse:272, movewindow"
       ];
-      windowrulev2 = "suppressevent maximize, class:.*";
+      windowrulev2 = [
+        "float, title:^(Picture-in-Picture|画中画)$"
+        "pin, title:^(Picture-in-Picture|画中画)$"
+
+        "immediate, class:^(steam_app_[0-9]*)$"
+        "suppressevent maximize, class:.*"
+        "suppressevent fullscreen, class:^(steam_app_[0-9]*)$"
+
+        "opacity 0.9 0.9, class:^(Alacritty|Code)$"
+        # hide XWayland Video Bridge
+        "opacity 0.0 override, class:^(xwaylandvideobridge)$"
+        "noanim, class:^(xwaylandvideobridge)$"
+        "noinitialfocus, class:^(xwaylandvideobridge)$"
+        "maxsize 1 1, class:^(xwaylandvideobridge)$"
+        "noblur, class:^(xwaylandvideobridge)$"
+        "nofocus, class:^(xwaylandvideobridge)$"
+      ];
     };
   };
 }

@@ -1,5 +1,4 @@
 name: Build Config
-
 on:
   workflow_dispatch:
   pull_request:
@@ -13,7 +12,6 @@ on:
       - "modules/**"
       - "flake.nix"
       - "flake.lock"
-
 jobs:
   build:
     strategy:
@@ -27,8 +25,16 @@ jobs:
           - bern
     runs-on: ubuntu-latest
     steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          build-mount-path: "/nix"
+          remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
       - uses: actions/checkout@v4
-
       - name: Install cross-compilation deps
         run: |
           sudo apt update
@@ -37,7 +43,6 @@ jobs:
             gcc-aarch64-linux-gnu \
             qemu-system-aarch64 \
             qemu-user-static
-
       - name: Install Nix
         uses: cachix/install-nix-action@v26
         with:
@@ -46,34 +51,26 @@ jobs:
             extra-platforms = aarch64-linux
             max-jobs = auto
             system-features = big-parallel kvm
-
       - name: Install Cachix
         uses: cachix/cachix-action@v14
         with:
           name: 3waffel
           authToken: "${{secrets.CACHIX_AUTH_TOKEN}}"
           skipPush: true
-
       - uses: DeterminateSystems/magic-nix-cache-action@v2
-
       - name: Build home-manager config
         run: nix build -L .#homeConfigurations.${{ matrix.user }}.activationPackage
-
       - name: Push home-manager cache
         run: nix eval --json ".#homeConfigurations.${{ matrix.user }}.activationPackage.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
-
       - name: Build NixOS config
         run: nix build -L --no-link .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
-
       - name: Push NixOS cache
         run: nix eval --json ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
-
       - name: Build installer
         if: matrix.host == 'yoshika'
         run: |
           nix build '.#nixosConfigurations.${{ matrix.host }}.config.system.build.tarballBuilder'
           sudo ./result/bin/nixos-wsl-tarball-builder nixos-wsl.tar.gz
-
       - name: Upload installer
         if: matrix.host == 'yoshika'
         uses: actions/upload-artifact@v4

@@ -29,16 +29,13 @@
         # Modules
         "hyprland/workspaces" = {
           format = "{icon}";
-          all-outputs = true;
-          active-only = false;
           on-click = "activate";
           sort-by-number = true;
-          disable-scroll = true;
           format-icons = {
-            "1" = "󰖟";
-            "2" = "";
-            "3" = "";
-            "4" = "󰭹";
+            "1" = "";
+            "2" = "";
+            "3" = "";
+            "4" = "";
           };
           persistent_workspaces = {
             "1" = [];
