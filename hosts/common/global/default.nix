@@ -20,6 +20,7 @@
     home-manager
     htop
     inetutils
+    nix-alien
     nodejs
     vim
     unzip

@@ -95,13 +95,13 @@
     /* for a properly aligned icon */
     font-family: "FiraCode Nerd Font Propo"; 
     font-size: 14px;
-    font-weight: bold;
     min-height: 0;
 }
 
 window#waybar {
     background-color: @background;
     color: @foreground;
+    font-weight: bold;
 }
 
 

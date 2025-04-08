@@ -11,9 +11,9 @@
         "XCURSOR_SIZE,25"
       ];
       exec-once = [
-        "swww-daemon"
-        "wlsunset -S 6:00 -s 21:00"
-        "wl-paste --watch cliphist store"
+        "uwsm app -- swww-daemon"
+        "uwsm app -- wlsunset -S 6:00 -s 19:00"
+        "uwsm app -- wl-paste --watch cliphist store"
         "systemctl --user enable --now waybar.service"
         "systemctl --user enable --now hypridle.service"
       ];
@@ -59,7 +59,7 @@
           special = false;
           new_optimizations = true;
           size = 5;
-          passes = 4;
+          passes = 2;
           brightness = 1;
           noise = 0.01;
           contrast = 1;

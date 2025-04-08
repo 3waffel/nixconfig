@@ -76,12 +76,14 @@
     fsType = "vfat";
     options = ["fmask=0077" "dmask=0077"];
   };
+  zramSwap.enable = true;
 
   system.stateVersion = "24.11";
   networking = {
     hostName = "bern";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
+    firewall.checkReversePath = "loose";
   };
 
   hardware = {

@@ -26,11 +26,14 @@
     ++ (with pkgs-unstable; [
       alacritty
       brave
+      krita
       libreoffice
       obsidian
 
+      appflowy
       bitwarden-desktop
       discord
+      slack
       telegram-desktop
       protonvpn-gui
     ]);

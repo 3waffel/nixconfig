@@ -44,7 +44,7 @@ jobs:
             qemu-system-aarch64 \
             qemu-user-static
       - name: Install Nix
-        uses: cachix/install-nix-action@v26
+        uses: cachix/install-nix-action@v31
         with:
           nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: |
@@ -52,28 +52,16 @@ jobs:
             max-jobs = auto
             system-features = big-parallel kvm
       - name: Install Cachix
-        uses: cachix/cachix-action@v14
+        uses: cachix/cachix-action@v16
         with:
           name: 3waffel
           authToken: "${{secrets.CACHIX_AUTH_TOKEN}}"
           skipPush: true
-      - uses: DeterminateSystems/magic-nix-cache-action@v2
-      - name: Build home-manager config
-        run: nix build -L .#homeConfigurations.${{ matrix.user }}.activationPackage
-      - name: Push home-manager cache
-        run: nix eval --json ".#homeConfigurations.${{ matrix.user }}.activationPackage.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
-      - name: Build NixOS config
-        run: nix build -L --no-link .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
-      - name: Push NixOS cache
-        run: nix eval --json ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.outPath" | sed 's/"\(.*\)"/\1/' | cachix push 3waffel
-      - name: Build installer
-        if: matrix.host == 'yoshika'
+      - name: Build and push home-manager config
         run: |
-          nix build '.#nixosConfigurations.${{ matrix.host }}.config.system.build.tarballBuilder'
-          sudo ./result/bin/nixos-wsl-tarball-builder nixos-wsl.tar.gz
-      - name: Upload installer
-        if: matrix.host == 'yoshika'
-        uses: actions/upload-artifact@v4
-        with:
-          name: installer-${{ matrix.host }}
-          path: nixos-wsl.tar.gz
+          nix build --no-link --print-out-paths .#homeConfigurations.${{ matrix.user }}.activationPackage \
+          | cachix push 3waffel
+      - name: Build and push NixOS config
+        run: |
+          nix build --no-link --print-out-paths .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
+          | cachix push 3waffel

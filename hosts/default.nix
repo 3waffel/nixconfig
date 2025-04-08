@@ -12,6 +12,7 @@
   }: let
     pkgsConfig = {
       inherit system;
+      overlays = [inputs.nix-alien.overlays.default];
       config.allowUnfree = true;
     };
     pkgs = import nixpkgs pkgsConfig;
