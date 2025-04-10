@@ -1,4 +1,16 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: let
+  inherit (pkgs.lib) getExe;
+  wallpapersDir = "${config.xdg.userDirs.pictures}/Wallpapers";
+  wallpaperSwitcher = pkgs.writeShellScriptBin "wallpaperSwitcher" ''
+    if ! [ -d "${wallpapersDir}" ]; then exit 1; fi
+    image=$( (find "${wallpapersDir}" -type f) | shuf -n 1)
+    if [ -e "$image" ]; then swww img "$image"; fi
+  '';
+in {
   wayland.windowManager.hyprland = {
     enable = true;
     # avoid conflicts with uwsm
@@ -16,6 +28,7 @@
         "uwsm app -- wl-paste --watch cliphist store"
         "systemctl --user enable --now waybar.service"
         "systemctl --user enable --now hypridle.service"
+        "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${getExe wallpaperSwitcher}"
       ];
 
       general = {

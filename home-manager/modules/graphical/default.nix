@@ -10,6 +10,7 @@
     ./hyprland
     ./vscode
     ./waybar
+    ./xdg
   ];
 
   home.packages = with pkgs;
@@ -17,6 +18,9 @@
       brightnessctl
       cliphist # clipboard
       grimblast
+      imv
+      networkmanagerapplet
+      networkmanager-openvpn
       pavucontrol # volume control
       playerctl
       swww # animated wallpaper
@@ -36,16 +40,14 @@
       slack
       telegram-desktop
       protonvpn-gui
+
+      winetricks
+      wineWowPackages.waylandFull
     ]);
 
-  services.cliphist.enable = true;
   programs.firefox = {
     enable = true;
     package = pkgs-unstable.firefox;
-  };
-
-  home.sessionVariables = {
-    XMODIFIERS = "@im=fcitx";
   };
 
   home.pointerCursor = {

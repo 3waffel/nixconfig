@@ -74,4 +74,5 @@
     withUWSM = true;
   };
   security.pam.services.hyprlock = {};
+  security.pam.services.sddm.kwallet.enable = true;
 }

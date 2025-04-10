@@ -16,6 +16,7 @@
       rust-lang.rust-analyzer
       tamasfe.even-better-toml
       # Misc
+      tomoki1207.pdf
       github.copilot-chat
       esbenp.prettier-vscode
       wakatime.vscode-wakatime
@@ -30,6 +31,7 @@
       "explorer.confirmDelete" = false;
       "extensions.autoCheckUpdates" = false;
       "extensions.autoUpdate" = false;
+      "update.mode" = "none";
       # "wakatime.apiKey" = {};
     };
   };
