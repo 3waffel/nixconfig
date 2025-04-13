@@ -4,12 +4,14 @@
   ...
 }: let
   inherit (pkgs.lib) getExe;
-  wallpapersDir = "${config.xdg.userDirs.pictures}/Wallpapers";
-  wallpaperSwitcher = pkgs.writeShellScriptBin "wallpaperSwitcher" ''
-    if ! [ -d "${wallpapersDir}" ]; then exit 1; fi
-    image=$( (find "${wallpapersDir}" -type f) | shuf -n 1)
-    if [ -e "$image" ]; then swww img "$image"; fi
-  '';
+  wallpaperSwitcher = let
+    wallpapersDir = "${config.xdg.userDirs.pictures}/Wallpapers";
+  in
+    pkgs.writeShellScriptBin "wallpaperSwitcher" ''
+      if ! [ -d "${wallpapersDir}" ]; then exit 1; fi
+      image=$( (find "${wallpapersDir}" -type f) | shuf -n 1)
+      if [ -e "$image" ]; then swww img "$image"; fi
+    '';
 in {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -24,7 +26,7 @@ in {
       ];
       exec-once = [
         "uwsm app -- swww-daemon"
-        "uwsm app -- wlsunset -S 6:00 -s 19:00"
+        "uwsm app -- ${getExe pkgs.wlsunset} -S 6:00 -s 19:00"
         "uwsm app -- wl-paste --watch cliphist store"
         "systemctl --user enable --now waybar.service"
         "systemctl --user enable --now hypridle.service"
@@ -137,16 +139,16 @@ in {
         ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 6.25%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 6.25%-"
         # Brightness
-        # ", XF86MonBrightnessDown, exec, hyprctl hyprsunset gamma -10"
-        # ", XF86MonBrightnessUp, exec, hyprctl hyprsunset gamma +10"
+        ", XF86MonBrightnessUp, exec, ${getExe pkgs.brightnessctl} s 5%+"
+        ", XF86MonBrightnessDown, exec, ${getExe pkgs.brightnessctl} s 5%-"
       ];
       # work for lockscreen
       bindl = [
         # Media
         ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioPrev, exec, playerctl previous"
-        ", XF86AudioNext, exec, playerctl next"
+        ", XF86AudioPlay, exec, ${getExe pkgs.playerctl} play-pause"
+        ", XF86AudioPrev, exec, ${getExe pkgs.playerctl} previous"
+        ", XF86AudioNext, exec, ${getExe pkgs.playerctl} next"
       ];
       # mouse movement
       bindm = [

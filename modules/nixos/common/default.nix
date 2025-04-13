@@ -1,0 +1,5 @@
+{...}: {
+  imports = [
+    ./nix-mirrors.nix
+  ];
+}

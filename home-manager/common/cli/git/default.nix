@@ -9,6 +9,7 @@
       init.defaultBranch = "main";
       safe.directory = "*";
       credential.helper = "store --file ~/.git-credentials";
+      diff.sopsdiffer.textconv = "sops -d";
       pull.rebase = "false";
     };
   };

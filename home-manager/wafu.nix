@@ -6,9 +6,9 @@
   };
 
   imports = [
-    ./modules/cli
-    ./modules/dev
-    # ./modules/graphical
+    ./common/cli
+    ./common/dev
+    # ./common/graphical
   ];
 
   # let HM manage itself when in standalone mode

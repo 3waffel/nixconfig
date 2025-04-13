@@ -2,7 +2,9 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  inherit (pkgs.lib) makeLibraryPath;
+in {
   home.packages = with pkgs;
     [
       act
@@ -58,7 +60,7 @@
         ++ [
           ''-I"${llvmPackages.libclang.lib}/lib/clang/${llvmPackages.libclang.version}/include"''
           ''-I"${glib.dev}/include/glib-2.0"''
-          ''-I${glib.out}/lib/glib-2.0/include/''
+          ''-I"${glib.out}/lib/glib-2.0/include"''
         ]);
   };
 

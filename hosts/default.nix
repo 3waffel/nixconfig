@@ -1,10 +1,6 @@
 {outputs, ...} @ inputs: let
   inherit (inputs) self nixpkgs nixpkgs-unstable;
-  inherit (nixpkgs.lib) nixosSystem;
-
-  commonModules =
-    builtins.attrValues outputs.nixosModules
-    ++ [inputs.home-manager.nixosModules.home-manager];
+  inherit (nixpkgs.lib) nixosSystem singleton optionals;
 
   nixosConfig = {
     extraModules ? [],
@@ -17,6 +13,10 @@
     };
     pkgs = import nixpkgs pkgsConfig;
     pkgs-unstable = import nixpkgs-unstable pkgsConfig;
+    commonModules =
+      builtins.attrValues outputs.nixosModules
+      ++ (singleton inputs.home-manager.nixosModules.home-manager)
+      ++ (singleton inputs.sops-nix.nixosModules.sops);
   in
     nixosSystem {
       inherit pkgs system;

@@ -1,12 +1,4 @@
-{
-  config,
-  sops-nix,
-  ...
-}: {
-  imports = [
-    sops-nix.nixosModules.sops
-  ];
-
+{config, ...}: {
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age.keyFile = "/home/wafu/.config/sops/age/keys.txt";

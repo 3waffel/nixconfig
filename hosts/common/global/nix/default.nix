@@ -6,8 +6,6 @@
   nixpkgs,
   ...
 }: {
-  imports = [./mirrors.nix];
-
   nix = {
     package = pkgs.nixVersions.latest;
 

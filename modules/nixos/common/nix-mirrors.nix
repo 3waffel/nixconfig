@@ -3,10 +3,10 @@
   lib,
   ...
 }: let
-  cfg = config._mods.mirrors;
+  cfg = config._mods.nix-mirrors;
 in
   with lib; {
-    options._mods.mirrors = {
+    options._mods.nix-mirrors = {
       enable = mkOption {
         type = types.bool;
         default = false;

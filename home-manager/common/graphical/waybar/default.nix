@@ -1,4 +1,6 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  inherit (pkgs.lib) getExe;
+in {
   programs.waybar = {
     enable = true;
     # avoid conflicts with uwsm
@@ -73,9 +75,9 @@
             car = "";
             default = ["" "" ""];
           };
-          on-click = "${pkgs.pamixer}/bin/pamixer -t";
-          on-click-right = "${pkgs.pamixer}/bin/pamixer --default-source -t";
-          on-click-middle = "${pkgs.pavucontrol}/bin/pavucontrol";
+          on-click = "${getExe pkgs.pamixer} -t";
+          on-click-right = "${getExe pkgs.pamixer} --default-source -t";
+          on-click-middle = "${getExe pkgs.pavucontrol}";
         };
         network = {
           format-wifi = "";
@@ -94,8 +96,8 @@
         backlight = {
           format = "{icon} {percent}%";
           format-icons = ["" "" "" "" "" "" "" "" ""];
-          on-scroll-up = "${pkgs.brightnessctl}/bin/brightnessctl s 5%+";
-          on-scroll-down = "${pkgs.brightnessctl}/bin/brightnessctl s 1";
+          on-scroll-up = "${getExe pkgs.brightnessctl} s 1%+";
+          on-scroll-down = "${getExe pkgs.brightnessctl} s 1";
         };
         battery = {
           states = {

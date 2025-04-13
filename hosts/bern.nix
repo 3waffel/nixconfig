@@ -22,7 +22,7 @@
     # ./common/optional/sops
   ];
 
-  home-manager.users.wafu = import "${self}/home-manager/modules/graphical";
+  home-manager.users.wafu = import "${self}/home-manager/common/graphical";
 
   console.earlySetup = true;
   boot = {
