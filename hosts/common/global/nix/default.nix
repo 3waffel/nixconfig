@@ -1,13 +1,15 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
-  nixpkgs,
   ...
-}: {
+} @ inputs: {
   nix = {
     package = pkgs.nixVersions.latest;
+    registry = {
+      n.flake = inputs.nixpkgs;
+      nn.flake = inputs.nixpkgs-unstable;
+    };
 
     gc = {
       automatic = true;

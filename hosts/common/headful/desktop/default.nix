@@ -27,6 +27,7 @@
       })
     ];
     fontconfig = {
+      useEmbeddedBitmaps = true;
       defaultFonts = {
         serif = ["Noto Serif CJK SC"];
         sansSerif = ["Noto Sans CJK SC"];
@@ -73,6 +74,9 @@
     enable = true;
     withUWSM = true;
   };
-  security.pam.services.hyprlock = {};
-  security.pam.services.sddm.kwallet.enable = true;
+  security.pam.services = {
+    hyprlock = {};
+    sddm.kwallet.enable = true;
+    kwallet.kwallet.enable = true;
+  };
 }

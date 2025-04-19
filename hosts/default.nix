@@ -9,7 +9,10 @@
     pkgsConfig = {
       inherit system;
       overlays = [inputs.nix-alien.overlays.default];
-      config.allowUnfree = true;
+      config = {
+        allowUnfree = true;
+        android_sdk.accept_license = true;
+      };
     };
     pkgs = import nixpkgs pkgsConfig;
     pkgs-unstable = import nixpkgs-unstable pkgsConfig;

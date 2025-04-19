@@ -33,6 +33,7 @@
       krita
       libreoffice
       obsidian
+      zotero
 
       appflowy
       bitwarden-desktop

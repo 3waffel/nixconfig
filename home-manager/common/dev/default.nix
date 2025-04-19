@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs-unstable,
   ...
 }: let
   inherit (pkgs.lib) makeLibraryPath;
@@ -20,20 +21,24 @@ in {
       llvmPackages.libclang
       llvmPackages.lld
       ninja
-      nodejs
       openssl_3
       pkg-config
-      poetry
-      rustup
       taplo-cli
       tree
       treefmt
-      trunk
       wasm-pack
     ]
-    ++ (with pkgs.nodePackages; [
+    ++ (with pkgs-unstable; [
+      flutter
+      jdk
+      poetry
+      rustup
+      trunk
+    ])
+    ++ (with pkgs-unstable.nodePackages; [
       typescript-language-server
       node2nix
+      nodejs
       npm
       yarn
       pnpm
@@ -46,15 +51,15 @@ in {
     };
   };
 
-  home.sessionVariables = with pkgs; {
+  home.sessionVariables = {
     OPENSSL_DIR = "${pkgs.openssl.dev}";
     OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
     OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
-    PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";
+    PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
     # https://github.com/rust-lang/rust-bindgen#environment-variables
-    LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
+    LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
     # Add glibc, clang, glib, and other headers to bindgen search path
-    BINDGEN_EXTRA_CLANG_ARGS =
+    BINDGEN_EXTRA_CLANG_ARGS = with pkgs;
       lib.concatStringsSep " "
       ((builtins.map (a: ''-I"${a}/include"'') [glibc.dev])
         ++ [

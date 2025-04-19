@@ -10,6 +10,7 @@
     pkgs.writeShellScriptBin "wallpaperSwitcher" ''
       if ! [ -d "${wallpapersDir}" ]; then exit 1; fi
       image=$( (find "${wallpapersDir}" -type f) | shuf -n 1)
+      pidof swww-daemon || uwsm app -- swww-daemon
       if [ -e "$image" ]; then swww img "$image"; fi
     '';
 in {
@@ -128,7 +129,7 @@ in {
                   ws = toString (i + 1);
                 in [
                   "$mod, ${ws}, workspace, ${ws}"
-                  "ALT SHIFT, ${ws}, movetoworkspace, ${ws}"
+                  "$mod SHIFT, ${ws}, movetoworkspace, ${ws}"
                 ]
               )
               9)
