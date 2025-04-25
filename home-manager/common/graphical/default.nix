@@ -18,7 +18,6 @@
       brightnessctl
       cliphist # clipboard
       grimblast
-      imv
       networkmanagerapplet
       networkmanager-openvpn
       pavucontrol # volume control
@@ -26,30 +25,32 @@
       swww # animated wallpaper
       wlsunset
       wl-clipboard
+
+      imv # image viewer
+      mpv # video viewer
+      sioyek # pdf viewer
     ]
     ++ (with pkgs-unstable; [
+      # Primary
       alacritty
       brave
+      firefox
       krita
       libreoffice
       obsidian
+      thunderbird
       zotero
-
+      # Secondary
       appflowy
       bitwarden-desktop
       discord
       slack
       telegram-desktop
       protonvpn-gui
-
+      # Misc
       winetricks
       wineWowPackages.waylandFull
     ]);
-
-  programs.firefox = {
-    enable = true;
-    package = pkgs-unstable.firefox;
-  };
 
   home.pointerCursor = {
     gtk.enable = true;
@@ -65,8 +66,10 @@
       package = pkgs.adw-gtk3;
     };
   };
+
   qt = {
     enable = true;
     platformTheme.name = "adwaita";
+    style.name = "adwaita-dark";
   };
 }

@@ -59,10 +59,20 @@ in {
           scroll_factor = 0.4;
         };
       };
-      device = {
-        name = "logitech-g-pro--1";
-        sensitivity = -0.8;
-      };
+      device = [
+        {
+          name = "logitech-g-pro--1";
+          sensitivity = -0.8;
+        }
+        {
+          name = "logitech-g-pro-wireless-gaming-mouse";
+          sensitivity = -0.8;
+        }
+        {
+          name = "logitech-g-pro-wireless-gaming-mouse-2";
+          sensitivity = -0.8;
+        }
+      ];
       gestures.workspace_swipe = true;
 
       decoration = {

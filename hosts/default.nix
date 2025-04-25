@@ -1,10 +1,10 @@
 {outputs, ...} @ inputs: let
   inherit (inputs) self nixpkgs nixpkgs-unstable;
-  inherit (nixpkgs.lib) nixosSystem singleton optionals;
+  inherit (nixpkgs.lib) nixosSystem singleton;
 
   nixosConfig = {
-    extraModules ? [],
     system,
+    extraModules ? [],
   }: let
     pkgsConfig = {
       inherit system;

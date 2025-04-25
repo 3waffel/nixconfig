@@ -35,9 +35,9 @@ in {
           sort-by-number = true;
           format-icons = {
             "1" = "";
-            "2" = "";
-            "3" = "";
-            "4" = "";
+            "2" = "";
+            "3" = "";
+            "4" = "";
           };
           persistent_workspaces = {
             "1" = [];
@@ -97,7 +97,8 @@ in {
           format = "{icon} {percent}%";
           format-icons = ["" "" "" "" "" "" "" "" ""];
           on-scroll-up = "${getExe pkgs.brightnessctl} s 1%+";
-          on-scroll-down = "${getExe pkgs.brightnessctl} s 1";
+          on-scroll-down = "${getExe pkgs.brightnessctl} s 1%-";
+          on-click = "${getExe pkgs.brightnessctl} s 1";
         };
         battery = {
           states = {
@@ -114,6 +115,7 @@ in {
           format = " {:%I:%M %p}";
           format-alt = " {:%a %b %d, %G}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
+          calendar.format.today = "<span color='#ff6699'><b><u>{}</u></b></span>";
         };
         tray = {
           icon-size = 14;

@@ -1,15 +1,12 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./fish
     ./git
     ./helix
     ./nvim
-    # ./nix-index
+    ./nix-index
     ./ssh
+    ./yazi
   ];
 
   home.sessionVariables = {
@@ -17,9 +14,6 @@
   };
 
   home.packages = with pkgs; [
-    cachix # Managing binary cache
-    comma # Install and run programs by sticking a , before them
-
     bat
     bottom # System viewer
     ncdu # TUI disk usage
@@ -29,6 +23,8 @@
     neofetch
 
     alejandra
+    cachix # Managing binary cache
+    comma # Install and run programs by sticking a , before them
     deadnix # Nix dead code locator
     sops # Deployment secrets tool
     statix # Nix linter

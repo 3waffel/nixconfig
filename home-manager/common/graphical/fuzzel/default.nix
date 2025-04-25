@@ -1,5 +1,4 @@
 {...}: {
-  # Launcher
   programs.fuzzel = {
     enable = true;
     settings = {
