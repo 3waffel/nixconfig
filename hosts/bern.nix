@@ -19,10 +19,12 @@
     ./common/users/wafu
     ./common/headful/desktop
     ./common/headful/steam
+    ./common/headless/podman
     # ./common/optional/sops
   ];
 
-  home-manager.users.wafu = import "${self}/home-manager/common/graphical";
+  home-manager.users.wafu = import "${self}/home-manager/common/desktop";
+  virtualisation.waydroid.enable = true;
 
   console.earlySetup = true;
   boot = {

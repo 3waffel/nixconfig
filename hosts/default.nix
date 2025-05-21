@@ -8,7 +8,10 @@
   }: let
     pkgsConfig = {
       inherit system;
-      overlays = [inputs.nix-alien.overlays.default];
+      overlays = [
+        inputs.nix4vscode.overlays.forVscode
+        inputs.dolphin-overlay.overlays.default
+      ];
       config = {
         allowUnfree = true;
         android_sdk.accept_license = true;

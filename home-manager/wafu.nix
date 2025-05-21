@@ -8,7 +8,7 @@
   imports = [
     ./common/cli
     ./common/dev
-    # ./common/graphical
+    # ./common/desktop
   ];
 
   # let HM manage itself when in standalone mode

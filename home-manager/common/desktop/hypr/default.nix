@@ -9,11 +9,25 @@
   in
     pkgs.writeShellScriptBin "wallpaperSwitcher" ''
       if ! [ -d "${wallpapersDir}" ]; then exit 1; fi
-      image=$( (find "${wallpapersDir}" -type f) | shuf -n 1)
+      image=$( (find -L "${wallpapersDir}" -type f) | shuf -n 1)
       pidof swww-daemon || uwsm app -- swww-daemon
       if [ -e "$image" ]; then swww img "$image"; fi
     '';
 in {
+  imports = [
+    ./hypridle.nix
+    ./hyprlock.nix
+  ];
+
+  home.packages = with pkgs; [
+    hyprshade
+    grimblast
+    swww
+    wf-recorder
+    wlsunset
+    wl-clipboard
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
     # avoid conflicts with uwsm
@@ -24,10 +38,19 @@ in {
       env = [
         "HYPRCURSOR_SIZE,25"
         "XCURSOR_SIZE,25"
+        # "NIXOS_OZONE_WL,1"
+        # https://wiki.hyprland.org/Nvidia/
+        "LIBVA_DRIVER_NAME,nvidia"
+        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
       ];
       exec-once = [
+        # XDPH
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+        "systemctl --user restart xdg-desktop-portal.service"
+        "systemctl --user restart xdg-desktop-portal-hyprland.service"
+        # Startup
         "uwsm app -- swww-daemon"
-        "uwsm app -- ${getExe pkgs.wlsunset} -S 6:00 -s 19:00"
+        "uwsm app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
         "uwsm app -- wl-paste --watch cliphist store"
         "systemctl --user enable --now waybar.service"
         "systemctl --user enable --now hypridle.service"
@@ -35,8 +58,8 @@ in {
       ];
 
       general = {
-        gaps_in = 5;
-        gaps_out = 10;
+        gaps_in = 3;
+        gaps_out = 0;
         border_size = 2;
         "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         "col.inactive_border" = "rgba(A58A8D30)";
@@ -48,6 +71,12 @@ in {
         disable_hyprland_logo = true;
       };
       dwindle.force_split = 2;
+      workspace = [
+        "1, persistent:true"
+        "2, persistent:true"
+        "3, persistent:true"
+        "4, persistent:true"
+      ];
 
       input = {
         kb_layout = "us";
@@ -79,23 +108,8 @@ in {
         rounding = 0;
         active_opacity = 1.0;
         inactive_opacity = 1.0;
-        blur = {
-          enabled = true;
-          xray = true;
-          special = false;
-          new_optimizations = true;
-          size = 5;
-          passes = 2;
-          brightness = 1;
-          noise = 0.01;
-          contrast = 1;
-        };
-        shadow = {
-          enabled = true;
-          ignore_window = true;
-          range = 4;
-          render_power = 2;
-        };
+        blur.enabled = false;
+        shadow.enabled = false;
         dim_inactive = false;
         dim_strength = 0.1;
         dim_special = 0;
@@ -125,6 +139,7 @@ in {
           "$mod, F, fullscreen"
           "$mod, L, exec, loginctl lock-session"
           "$mod, M, exit"
+          "$mod, V, exec, cliphist list | $launcher --dmenu | cliphist decode | wl-copy"
           # Focus windows.
           "$mod, up, movefocus, u"
           "$mod, down, movefocus, d"
@@ -168,12 +183,13 @@ in {
       windowrulev2 = [
         "float, title:^(Picture-in-Picture|画中画)$"
         "pin, title:^(Picture-in-Picture|画中画)$"
+        "float, class:^(Waydroid|waydroid)(.*)$"
 
         "immediate, class:^(steam_app_[0-9]*)$"
         "suppressevent maximize, class:.*"
         "suppressevent fullscreen, class:^(steam_app_[0-9]*)$"
 
-        "opacity 0.9 0.9, class:^(Alacritty|Code)$"
+        "opacity 0.95 0.95, class:^(Alacritty|Code|code)$"
         # hide XWayland Video Bridge
         "opacity 0.0 override, class:^(xwaylandvideobridge)$"
         "noanim, class:^(xwaylandvideobridge)$"

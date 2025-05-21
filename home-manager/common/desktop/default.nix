@@ -6,8 +6,7 @@
   imports = [
     ./dunst
     ./fuzzel
-    ./hypridle
-    ./hyprland
+    ./hypr
     ./vscode
     ./waybar
     ./xdg
@@ -48,6 +47,8 @@
       telegram-desktop
       protonvpn-gui
       # Misc
+      lutris
+      protonup-qt
       winetricks
       wineWowPackages.waylandFull
     ]);

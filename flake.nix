@@ -29,7 +29,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # tools
-    nix-alien.url = "github:thiagokokada/nix-alien";
+    nix4vscode = {
+      url = "github:nix-community/nix4vscode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dolphin-overlay = {
+      url = "github:rumboon/dolphin-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # custom inputs
     st7789-dev.url = "github:3waffel/st7789-dev";
   };

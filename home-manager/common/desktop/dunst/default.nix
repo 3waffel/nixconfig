@@ -14,6 +14,12 @@
         ellipsize = "end";
         ignore_newline = false;
       };
+      urgency_low = {
+        timeout = 10;
+      };
+      urgency_normal = {
+        timeout = 10;
+      };
     };
   };
 }

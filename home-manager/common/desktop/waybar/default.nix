@@ -39,12 +39,6 @@ in {
             "3" = "";
             "4" = "";
           };
-          persistent_workspaces = {
-            "1" = [];
-            "2" = [];
-            "3" = [];
-            "4" = [];
-          };
         };
         "hyprland/window" = {
           separate-outputs = true;

@@ -13,6 +13,7 @@
       "docker"
       "gpio"
       "networkmanager"
+      "gamemode"
     ];
     isNormalUser = true;
     shell = pkgs.fish;

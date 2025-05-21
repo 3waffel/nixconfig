@@ -1,13 +1,32 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: let
   inherit (config.home) homeDirectory;
   mimeTypes = import ./mimeTypes.nix;
 in {
+  home.activation.hideApps =
+    lib.hm.dag.entryAfter ["writeBoundary"]
+    ''
+      sed -i 's/Icon=.*/NoDisplay=true/' ~/.local/share/applications/waydroid.com.*.desktop || true
+      sed -i 's/Icon=.*/NoDisplay=true/' ~/.local/share/applications/waydroid.org.*.desktop || true
+      sed -i 's/Icon=.*/NoDisplay=true/' ~/.local/share/applications/Proton*.desktop || true
+      sed -i 's/Icon=.*/NoDisplay=true/' ~/.local/share/applications/Steam*.desktop || true
+    '';
+
   xdg = {
     enable = true;
+    portal = {
+      enable = true;
+      xdgOpenUsePortal = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-hyprland
+        xdg-desktop-portal-gtk
+      ];
+      config.common.default = "*";
+    };
     userDirs = {
       enable = true;
       createDirectories = true;

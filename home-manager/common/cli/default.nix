@@ -20,6 +20,7 @@
     eza # Better ls
     fd # Better find
     httpie # Better curl
+    jq
     neofetch
 
     alejandra
