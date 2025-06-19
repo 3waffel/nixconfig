@@ -13,6 +13,7 @@
       "docker"
       "gpio"
       "networkmanager"
+      "audio"
       "gamemode"
     ];
     isNormalUser = true;
@@ -28,7 +29,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    backupFileExtension = "backup";
+    backupFileExtension = "hmbackup";
     extraSpecialArgs = {inherit pkgs pkgs-unstable;};
     users.wafu = import "${self}/home-manager/wafu.nix";
   };

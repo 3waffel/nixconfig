@@ -2,51 +2,59 @@
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     stdenv.cc.cc
-    fuse3
     alsa-lib
     at-spi2-atk
     at-spi2-core
     atk
+    bzip2
     cairo
+    coreutils
     cups
     curl
     dbus
     expat
+    flac
     fontconfig
     freetype
+    gcc-unwrapped.lib
     gdk-pixbuf
     glib
-    gtk3
-    libGL
-    libappindicator-gtk3
-    libdrm
-    libnotify
-    libpulseaudio
-    libuuid
-    libusb1
-    xorg.libxcb
-    libxkbcommon
-    mesa
-    nspr
-    nss
-    pango
-    pipewire
-    systemd
+    harfbuzz
     icu
-    openssl
+    libcap
+    libdrm
+    liberation_ttf
+    libexif
+    # libgbm
+    libglvnd
+    libkrb5
+    libpng
     xorg.libX11
-    xorg.libXScrnSaver
+    xorg.libxcb
     xorg.libXcomposite
     xorg.libXcursor
     xorg.libXdamage
     xorg.libXext
     xorg.libXfixes
     xorg.libXi
+    libxkbcommon
     xorg.libXrandr
     xorg.libXrender
-    xorg.libXtst
-    xorg.libxkbfile
+    xorg.libXScrnSaver
     xorg.libxshmfence
-    zlib
+    xorg.libXtst
+    mesa
+    nspr
+    nss
+    pango
+    pciutils
+    pipewire
+    snappy
+    speechd-minimal
+    systemd
+    util-linux
+    vulkan-loader
+    wayland
+    wget
   ];
 }

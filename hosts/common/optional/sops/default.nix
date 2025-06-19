@@ -1,7 +1,9 @@
-{config, ...}: {
+{config, ...}: let
+  homeDir = config.users.users.wafu.home;
+in {
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    age.keyFile = "/home/wafu/.config/sops/age/keys.txt";
+    age.keyFile = "${homeDir}/.config/sops/age/keys.txt";
     secrets = {
       ngrok-config = {};
       tailscale-authkey = {};

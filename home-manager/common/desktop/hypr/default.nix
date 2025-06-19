@@ -1,9 +1,10 @@
 {
   pkgs,
+  lib,
   config,
   ...
 }: let
-  inherit (pkgs.lib) getExe;
+  inherit (lib) getExe;
   wallpaperSwitcher = let
     wallpapersDir = "${config.xdg.userDirs.pictures}/Wallpapers";
   in
@@ -20,6 +21,7 @@ in {
   ];
 
   home.packages = with pkgs; [
+    hyprpolkitagent
     hyprshade
     grimblast
     swww
@@ -44,14 +46,11 @@ in {
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
       ];
       exec-once = [
-        # XDPH
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-        "systemctl --user restart xdg-desktop-portal.service"
-        "systemctl --user restart xdg-desktop-portal-hyprland.service"
         # Startup
         "uwsm app -- swww-daemon"
         "uwsm app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
         "uwsm app -- wl-paste --watch cliphist store"
+        "systemctl --user enable --now hyprpolkitagent.service"
         "systemctl --user enable --now waybar.service"
         "systemctl --user enable --now hypridle.service"
         "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${getExe wallpaperSwitcher}"
@@ -69,6 +68,7 @@ in {
       };
       misc = {
         disable_hyprland_logo = true;
+        middle_click_paste = false;
       };
       dwindle.force_split = 2;
       workspace = [
@@ -126,14 +126,12 @@ in {
       ];
 
       "$mod" = "SUPER";
-      "$launcher" = "fuzzel";
-      "$browser" = "firefox";
-      "$terminal" = "alacritty";
+      "$launcher" = getExe pkgs.fuzzel;
       bind =
         [
           # Launch programs.
-          "$mod, Space, exec, $launcher"
-          "$mod, Return, exec, $terminal"
+          "$mod, Space, exec, pkill $launcher || $launcher"
+          "$mod, Return, exec, ${getExe pkgs.xdg-terminal-exec}"
           # Compositor
           "$mod, Q, killactive"
           "$mod, F, fullscreen"

@@ -11,6 +11,7 @@
       overlays = [
         inputs.nix4vscode.overlays.forVscode
         inputs.dolphin-overlay.overlays.default
+        inputs.nur.overlays.default
       ];
       config = {
         allowUnfree = true;

@@ -5,23 +5,14 @@
       ls = "exa";
       cat = "bat";
 
-      jqless = "jq -C | less -r";
-
-      nrs = "nixos-rebuild switch --use-remote-sudo";
-      hms = "home-manager switch";
+      nrs = "nixos-rebuild switch --use-remote-sudo --flake ~/nixconfig#$(hostname)";
+      nrt = "nixos-rebuild test --use-remote-sudo --flake ~/nixconfig#$(hostname)";
+      hms = "home-manager switch --flake ~/nixconfig#$(whoami)";
       nd = "nix develop -c $SHELL";
-
-      v = "nvim";
-      vi = "nvim";
-      vim = "nvim";
-      m = "neomutt";
-      mutt = "neomutt";
     };
     shellAliases = {
       # Get ip
       getip = "curl ifconfig.me";
-      # SSH with kitty terminfo
-      kssh = "kitty +kitten ssh";
       # Clear screen and scrollback
       clear = "printf '\\033[2J\\033[3J\\033[1;1H'";
     };

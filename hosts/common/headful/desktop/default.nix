@@ -75,6 +75,19 @@
     xserver.xkb.layout = "us";
   };
 
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    discover
+    elisa
+    gwenview
+    kate
+    khelpcenter
+    konsole
+    okular
+    plasma-browser-integration
+    spectacle
+    systemsettings
+  ];
+
   programs.hyprland = {
     enable = true;
     withUWSM = true;
@@ -82,7 +95,14 @@
 
   security.pam.services = {
     hyprlock = {};
-    sddm.kwallet.enable = true;
-    kwallet.kwallet.enable = true;
+    login.kwallet.enable = true;
   };
+
+  # No password for wheel
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (subject.isInGroup("wheel"))
+        return polkit.Result.YES;
+    });
+  '';
 }

@@ -8,9 +8,6 @@ in
         auto-format = true;
       }
       {
-        name = "cpp";
-      }
-      {
         name = "nix";
         auto-format = true;
         formatter.command = "${getExe alejandra}";
@@ -19,6 +16,14 @@ in
         name = "toml";
         auto-format = true;
         formatter.command = "${getExe taplo} fmt -";
+      }
+      {
+        name = "tidal";
+        scope = "source.tidal";
+        file-types = ["tidal"];
+        comment-token = "--";
+        indent = {tab-width = 2; unit = "  ";};
+        grammar = "haskell";
       }
     ];
     language-server = {

@@ -11,16 +11,18 @@
 
   home.sessionVariables = {
     EDITOR = "hx";
+    PAGER = "bat";
   };
 
   home.packages = with pkgs; [
     bat
     bottom # System viewer
-    ncdu # TUI disk usage
+    chafa
     eza # Better ls
     fd # Better find
     httpie # Better curl
     jq
+    ncdu # TUI disk usage
     neofetch
 
     alejandra

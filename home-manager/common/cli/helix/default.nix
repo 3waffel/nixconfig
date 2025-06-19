@@ -5,6 +5,8 @@
 } @ args: {
   programs.helix = {
     enable = true;
+    defaultEditor = true;
+    ignores = [".git" ".direnv"];
     languages = import ./languages.nix args;
     settings = {
       theme = "catppuccin_mocha";

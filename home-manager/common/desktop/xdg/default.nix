@@ -10,8 +10,7 @@ in {
   home.activation.hideApps =
     lib.hm.dag.entryAfter ["writeBoundary"]
     ''
-      sed -i 's/Icon=.*/NoDisplay=true/' ~/.local/share/applications/waydroid.com.*.desktop || true
-      sed -i 's/Icon=.*/NoDisplay=true/' ~/.local/share/applications/waydroid.org.*.desktop || true
+      sed -i 's/Icon=.*/NoDisplay=true/' ~/.local/share/applications/waydroid.*.desktop || true
       sed -i 's/Icon=.*/NoDisplay=true/' ~/.local/share/applications/Proton*.desktop || true
       sed -i 's/Icon=.*/NoDisplay=true/' ~/.local/share/applications/Steam*.desktop || true
     '';
@@ -25,7 +24,7 @@ in {
         xdg-desktop-portal-hyprland
         xdg-desktop-portal-gtk
       ];
-      config.common.default = "*";
+      config.common.default = ["gtk" "hyprland"];
     };
     userDirs = {
       enable = true;
@@ -36,6 +35,8 @@ in {
         XDG_PROJECTS_DIR = "${homeDirectory}/Projects";
       };
     };
+    # default terminal emulator
+    configFile."xdg-terminals.list".text = lib.concatLines ["Alacritty.desktop"];
 
     configFile."mimeapps.list".force = true;
     mimeApps = {
@@ -44,7 +45,7 @@ in {
         genDefaultApp = value: list:
           builtins.listToAttrs (map (name: {inherit name value;}) list);
       in
-        genDefaultApp "firefox.desktop" [
+        genDefaultApp "librewolf.desktop" [
           "application/x-extension-htm"
           "application/x-extension-html"
           "application/x-extension-shtml"
@@ -71,6 +72,7 @@ in {
           "application/epub+zip"
           "application/pdf"
         ]
+        // genDefaultApp "Helix.desktop" mimeTypes.text
         // genDefaultApp "imv.desktop" mimeTypes.images
         // genDefaultApp "mpv.desktop" mimeTypes.media
         // {

@@ -12,6 +12,7 @@
       inherit system;
       overlays = [
         inputs.nix4vscode.overlays.forVscode
+        inputs.nur.overlays.default
       ];
       config = {
         allowUnfree = true;

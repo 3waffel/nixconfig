@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ./browser
     ./dunst
     ./fuzzel
     ./hypr
@@ -24,6 +25,7 @@
       swww # animated wallpaper
       wlsunset
       wl-clipboard
+      xdg-terminal-exec
 
       imv # image viewer
       mpv # video viewer
@@ -33,15 +35,12 @@
       # Primary
       alacritty
       brave
-      firefox
       krita
       libreoffice
       obsidian
       thunderbird
       zotero
       # Secondary
-      appflowy
-      bitwarden-desktop
       discord
       slack
       telegram-desktop
