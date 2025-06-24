@@ -57,7 +57,7 @@ in {
       ];
 
       general = {
-        gaps_in = 3;
+        gaps_in = 2;
         gaps_out = 0;
         border_size = 2;
         "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
@@ -179,15 +179,17 @@ in {
         "$mod, mouse:272, movewindow"
       ];
       windowrulev2 = [
+        "suppressevent maximize, class:.*"
+        "float, class:^(Waydroid|waydroid)(.*)$"
+        "opacity 0.95 0.95, class:^(Alacritty|Code|code)$"
+
         "float, title:^(Picture-in-Picture|画中画)$"
         "pin, title:^(Picture-in-Picture|画中画)$"
-        "float, class:^(Waydroid|waydroid)(.*)$"
+        "move onscreen 100% 100%, title:^(Picture-in-Picture|画中画)$"
 
         "immediate, class:^(steam_app_[0-9]*)$"
-        "suppressevent maximize, class:.*"
         "suppressevent fullscreen, class:^(steam_app_[0-9]*)$"
 
-        "opacity 0.95 0.95, class:^(Alacritty|Code|code)$"
         # hide XWayland Video Bridge
         "opacity 0.0 override, class:^(xwaylandvideobridge)$"
         "noanim, class:^(xwaylandvideobridge)$"

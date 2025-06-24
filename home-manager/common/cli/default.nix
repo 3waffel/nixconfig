@@ -3,6 +3,7 @@
     ./fish
     ./git
     ./helix
+    ./nh
     ./nvim
     ./nix-index
     ./ssh

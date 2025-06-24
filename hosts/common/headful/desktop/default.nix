@@ -6,26 +6,23 @@
 }: {
   fonts = {
     enableDefaultPackages = true;
-    packages = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-cjk-serif
-      noto-fonts-emoji
-      noto-fonts-color-emoji
-      noto-fonts-extra
-      (nerdfonts.override {
-        fonts = [
-          "Hack"
-          "Meslo"
-          "SourceCodePro"
-          "FiraCode"
-          "Terminus"
-          "Iosevka"
-          "Monoid"
-          "FantasqueSansMono"
-        ];
-      })
-    ];
+    packages = with pkgs;
+      [
+        noto-fonts
+        noto-fonts-cjk-sans
+        noto-fonts-cjk-serif
+        noto-fonts-emoji
+        noto-fonts-color-emoji
+        noto-fonts-extra
+      ]
+      ++ (with pkgs.nerd-fonts; [
+        hack
+        meslo-lg
+        sauce-code-pro
+        fira-code
+        iosevka
+        fantasque-sans-mono
+      ]);
     fontconfig = {
       useEmbeddedBitmaps = true;
       defaultFonts = {

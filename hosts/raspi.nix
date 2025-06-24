@@ -25,7 +25,18 @@
       (import ./common/headless/openvscode {})
     ];
 
+  hardware = {
+    bluetooth.enable = true;
+    raspberry-pi."4".fkms-3d.enable = true;
+    raspberry-pi."4".apply-overlays-dtmerge.enable = true;
+  };
+
   services = {
+    pulseaudio.enable = false;
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+    };
     resolved.fallbackDns = config.networking.nameservers;
     st7789-dev.enable = true;
 
@@ -79,13 +90,6 @@
       # allProxy = "http://127.0.0.1:7890";
       noProxy = "127.0.0.1,localhost,internal.domain";
     };
-  };
-
-  hardware = {
-    bluetooth.enable = true;
-    pulseaudio.enable = true;
-    raspberry-pi."4".fkms-3d.enable = true;
-    raspberry-pi."4".apply-overlays-dtmerge.enable = true;
   };
 
   environment.systemPackages = with pkgs; [

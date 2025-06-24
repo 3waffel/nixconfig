@@ -25,7 +25,7 @@
     libdrm
     liberation_ttf
     libexif
-    # libgbm
+    libgbm
     libglvnd
     libkrb5
     libpng

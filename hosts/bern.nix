@@ -91,7 +91,6 @@
 
   hardware = {
     bluetooth.enable = true;
-    pulseaudio.enable = false;
     nvidia = {
       powerManagement = {
         enable = true;
@@ -106,13 +105,16 @@
 
   # Enable sound with pipewire.
   security.rtkit.enable = true;
-  services.blueman.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
+  services = {
+    blueman.enable = true;
+    pulseaudio.enable = false;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+    };
   };
 
   services = {

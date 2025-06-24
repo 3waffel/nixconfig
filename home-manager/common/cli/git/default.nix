@@ -5,7 +5,7 @@
   config,
   ...
 }: let
-  extraDirs = config.xdg.userDirs.extraConfig;
+  inherit (config.home) homeDirectory;
 in {
   programs.git = {
     package = pkgs.gitAndTools.gitFull;
@@ -29,8 +29,8 @@ in {
     };
     includes = [
       {
-        condition = "gitdir:${extraDirs.XDG_PROJECTS_DIR}/";
-        path = "${extraDirs.XDG_PROJECTS_DIR}/.gitconfig";
+        condition = "gitdir:${homeDirectory}/Projects";
+        path = "${homeDirectory}/Projects/.gitconfig";
       }
     ];
   };
