@@ -27,6 +27,7 @@
         "ms-python.python"
         "ms-python.debugpy"
         "ms-toolsai.jupyter"
+        "charliermarsh.ruff"
         "ms-python.vscode-pylance"
         "ms-python.black-formatter"
         # Haskell
@@ -39,6 +40,7 @@
         "github.copilot-chat"
         "esbenp.prettier-vscode"
         "james-yu.latex-workshop"
+        "myriad-dreamin.tinymist"
         "wakatime.vscode-wakatime"
         "dracula-theme.theme-dracula"
         "ms-vscode-remote.remote-ssh"

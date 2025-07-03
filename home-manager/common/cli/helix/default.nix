@@ -6,8 +6,23 @@
   programs.helix = {
     enable = true;
     defaultEditor = true;
-    ignores = [".git" ".direnv"];
+    ignores = [".git" ".direnv" "node_modules"];
     languages = import ./languages.nix args;
+    extraPackages = with pkgs; [
+      bash-language-server
+      clang-tools
+      cmake-language-server
+      dockerfile-language-server-nodejs
+      haskell-language-server
+      marksman
+      nil
+      pyright
+      ruff
+      taplo
+      tinymist
+      typescript-language-server
+      vscode-langservers-extracted
+    ];
     settings = {
       theme = "catppuccin_mocha";
       editor = {
@@ -21,19 +36,30 @@
         };
         indent-guides.render = true;
         lsp = {
+          auto-signature-help = true;
           display-messages = true;
           display-inlay-hints = true;
+          display-signature-help-docs = true;
         };
         file-picker.hidden = false;
         statusline = {
-          left = ["mode" "spinner"];
+          left = [
+            "mode"
+            "spinner"
+            "version-control"
+            "file-modification-indicator"
+          ];
           center = ["file-name"];
-          right = ["diagnostics" "selections" "position-percentage" "position"];
+          right = [
+            "diagnostics"
+            "selections"
+            "position-percentage"
+            "position"
+          ];
         };
       };
       keys.normal.space.u = {
         f = ":format"; # format using LSP formatter
-        a = ["select_all" ":pipe alejandra -q"]; # format Nix with Alejandra
         w = ":set whitespace.render all";
         W = ":set whitespace.render none";
       };

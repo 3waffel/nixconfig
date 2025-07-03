@@ -29,7 +29,7 @@ in {
     };
     includes = [
       {
-        condition = "gitdir:${homeDirectory}/Projects";
+        condition = "gitdir:${homeDirectory}/Projects/";
         path = "${homeDirectory}/Projects/.gitconfig";
       }
     ];
@@ -51,7 +51,7 @@ in {
           description = "commit with better-commits";
           context = "files";
           loadingText = "opening better-commits tool";
-          subprocess = true;
+          output = "terminal";
         }
         {
           key = "n";
@@ -59,7 +59,7 @@ in {
           description = "new branch with better-branch";
           context = "localBranches";
           loadingText = "opening better-branch tool";
-          subprocess = true;
+          output = "terminal";
         }
       ];
     };

@@ -10,11 +10,6 @@
     ./yazi
   ];
 
-  home.sessionVariables = {
-    EDITOR = "hx";
-    PAGER = "bat";
-  };
-
   home.packages = with pkgs; [
     bat
     bottom # System viewer
@@ -25,6 +20,7 @@
     jq
     ncdu # TUI disk usage
     neofetch
+    tree
 
     alejandra
     cachix # Managing binary cache

@@ -1,65 +1,55 @@
 {
-  config,
   pkgs,
   pkgs-unstable,
   ...
 }: let
   inherit (pkgs.lib) makeLibraryPath;
 in {
-  home.packages = with pkgs;
+  home.packages = with pkgs-unstable;
     [
-      act
       binutils
       bison
-      cachix
       cmake
-      direnv
+      flutter
       gcc
       glibc
       gnumake
-      libcec
+      jdk
       llvmPackages.libclang
       llvmPackages.lld
       ninja
-      openssl_3
-      pkg-config
-      taplo-cli
-      tree
-      treefmt
-      wasm-pack
-    ]
-    ++ (with pkgs-unstable; [
-      flutter
-      jdk
       poetry
       rustup
       trunk
-    ])
-    ++ (with pkgs-unstable.nodePackages; [
-      typescript-language-server
+      typst
+      wasm-pack
+    ]
+    ++ (with nodePackages; [
       node2nix
       nodejs
       npm
       yarn
       pnpm
+    ])
+    ++ (with haskellPackages; [
+      stack
     ]);
 
   programs.direnv = {
     enable = true;
-    nix-direnv = {
-      enable = true;
-    };
+    nix-direnv.enable = true;
   };
 
-  home.sessionVariables = {
-    OPENSSL_DIR = "${pkgs.openssl.dev}";
-    OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
-    OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
-    PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+  home.sessionVariables = with pkgs; {
+    OPENSSL_DIR = "${openssl.dev}";
+    OPENSSL_LIB_DIR = "${openssl.out}/lib";
+    OPENSSL_INCLUDE_DIR = "${openssl.dev}/include";
+    PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";
+
     # https://github.com/rust-lang/rust-bindgen#environment-variables
-    LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
+    LIBCLANG_PATH = makeLibraryPath [llvmPackages.libclang.lib];
     # Add glibc, clang, glib, and other headers to bindgen search path
-    BINDGEN_EXTRA_CLANG_ARGS = with pkgs;
+    BINDGEN_EXTRA_CLANG_ARGS =
       lib.concatStringsSep " "
       ((builtins.map (a: ''-I"${a}/include"'') [glibc.dev])
         ++ [
