@@ -24,7 +24,6 @@
   ];
 
   home-manager.users.wafu = import "${self}/home-manager/common/desktop";
-  virtualisation.waydroid.enable = true;
 
   console.earlySetup = true;
   boot = {
@@ -101,7 +100,10 @@
         nvidiaBusId = "PCI:1:0:0";
       };
     };
+    # nvidia support for containers
+    nvidia-container-toolkit.enable = true;
   };
+  virtualisation.waydroid.enable = true;
 
   # Enable sound with pipewire.
   security.rtkit.enable = true;

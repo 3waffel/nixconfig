@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [./ui.nix ./lsp.nix ./syntax.nix];
 
   programs.neovim = {

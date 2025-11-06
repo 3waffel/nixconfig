@@ -1,12 +1,12 @@
 {
   outputs = {self, ...} @ inputs: let
-    _inputs = inputs // {inherit (self) outputs;};
+    inputs' = inputs // {inherit (self) outputs;};
   in {
     nixosModules = import ./modules/nixos;
     homeManagerModules = import ./modules/home-manager;
 
-    nixosConfigurations = import ./hosts _inputs;
-    homeConfigurations = import ./home-manager _inputs;
+    nixosConfigurations = import ./hosts inputs';
+    homeConfigurations = import ./home-manager inputs';
   };
 
   inputs = {

@@ -7,6 +7,7 @@
   inherit (config.home) homeDirectory;
   mimeTypes = import ./mimeTypes.nix;
 in {
+  # Hide redundant entries from the launcher
   home.activation.hideApps =
     lib.hm.dag.entryAfter ["writeBoundary"]
     ''
@@ -35,8 +36,12 @@ in {
         XDG_PROJECTS_DIR = "${homeDirectory}/Projects";
       };
     };
+
     # default terminal emulator
-    configFile."xdg-terminals.list".text = lib.concatLines ["Alacritty.desktop"];
+    configFile."xdg-terminals.list".text = lib.concatLines [
+      "kitty.desktop"
+      "Alacritty.desktop"
+    ];
 
     configFile."mimeapps.list".force = true;
     mimeApps = {

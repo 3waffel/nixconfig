@@ -1,9 +1,26 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   home.file.".mozilla/firefox/ignore-dev-edition-profile".text = "";
+
+  programs.qutebrowser = {
+    enable = true;
+    settings = {
+      url = {
+        start_pages = ["https://startpage.com"];
+        default_page = "https://startpage.com";
+      };
+      auto_save.session = true;
+      colors.webpage.preferred_color_scheme = "dark";
+      content = {
+        pdfjs = true;
+        blocking.method = "both";
+        autoplay = false;
+      };
+    };
+    searchEngines = {
+      DEFAULT = "https://startpage.com/search?q={}";
+    };
+  };
+
   programs.librewolf = {
     enable = true;
     package = pkgs.librewolf-bin;

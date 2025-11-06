@@ -1,8 +1,4 @@
-{
-  pkgs,
-  pkgs-unstable,
-  ...
-}: {
+{pkgs-unstable, ...}: {
   programs.vscode = {
     enable = true;
     package = pkgs-unstable.vscode;
@@ -29,15 +25,18 @@
         "ms-toolsai.jupyter"
         "charliermarsh.ruff"
         "ms-python.vscode-pylance"
-        "ms-python.black-formatter"
         # Haskell
         "haskell.haskell"
         "justusadam.language-haskell"
         # JavaScript
         "astro-build.astro-vscode"
+        "styled-components.vscode-styled-components"
+        # Shell
+        "timonwong.shellcheck"
         # Misc
         "github.copilot"
         "github.copilot-chat"
+        "Gruntfuggly.todo-tree"
         "esbenp.prettier-vscode"
         "james-yu.latex-workshop"
         "myriad-dreamin.tinymist"
@@ -49,20 +48,28 @@
         "visualstudioexptteam.vscodeintellicode"
       ];
       userSettings = {
+        # Interface
         "editor.wordWrap" = "on";
         "explorer.confirmDelete" = false;
         "explorer.confirmDragAndDrop" = false;
         "extensions.autoCheckUpdates" = false;
         "extensions.autoUpdate" = false;
+        "extensions.ignoreRecommendations" = true;
         "update.mode" = "none";
         "workbench.colorTheme" = "Dracula Theme";
+        "workbench.editor.empty.hint" = "hidden";
         "workbench.startupEditor" = "none";
 
+        # Formatter
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
-        "[python]"."editor.defaultFormatter" = "ms-python.black-formatter";
         "[latex]"."editor.defaultFormatter" = "James-Yu.latex-workshop";
+        "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
+        "[typst]"."editor.defaultFormatter" = "myriad-dreamin.tinymist";
 
+        # Extension
         "github.copilot.enable"."*" = false;
+        "github.copilot.renameSuggestions.triggerAutomatically" = false;
+        "python.REPL.enableREPLSmartSend" = false;
         # "wakatime.apiKey" = {};
       };
     };

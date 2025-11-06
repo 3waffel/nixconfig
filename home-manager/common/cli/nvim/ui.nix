@@ -21,7 +21,7 @@
         lua *
         */
         ''
-          require('bqf').setup{}
+          require('bqf').setup()
         '';
     }
     {
@@ -48,12 +48,12 @@
           dashboard.section.header.opts.hl = "Title"
 
           dashboard.section.buttons.val = {
-              dashboard.button( "n", " New file" , ":enew <BAR> startinsert <CR>"),
+              dashboard.button( "n", "󰈔 New file" , ":enew<CR>"),
               dashboard.button( "e", " Explore", ":Explore<CR>"),
               dashboard.button( "g", " Git summary", ":Git | :only<CR>"),
-              dashboard.button( "o", " Org capture" , ":cd ~/Documents/Org | :e Capture.org<CR>"),
-              dashboard.button( "c", "  Nix config flake" , ":cd ~/Documents/NixConfig | :e flake.nix<CR>"),
-              dashboard.button( "q", "  Quit nvim", ":qa<CR>"),
+              dashboard.button( "s", " Scratchpad", ":e ~/Documents/scratch.md<CR>"),
+              dashboard.button( "c", "  Nix config flake" , ":e ~/nixconfig/flake.nix<CR>"),
+              dashboard.button( "q", "󰅙  Quit nvim", ":qa<CR>"),
           }
 
           alpha.setup(dashboard.opts)
@@ -68,7 +68,7 @@
         lua
         */
         ''
-          require('bufferline').setup{}
+          require('bufferline').setup()
         '';
     }
     {
@@ -79,7 +79,7 @@
         lua
         */
         ''
-          require('scope').setup{}
+          require('scope').setup()
         '';
     }
     {
@@ -90,7 +90,7 @@
         lua
         */
         ''
-          require('which-key').setup{}
+          require('which-key').setup()
         '';
     }
     {
@@ -101,7 +101,7 @@
         lua
         */
         ''
-          require('range-highlight').setup{}
+          require('range-highlight').setup()
         '';
     }
     {
@@ -112,7 +112,7 @@
         lua
         */
         ''
-          require('indent_blankline').setup{char_highlight_list={'IndentBlankLine'}}
+          require('ibl').setup()
         '';
     }
     {
@@ -123,7 +123,7 @@
         lua
         */
         ''
-          require('nvim-web-devicons').setup{}
+          require('nvim-web-devicons').setup()
         '';
     }
     {
@@ -153,7 +153,7 @@
         lua
         */
         ''
-          require('colorizer').setup{}
+          require('colorizer').setup()
         '';
     }
   ];

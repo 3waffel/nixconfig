@@ -2,9 +2,7 @@
   pkgs,
   config,
   ...
-}: let
-  inherit (builtins) attrValues removeAttrs;
-in {
+}: {
   programs.neovim.plugins = with pkgs.vimPlugins; [
     rust-vim
     dart-vim-plugin
@@ -20,14 +18,17 @@ in {
 
     {
       plugin = vimtex;
-      config = let
-        method =
-          if config.programs.zathura.enable
-          then "zathura"
-          else "general";
-      in ''
-        let g:vimtex_view_method = '${method}'
-      '';
+      config =
+        /*
+        vim
+        */
+        ''
+          let g:vimtex_view_method = '${
+            if config.programs.zathura.enable
+            then "zathura"
+            else "general"
+          }'
+        '';
     }
   ];
 }

@@ -19,6 +19,7 @@
     gcc-unwrapped.lib
     gdk-pixbuf
     glib
+    gtk3
     harfbuzz
     icu
     libcap

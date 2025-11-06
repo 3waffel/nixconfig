@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-} @ args: {
+{pkgs, ...} @ args: {
   programs.helix = {
     enable = true;
     defaultEditor = true;

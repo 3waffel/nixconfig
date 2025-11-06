@@ -21,7 +21,7 @@
     };
     pkgs = import nixpkgs pkgsConfig;
     pkgs-unstable = import nixpkgs-unstable pkgsConfig;
-  in (inputs.home-manager.lib.homeManagerConfiguration rec {
+  in (inputs.home-manager.lib.homeManagerConfiguration {
     inherit pkgs modules;
     extraSpecialArgs = {inherit pkgs-unstable;} // inputs;
   });

@@ -21,7 +21,7 @@
           identityFile = ["~/.ssh/srht.id_ed25519"];
           hostname = "*sr.ht";
           extraOptions = {
-            "PreferredAuthentications" = "publickey";
+            PreferredAuthentications = "publickey";
           };
         };
       };

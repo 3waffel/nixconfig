@@ -68,5 +68,8 @@ in {
       [net]
       git-fetch-with-cli = true
     '';
+    ".stack/config.yaml".text = ''
+      recommend-stack-upgrade: false
+    '';
   };
 }

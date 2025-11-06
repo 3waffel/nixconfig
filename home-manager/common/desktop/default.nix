@@ -34,7 +34,6 @@
     ++ (with pkgs-unstable; [
       # Primary
       alacritty
-      brave
       krita
       libreoffice
       obsidian
@@ -51,6 +50,16 @@
       winetricks
       wineWowPackages.waylandFull
     ]);
+
+  programs.kitty = {
+    enable = true;
+    settings = {
+      visual_bell_duration = 0;
+      enable_audios_bell = false;
+      bell_on_tab = false;
+    };
+    themeFile = "Catppuccin-Mocha";
+  };
 
   home.pointerCursor = {
     gtk.enable = true;

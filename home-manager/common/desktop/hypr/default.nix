@@ -8,12 +8,23 @@
   wallpaperSwitcher = let
     wallpapersDir = "${config.xdg.userDirs.pictures}/Wallpapers";
   in
-    pkgs.writeShellScriptBin "wallpaperSwitcher" ''
+    pkgs.writeShellScript "wallpaperSwitcher" ''
       if ! [ -d "${wallpapersDir}" ]; then exit 1; fi
       image=$( (find -L "${wallpapersDir}" -type f) | shuf -n 1)
       pidof swww-daemon || uwsm app -- swww-daemon
       if [ -e "$image" ]; then swww img "$image"; fi
     '';
+  powerMenu = pkgs.writeShellScript "powerMenu" ''
+    entries="󰷛 Lock\n Logout\n󰒲 Suspend\n󰑓 Reboot\n⏻ Shutdown"
+    selected=$(echo -e $entries | fuzzel --dmenu -p "Power Menu: ")
+    case $selected in
+    *Lock) loginctl lock-session ;;
+    *Logout) uwsm stop ;;
+    *Suspend) systemctl suspend ;;
+    *Reboot) systemctl reboot ;;
+    *Shutdown) systemctl poweroff ;;
+    esac
+  '';
 in {
   imports = [
     ./hypridle.nix
@@ -50,10 +61,10 @@ in {
         "uwsm app -- swww-daemon"
         "uwsm app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
         "uwsm app -- wl-paste --watch cliphist store"
+        "uwsm app -- waybar"
         "systemctl --user enable --now hyprpolkitagent.service"
-        "systemctl --user enable --now waybar.service"
         "systemctl --user enable --now hypridle.service"
-        "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${getExe wallpaperSwitcher}"
+        "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${wallpaperSwitcher}"
       ];
 
       general = {
@@ -133,18 +144,22 @@ in {
           "$mod, Space, exec, pkill $launcher || $launcher"
           "$mod, Return, exec, ${getExe pkgs.xdg-terminal-exec}"
           # Compositor
-          "$mod, Q, killactive"
           "$mod, F, fullscreen"
+          "$mod SHIFT, F, togglefloating"
           "$mod, L, exec, loginctl lock-session"
-          "$mod, M, exit"
           "$mod, V, exec, cliphist list | $launcher --dmenu | cliphist decode | wl-copy"
+          "$mod, Escape, killactive"
+          "$mod SHIFT, Escape, exec, ${powerMenu}"
           # Focus windows.
           "$mod, up, movefocus, u"
           "$mod, down, movefocus, d"
           "$mod, left, movefocus, l"
           "$mod, right, movefocus, r"
+          # Screenshot
+          ", Print, exec, grimblast copy area"
         ]
         ++ (
+          # Move workspace
           with builtins;
             concatLists
             (genList (
@@ -181,7 +196,7 @@ in {
       windowrulev2 = [
         "suppressevent maximize, class:.*"
         "float, class:^(Waydroid|waydroid)(.*)$"
-        "opacity 0.95 0.95, class:^(Alacritty|Code|code)$"
+        "opacity 0.95 0.95, class:^(Alacritty|kitty|Code|code)$"
 
         "float, title:^(Picture-in-Picture|画中画)$"
         "pin, title:^(Picture-in-Picture|画中画)$"
