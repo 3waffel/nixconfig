@@ -1,12 +1,13 @@
-{pkgs-unstable, ...}: {
+{pkgs, ...}: {
   programs.vscode = {
     enable = true;
-    package = pkgs-unstable.vscode;
+    package = pkgs.vscode;
     mutableExtensionsDir = false;
     profiles.default = {
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
-      extensions = pkgs-unstable.nix4vscode.forVscode [
+      # https://nix-community.github.io/nix4vscode
+      extensions = pkgs.nix4vscode.forVscode [
         # Nix
         "mkhl.direnv"
         "jnoortheen.nix-ide"
@@ -29,6 +30,7 @@
         "haskell.haskell"
         "justusadam.language-haskell"
         # JavaScript
+        "esbenp.prettier-vscode"
         "astro-build.astro-vscode"
         "styled-components.vscode-styled-components"
         # Shell
@@ -36,16 +38,16 @@
         # Misc
         "github.copilot"
         "github.copilot-chat"
+        "github.vscode-github-actions"
         "Gruntfuggly.todo-tree"
-        "esbenp.prettier-vscode"
         "james-yu.latex-workshop"
         "myriad-dreamin.tinymist"
+        "tfehlmann.snakefmt"
+        "snakemake.snakemake-lang"
         "wakatime.vscode-wakatime"
         "dracula-theme.theme-dracula"
         "ms-vscode-remote.remote-ssh"
-        "github.vscode-github-actions"
         "tidalcycles.vscode-tidalcycles"
-        "visualstudioexptteam.vscodeintellicode"
       ];
       userSettings = {
         # Interface
@@ -56,7 +58,8 @@
         "extensions.autoUpdate" = false;
         "extensions.ignoreRecommendations" = true;
         "update.mode" = "none";
-        "workbench.colorTheme" = "Dracula Theme";
+        "update.showReleaseNotes" = false;
+        "workbench.colorTheme" = "Default High Contrast";
         "workbench.editor.empty.hint" = "hidden";
         "workbench.startupEditor" = "none";
 
@@ -65,10 +68,10 @@
         "[latex]"."editor.defaultFormatter" = "James-Yu.latex-workshop";
         "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
         "[typst]"."editor.defaultFormatter" = "myriad-dreamin.tinymist";
+        "[snakemake]"."editor.defaultFormatter" = "tfehlmann.snakefmt";
 
         # Extension
         "github.copilot.enable"."*" = false;
-        "github.copilot.renameSuggestions.triggerAutomatically" = false;
         "python.REPL.enableREPLSmartSend" = false;
         # "wakatime.apiKey" = {};
       };

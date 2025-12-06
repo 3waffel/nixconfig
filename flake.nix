@@ -1,6 +1,19 @@
 {
-  outputs = {self, ...} @ inputs: let
-    inputs' = inputs // {inherit (self) outputs;};
+  outputs = inputs: let
+    inputs' = inputs // {inherit usePkgs;};
+    usePkgs = system:
+      import inputs.nixpkgs {
+        inherit system;
+        overlays = [
+          inputs.nix4vscode.overlays.forVscode
+          inputs.dolphin-overlay.overlays.default
+          inputs.nur.overlays.default
+        ];
+        config = {
+          allowUnfree = true;
+          android_sdk.accept_license = true;
+        };
+      };
   in {
     nixosModules = import ./modules/nixos;
     homeManagerModules = import ./modules/home-manager;
@@ -10,11 +23,10 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # system
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur = {

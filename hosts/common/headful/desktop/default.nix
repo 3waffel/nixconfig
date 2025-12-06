@@ -11,9 +11,7 @@
         noto-fonts
         noto-fonts-cjk-sans
         noto-fonts-cjk-serif
-        noto-fonts-emoji
         noto-fonts-color-emoji
-        noto-fonts-extra
       ]
       ++ (with pkgs.nerd-fonts; [
         hack
@@ -54,7 +52,7 @@
         fcitx5-fluent
         fcitx5-gtk
         fcitx5-mozc
-        fcitx5-chinese-addons
+        qt6Packages.fcitx5-chinese-addons
         fcitx5-pinyin-moegirl
         fcitx5-pinyin-zhwiki
         libsForQt5.fcitx5-qt

@@ -1,7 +1,6 @@
 {
   self,
   pkgs,
-  pkgs-unstable,
   ...
 }: {
   users.users.wafu = {
@@ -30,7 +29,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "hmbackup";
-    extraSpecialArgs = {inherit pkgs pkgs-unstable;};
+    extraSpecialArgs = {inherit pkgs;};
     users.wafu = import "${self}/home-manager/wafu.nix";
   };
 }

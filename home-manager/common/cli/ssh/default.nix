@@ -5,6 +5,7 @@
 }: {
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
     matchBlocks = with builtins; let
       identityFile = ["~/.ssh/id_ed25519"];
     in

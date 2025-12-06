@@ -4,7 +4,7 @@
     ./git
     ./helix
     ./nh
-    ./nvim
+    # ./nvim
     ./nix-index
     ./ssh
     ./yazi

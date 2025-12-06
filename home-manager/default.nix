@@ -1,30 +1,22 @@
 {
-  self,
-  nixpkgs,
-  nixpkgs-unstable,
+  home-manager,
+  usePkgs,
   ...
 } @ inputs: let
+  inherit (home-manager.lib) homeManagerConfiguration;
+
   hmConfig = {
-    system ? "x86_64-linux",
+    system ? builtins.currentSystem,
     modules ? [],
   }: let
-    pkgsConfig = {
-      inherit system;
-      overlays = [
-        inputs.nix4vscode.overlays.forVscode
-        inputs.nur.overlays.default
-      ];
-      config = {
-        allowUnfree = true;
-        android_sdk.accept_license = true;
-      };
+    pkgs = usePkgs system;
+  in
+    homeManagerConfiguration {
+      inherit pkgs modules;
+      extraSpecialArgs = inputs;
     };
-    pkgs = import nixpkgs pkgsConfig;
-    pkgs-unstable = import nixpkgs-unstable pkgsConfig;
-  in (inputs.home-manager.lib.homeManagerConfiguration {
-    inherit pkgs modules;
-    extraSpecialArgs = {inherit pkgs-unstable;} // inputs;
-  });
 in {
-  wafu = hmConfig {modules = [./wafu.nix];};
+  wafu = hmConfig {
+    modules = [./wafu.nix];
+  };
 }

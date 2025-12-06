@@ -8,7 +8,7 @@
       bash-language-server
       clang-tools
       cmake-language-server
-      dockerfile-language-server-nodejs
+      dockerfile-language-server
       haskell-language-server
       marksman
       nil

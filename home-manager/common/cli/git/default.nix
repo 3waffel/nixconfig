@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-unstable,
   lib,
   config,
   ...
@@ -8,24 +7,17 @@
   inherit (config.home) homeDirectory;
 in {
   programs.git = {
-    package = pkgs.gitAndTools.gitFull;
+    package = pkgs.gitFull;
     enable = true;
-    userName = "3waffel";
-    userEmail = "45911671+3waffel@users.noreply.github.com";
     ignores = ["*~" "*.swp" ".direnv" "result"];
-    extraConfig = {
+    settings = {
+      user.name = "3waffel";
+      user.email = "45911671+3waffel@users.noreply.github.com";
       init.defaultBranch = "main";
       safe.directory = "*";
       credential.helper = "store --file ~/.git-credentials";
       diff.sopsdiffer.textconv = "sops -d";
       pull.rebase = "false";
-    };
-    delta = {
-      enable = true;
-      options = {
-        features.decorations = true;
-        line-numbers = true;
-      };
     };
     includes = [
       {
@@ -33,6 +25,14 @@ in {
         path = "${homeDirectory}/Projects/.gitconfig";
       }
     ];
+  };
+
+  programs.delta = {
+    enable = true;
+    options = {
+      features.decorations = true;
+      line-numbers = true;
+    };
   };
 
   programs.lazygit = {
@@ -47,7 +47,7 @@ in {
       customCommands = [
         {
           key = "c";
-          command = "${lib.getExe pkgs-unstable.better-commits}";
+          command = "${lib.getExe pkgs.better-commits}";
           description = "commit with better-commits";
           context = "files";
           loadingText = "opening better-commits tool";
@@ -55,7 +55,7 @@ in {
         }
         {
           key = "n";
-          command = "${lib.getExe pkgs-unstable.better-commits} better-branch";
+          command = "${lib.getExe pkgs.better-commits} better-branch";
           description = "new branch with better-branch";
           context = "localBranches";
           loadingText = "opening better-branch tool";

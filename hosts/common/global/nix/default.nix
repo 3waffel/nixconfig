@@ -8,7 +8,6 @@
     package = pkgs.nixVersions.latest;
     registry = {
       n.flake = inputs.nixpkgs;
-      nn.flake = inputs.nixpkgs-unstable;
     };
 
     gc = {

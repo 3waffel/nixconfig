@@ -1,11 +1,7 @@
-{
-  pkgs,
-  pkgs-unstable,
-  ...
-}: let
+{pkgs, ...}: let
   inherit (pkgs.lib) makeLibraryPath;
 in {
-  home.packages = with pkgs-unstable;
+  home.packages = with pkgs;
     [
       binutils
       bison
@@ -26,7 +22,7 @@ in {
     ]
     ++ (with nodePackages; [
       node2nix
-      nodejs
+      # nodejs
       npm
       yarn
       pnpm

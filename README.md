@@ -1,7 +1,7 @@
 # ❄ Nix Configuration
 ## NixOS
 ```
-nixos-rebuild switch --flake ".#$(hostname)" --use-remote-sudo
+nixos-rebuild switch --flake ".#$(hostname)" --sudo
 ```
 
 ## Home Manager

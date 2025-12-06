@@ -77,10 +77,6 @@ in {
         allow_tearing = false;
         layout = "dwindle";
       };
-      misc = {
-        disable_hyprland_logo = true;
-        middle_click_paste = false;
-      };
       dwindle.force_split = 2;
       workspace = [
         "1, persistent:true"
@@ -88,6 +84,14 @@ in {
         "3, persistent:true"
         "4, persistent:true"
       ];
+      misc = {
+        disable_hyprland_logo = true;
+        middle_click_paste = false;
+      };
+      ecosystem = {
+        no_update_news = true;
+        no_donation_nag = true;
+      };
 
       input = {
         kb_layout = "us";
@@ -113,7 +117,6 @@ in {
           sensitivity = -0.8;
         }
       ];
-      gestures.workspace_swipe = true;
 
       decoration = {
         rounding = 0;
@@ -134,6 +137,9 @@ in {
         "fade, 0"
         "border, 0"
         "borderangle, 0"
+      ];
+      gesture = [
+        "3, horizontal, workspace"
       ];
 
       "$mod" = "SUPER";

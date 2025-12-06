@@ -5,8 +5,8 @@
       ls = "exa";
       cat = "bat";
 
-      nrs = "nixos-rebuild switch --use-remote-sudo --flake ~/nixconfig#$(hostname)";
-      nrt = "nixos-rebuild test --use-remote-sudo --flake ~/nixconfig#$(hostname)";
+      nrs = "nixos-rebuild switch --sudo --flake ~/nixconfig#$(hostname)";
+      nrt = "nixos-rebuild test --sudo --flake ~/nixconfig#$(hostname)";
       hms = "home-manager switch --flake ~/nixconfig#$(whoami)";
       nd = "nix develop -c $SHELL";
     };

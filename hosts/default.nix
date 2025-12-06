@@ -1,33 +1,24 @@
-{outputs, ...} @ inputs: let
-  inherit (inputs) self nixpkgs nixpkgs-unstable;
+{
+  self,
+  nixpkgs,
+  usePkgs,
+  ...
+} @ inputs: let
   inherit (nixpkgs.lib) nixosSystem singleton;
 
   nixosConfig = {
     system,
     extraModules ? [],
   }: let
-    pkgsConfig = {
-      inherit system;
-      overlays = [
-        inputs.nix4vscode.overlays.forVscode
-        inputs.dolphin-overlay.overlays.default
-        inputs.nur.overlays.default
-      ];
-      config = {
-        allowUnfree = true;
-        android_sdk.accept_license = true;
-      };
-    };
-    pkgs = import nixpkgs pkgsConfig;
-    pkgs-unstable = import nixpkgs-unstable pkgsConfig;
+    pkgs = usePkgs system;
     commonModules =
-      builtins.attrValues outputs.nixosModules
+      builtins.attrValues self.outputs.nixosModules
       ++ (singleton inputs.home-manager.nixosModules.home-manager)
       ++ (singleton inputs.sops-nix.nixosModules.sops);
   in
     nixosSystem {
       inherit pkgs system;
-      specialArgs = {inherit pkgs-unstable;} // inputs;
+      specialArgs = inputs;
       modules = extraModules ++ commonModules;
     };
 in {

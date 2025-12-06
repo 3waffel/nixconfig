@@ -1,8 +1,4 @@
-{
-  pkgs,
-  pkgs-unstable,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./browser
     ./dunst
@@ -31,7 +27,7 @@
       mpv # video viewer
       sioyek # pdf viewer
     ]
-    ++ (with pkgs-unstable; [
+    ++ [
       # Primary
       alacritty
       krita
@@ -49,7 +45,7 @@
       protonup-qt
       winetricks
       wineWowPackages.waylandFull
-    ]);
+    ];
 
   programs.kitty = {
     enable = true;
