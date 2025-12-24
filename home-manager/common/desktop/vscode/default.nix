@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   programs.vscode = {
     enable = true;
     package = pkgs.vscode;
@@ -30,6 +34,7 @@
         "haskell.haskell"
         "justusadam.language-haskell"
         # JavaScript
+        "vitest.explorer"
         "esbenp.prettier-vscode"
         "astro-build.astro-vscode"
         "styled-components.vscode-styled-components"
@@ -39,6 +44,7 @@
         "github.copilot"
         "github.copilot-chat"
         "github.vscode-github-actions"
+        "stkb.rewrap"
         "Gruntfuggly.todo-tree"
         "james-yu.latex-workshop"
         "myriad-dreamin.tinymist"
@@ -67,14 +73,44 @@
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
         "[latex]"."editor.defaultFormatter" = "James-Yu.latex-workshop";
         "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
-        "[typst]"."editor.defaultFormatter" = "myriad-dreamin.tinymist";
         "[snakemake]"."editor.defaultFormatter" = "tfehlmann.snakefmt";
+        "[toml]"."editor.defaultFormatter" = "tamasfe.even-better-toml";
+        "[typst]"."editor.defaultFormatter" = "myriad-dreamin.tinymist";
 
         # Extension
+        "chat.mcp.gallery.enabled" = true;
         "github.copilot.enable"."*" = false;
+        "github.copilot.renameSuggestions.triggerAutomatically" = true;
+        "inlineChat.lineNaturalLanguageHint" = false;
         "python.REPL.enableREPLSmartSend" = false;
         # "wakatime.apiKey" = {};
       };
     };
+  };
+
+  # FIXME The servers are configured with system-wide dependency, while it may
+  # not be compatible with per project environment, e.g. Python libs.
+  home.file.".config/Code/User/mcp.json".source = inputs.mcp-servers-nix.lib.mkConfig pkgs {
+    fileName = "mcp.json";
+    flavor = "vscode-workspace";
+    programs = {
+      context7 = {
+        enable = true;
+        env.CONTEXT7_API_KEY = ''''${input:CONTEXT7_API_KEY}'';
+      };
+      nixos.enable = true;
+      serena = {
+        enable = true;
+        context = "ide-assistant";
+      };
+    };
+    settings.inputs = [
+      {
+        id = "CONTEXT7_API_KEY";
+        type = "promptString";
+        description = "API key for authentication";
+        password = true;
+      }
+    ];
   };
 }

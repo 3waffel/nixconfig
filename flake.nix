@@ -6,6 +6,7 @@
         inherit system;
         overlays = [
           inputs.nix4vscode.overlays.forVscode
+          inputs.mcp-servers-nix.overlays.default
           inputs.dolphin-overlay.overlays.default
           inputs.nur.overlays.default
         ];
@@ -53,6 +54,15 @@
       url = "github:rumboon/dolphin-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mcp-servers-nix = {
+      url = "github:natsukium/mcp-servers-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    catppuccin.url = "github:catppuccin/nix";
     # custom inputs
     st7789-dev.url = "github:3waffel/st7789-dev";
   };

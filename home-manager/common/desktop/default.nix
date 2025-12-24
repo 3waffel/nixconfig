@@ -1,12 +1,19 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
     ./browser
     ./dunst
     ./fuzzel
     ./hypr
+    ./noctalia
     ./vscode
     ./waybar
     ./xdg
+
+    inputs.catppuccin.homeModules.catppuccin
   ];
 
   home.packages = with pkgs;
@@ -51,7 +58,7 @@
     enable = true;
     settings = {
       visual_bell_duration = 0;
-      enable_audios_bell = false;
+      enable_audio_bell = false;
       bell_on_tab = false;
     };
     themeFile = "Catppuccin-Mocha";
@@ -59,22 +66,28 @@
 
   home.pointerCursor = {
     gtk.enable = true;
+    hyprcursor.enable = true;
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Classic";
-    size = 16;
+    size = 30;
+  };
+
+  catppuccin = {
+    accent = "green";
+    flavor = "mocha";
+    gtk.icon.enable = true;
+    hyprland.enable = true;
+    kvantum.enable = true;
   };
 
   gtk = {
     enable = true;
-    theme = {
-      name = "adw-gtk3-dark";
-      package = pkgs.adw-gtk3;
-    };
+    colorScheme = "dark";
   };
 
   qt = {
     enable = true;
-    platformTheme.name = "adwaita";
-    style.name = "adwaita-dark";
+    platformTheme.name = "gtk3";
+    style.name = "kvantum";
   };
 }

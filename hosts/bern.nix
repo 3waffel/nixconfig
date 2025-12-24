@@ -1,7 +1,6 @@
 {
   self,
   lib,
-  pkgs,
   modulesPath,
   nixos-hardware,
   ...
@@ -24,6 +23,14 @@
   ];
 
   home-manager.users.wafu = import "${self}/home-manager/common/desktop";
+  catppuccin = {
+    accent = "green";
+    flavor = "mocha";
+    grub.enable = true;
+    plymouth.enable = true;
+    sddm.enable = true;
+    tty.enable = true;
+  };
 
   console.earlySetup = true;
   boot = {
@@ -34,17 +41,9 @@
         device = "nodev";
         useOSProber = true;
         configurationLimit = 10;
-        theme = pkgs.catppuccin-grub;
-        splashImage = "${pkgs.catppuccin-grub}/background.png";
       };
     };
-    plymouth = {
-      enable = true;
-      themePackages = with pkgs; [
-        (catppuccin-plymouth.override {variant = "mocha";})
-      ];
-      theme = "catppuccin-mocha";
-    };
+    plymouth.enable = true;
     consoleLogLevel = 3;
     initrd.verbose = false;
     initrd.availableKernelModules = [

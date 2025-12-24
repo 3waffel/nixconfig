@@ -1,9 +1,14 @@
-{
+{config, ...}: let
+  lock_cmd =
+    if config.programs.noctalia-shell.enable
+    then "noctalia-shell ipc call lockScreen lock"
+    else "pidof hyprlock || hyprlock";
+in {
   services.hypridle = {
     enable = true;
     settings = {
       general = {
-        lock_cmd = "pidof hyprlock || hyprlock";
+        inherit lock_cmd;
         before_sleep_cmd = "loginctl lock-session";
         after_sleep_cmd = "hyprctl dispatch dpms on";
       };

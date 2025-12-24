@@ -11,12 +11,14 @@
     pkgs.writeShellScript "wallpaperSwitcher" ''
       if ! [ -d "${wallpapersDir}" ]; then exit 1; fi
       image=$( (find -L "${wallpapersDir}" -type f) | shuf -n 1)
+
       pidof swww-daemon || uwsm app -- swww-daemon
       if [ -e "$image" ]; then swww img "$image"; fi
     '';
   powerMenu = pkgs.writeShellScript "powerMenu" ''
     entries="󰷛 Lock\n Logout\n󰒲 Suspend\n󰑓 Reboot\n⏻ Shutdown"
     selected=$(echo -e $entries | fuzzel --dmenu -p "Power Menu: ")
+
     case $selected in
     *Lock) loginctl lock-session ;;
     *Logout) uwsm stop ;;
@@ -49,30 +51,31 @@ in {
       monitor = [",preferred,auto,1"];
       xwayland.force_zero_scaling = true;
       env = [
-        "HYPRCURSOR_SIZE,25"
-        "XCURSOR_SIZE,25"
         # "NIXOS_OZONE_WL,1"
         # https://wiki.hyprland.org/Nvidia/
         "LIBVA_DRIVER_NAME,nvidia"
+        "XDG_SESSION_TYPE,wayland"
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
       ];
       exec-once = [
         # Startup
-        "uwsm app -- swww-daemon"
-        "uwsm app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
-        "uwsm app -- wl-paste --watch cliphist store"
-        "uwsm app -- waybar"
         "systemctl --user enable --now hyprpolkitagent.service"
         "systemctl --user enable --now hypridle.service"
-        "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${wallpaperSwitcher}"
+        # "uwsm app -- waybar"
+        # "uwsm app -- swww-daemon"
+        # "uwsm app -- wl-paste --watch cliphist store"
+        # "uwsm app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
+        # "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${wallpaperSwitcher}"
+        "uwsm app -- noctalia-shell"
       ];
 
       general = {
-        gaps_in = 2;
+        gaps_in = 0;
         gaps_out = 0;
         border_size = 2;
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = "rgba(A58A8D30)";
+        # color variables from catppuccin
+        "col.active_border" = "$lavender $green 45deg";
+        "col.inactive_border" = "$surface0";
         resize_on_border = true;
         allow_tearing = false;
         layout = "dwindle";
@@ -117,6 +120,7 @@ in {
           sensitivity = -0.8;
         }
       ];
+      cursor.no_hardware_cursors = true;
 
       decoration = {
         rounding = 0;
@@ -144,39 +148,46 @@ in {
 
       "$mod" = "SUPER";
       "$launcher" = getExe pkgs.fuzzel;
+      "$terminal" = getExe pkgs.xdg-terminal-exec;
       bind =
         [
           # Launch programs.
-          "$mod, Space, exec, pkill $launcher || $launcher"
-          "$mod, Return, exec, ${getExe pkgs.xdg-terminal-exec}"
+          "$mod, Return, exec, $terminal"
+          # "$mod, Space, exec, pkill $launcher || $launcher"
+          "$mod, Space, exec, noctalia-shell ipc call launcher toggle"
+
           # Compositor
           "$mod, F, fullscreen"
           "$mod SHIFT, F, togglefloating"
-          "$mod, L, exec, loginctl lock-session"
-          "$mod, V, exec, cliphist list | $launcher --dmenu | cliphist decode | wl-copy"
+          "$mod CONTROL, F, pin"
           "$mod, Escape, killactive"
-          "$mod SHIFT, Escape, exec, ${powerMenu}"
+          # "$mod, L, exec, loginctl lock-session"
+          "$mod, L, exec, noctalia-shell ipc call lockScreen lock"
+          # "$mod, V, exec, cliphist list | $launcher --dmenu | cliphist decode | wl-copy"
+          "$mod, V, exec, noctalia-shell ipc call launcher clipboard"
+          "$mod, P, exec, noctalia-shell ipc call controlCenter toggle"
+          # "$mod SHIFT, Escape, exec, ${powerMenu}"
+          "$mod SHIFT, Escape, exec, noctalia-shell ipc call sessionMenu toggle"
+
           # Focus windows.
           "$mod, up, movefocus, u"
           "$mod, down, movefocus, d"
           "$mod, left, movefocus, l"
           "$mod, right, movefocus, r"
+
           # Screenshot
           ", Print, exec, grimblast copy area"
         ]
         ++ (
           # Move workspace
-          with builtins;
+          with builtins; let
+            makeWorkspace = ws: [
+              "$mod, ${ws}, workspace, ${ws}"
+              "$mod SHIFT, ${ws}, movetoworkspace, ${ws}"
+            ];
+          in
             concatLists
-            (genList (
-                i: let
-                  ws = toString (i + 1);
-                in [
-                  "$mod, ${ws}, workspace, ${ws}"
-                  "$mod SHIFT, ${ws}, movetoworkspace, ${ws}"
-                ]
-              )
-              9)
+            (genList (i: makeWorkspace (toString (i + 1))) 9)
         );
       # repeat when held and work for lockscreen
       bindel = [

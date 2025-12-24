@@ -14,7 +14,8 @@
     commonModules =
       builtins.attrValues self.outputs.nixosModules
       ++ (singleton inputs.home-manager.nixosModules.home-manager)
-      ++ (singleton inputs.sops-nix.nixosModules.sops);
+      ++ (singleton inputs.sops-nix.nixosModules.sops)
+      ++ (singleton inputs.catppuccin.nixosModules.catppuccin);
   in
     nixosSystem {
       inherit pkgs system;

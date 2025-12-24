@@ -29,7 +29,10 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "hmbackup";
-    extraSpecialArgs = {inherit pkgs;};
+    extraSpecialArgs = {
+      inherit pkgs;
+      inherit (self) inputs;
+    };
     users.wafu = import "${self}/home-manager/wafu.nix";
   };
 }

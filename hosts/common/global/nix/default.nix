@@ -27,7 +27,7 @@
         "3waffel.cachix.org-1:Tm5oJGJA8klOLa4dYRJvoYWQIpItX+0w9KvoRP8Z2mc="
       ];
       trusted-users = ["root" "@wheel"];
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = ["nix-command" "flakes" "pipe-operators"];
       warn-dirty = false;
       system-features = ["kvm" "big-parallel"];
     };
