@@ -35,19 +35,18 @@
       sioyek # pdf viewer
     ]
     ++ [
-      # Primary
       alacritty
       krita
       libreoffice
       obsidian
       thunderbird
       zotero
-      # Secondary
+
       discord
       slack
       telegram-desktop
       protonvpn-gui
-      # Misc
+
       lutris
       protonup-qt
       winetricks
@@ -62,6 +61,10 @@
       bell_on_tab = false;
     };
     themeFile = "Catppuccin-Mocha";
+  };
+
+  home.sessionVariables = {
+    QT_IM_MODULE = "fcitx";
   };
 
   home.pointerCursor = {

@@ -1,6 +1,5 @@
 {
   self,
-  lib,
   modulesPath,
   nixos-hardware,
   ...
@@ -18,6 +17,7 @@
     ./common/users/wafu
     ./common/headful/desktop
     ./common/headful/steam
+    ./common/headless/dns
     ./common/headless/podman
     # ./common/optional/sops
   ];
@@ -82,7 +82,6 @@
   system.stateVersion = "24.11";
   networking = {
     hostName = "bern";
-    useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall.checkReversePath = "loose";
   };
@@ -107,7 +106,6 @@
   # Enable sound with pipewire.
   security.rtkit.enable = true;
   services = {
-    blueman.enable = true;
     pulseaudio.enable = false;
     pipewire = {
       enable = true;
@@ -119,8 +117,11 @@
   };
 
   services = {
+    blueman.enable = true;
     printing.enable = true;
+    # firmware update
     fwupd.enable = true;
+    # temperature management daemon
     thermald.enable = true;
   };
 }

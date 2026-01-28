@@ -47,14 +47,15 @@ in {
     enable = true;
     # avoid conflicts with uwsm
     systemd.enable = false;
+    plugins = with pkgs.hyprlandPlugins; [hypr-dynamic-cursors];
     settings = {
       monitor = [",preferred,auto,1"];
       xwayland.force_zero_scaling = true;
       env = [
-        # "NIXOS_OZONE_WL,1"
+        "NIXOS_OZONE_WL,1"
+        "XDG_SESSION_TYPE,wayland"
         # https://wiki.hyprland.org/Nvidia/
         "LIBVA_DRIVER_NAME,nvidia"
-        "XDG_SESSION_TYPE,wayland"
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
       ];
       exec-once = [
@@ -67,20 +68,35 @@ in {
         # "uwsm app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
         # "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${wallpaperSwitcher}"
         "uwsm app -- noctalia-shell"
+        "wpctl set-mute @DEFAULT_AUDIO_SINK@ 1"
+        "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1"
       ];
 
       general = {
+        layout = "dwindle";
         gaps_in = 0;
         gaps_out = 0;
         border_size = 2;
+        resize_on_border = true;
+        allow_tearing = false;
         # color variables from catppuccin
         "col.active_border" = "$lavender $green 45deg";
         "col.inactive_border" = "$surface0";
-        resize_on_border = true;
-        allow_tearing = false;
-        layout = "dwindle";
       };
-      dwindle.force_split = 2;
+      master = {
+        new_status = "inherit";
+        new_on_active = "before";
+        new_on_top = true;
+        drop_at_cursor = false;
+        smart_resizing = false;
+        orientation = "left";
+        slave_count_for_center_master = 0;
+      };
+      dwindle = {
+        pseudotile = true;
+        force_split = 2;
+        preserve_split = true;
+      };
       workspace = [
         "1, persistent:true"
         "2, persistent:true"
@@ -89,6 +105,8 @@ in {
       ];
       misc = {
         disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+        animate_manual_resizes = true;
         middle_click_paste = false;
       };
       ecosystem = {
@@ -192,8 +210,8 @@ in {
       # repeat when held and work for lockscreen
       bindel = [
         # Volume
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 6.25%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 6.25%-"
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         # Brightness
         ", XF86MonBrightnessUp, exec, ${getExe pkgs.brightnessctl} s 5%+"
         ", XF86MonBrightnessDown, exec, ${getExe pkgs.brightnessctl} s 5%-"
