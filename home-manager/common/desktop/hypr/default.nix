@@ -59,15 +59,14 @@ in {
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
       ];
       exec-once = [
-        # Startup
         "systemctl --user enable --now hyprpolkitagent.service"
         "systemctl --user enable --now hypridle.service"
+        "uwsm app -- noctalia-shell"
         # "uwsm app -- waybar"
         # "uwsm app -- swww-daemon"
         # "uwsm app -- wl-paste --watch cliphist store"
         # "uwsm app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
         # "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${wallpaperSwitcher}"
-        "uwsm app -- noctalia-shell"
         "wpctl set-mute @DEFAULT_AUDIO_SINK@ 1"
         "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1"
       ];
@@ -151,7 +150,10 @@ in {
         dim_special = 0;
       };
 
-      bezier = "ease_out_quint, 0.22, 1, 0.36, 1";
+      bezier = [
+        # https://easings.net/
+        "ease_out_quint, 0.22, 1, 0.36, 1"
+      ];
       animation = [
         "workspaces, 1, 5, ease_out_quint, slide"
         "windows, 0"
@@ -207,6 +209,7 @@ in {
             concatLists
             (genList (i: makeWorkspace (toString (i + 1))) 9)
         );
+
       # repeat when held and work for lockscreen
       bindel = [
         # Volume
@@ -216,6 +219,7 @@ in {
         ", XF86MonBrightnessUp, exec, ${getExe pkgs.brightnessctl} s 5%+"
         ", XF86MonBrightnessDown, exec, ${getExe pkgs.brightnessctl} s 5%-"
       ];
+
       # work for lockscreen
       bindl = [
         # Media
@@ -224,29 +228,61 @@ in {
         ", XF86AudioPrev, exec, ${getExe pkgs.playerctl} previous"
         ", XF86AudioNext, exec, ${getExe pkgs.playerctl} next"
       ];
+
       # mouse movement
       bindm = [
         "$mod, mouse:272, movewindow"
       ];
-      windowrulev2 = [
-        "suppressevent maximize, class:.*"
-        "float, class:^(Waydroid|waydroid)(.*)$"
-        "opacity 0.95 0.95, class:^(Alacritty|kitty|Code|code)$"
 
-        "float, title:^(Picture-in-Picture|画中画)$"
-        "pin, title:^(Picture-in-Picture|画中画)$"
-        "move onscreen 100% 100%, title:^(Picture-in-Picture|画中画)$"
+      windowrule = [
+        {
+          name = "suppress-maximize-events";
+          "match:class" = ".*";
+          suppress_event = "maximize";
+        }
 
-        "immediate, class:^(steam_app_[0-9]*)$"
-        "suppressevent fullscreen, class:^(steam_app_[0-9]*)$"
+        {
+          name = "terminal-opacity";
+          "match:class" = "^(Alacritty|kitty|Code|code)$";
+          opacity = "0.95 0.95";
+        }
 
-        # hide XWayland Video Bridge
-        "opacity 0.0 override, class:^(xwaylandvideobridge)$"
-        "noanim, class:^(xwaylandvideobridge)$"
-        "noinitialfocus, class:^(xwaylandvideobridge)$"
-        "maxsize 1 1, class:^(xwaylandvideobridge)$"
-        "noblur, class:^(xwaylandvideobridge)$"
-        "nofocus, class:^(xwaylandvideobridge)$"
+        {
+          name = "picture-in-picture";
+          "match:title" = "^(Picture-in-Picture|画中画)$";
+          float = true;
+          pin = true;
+          move = "max(monitor_w-window_w,0) max(monitor_h-window_h,0)";
+        }
+
+        {
+          name = "steam-app";
+          "match:class" = "^(steam_app_.*)$";
+          immediate = true;
+          suppress_event = "fullscreen";
+        }
+
+        {
+          name = "xwayland-video-bridge-fixes";
+          "match:class" = "xwaylandvideobridge";
+          no_initial_focus = true;
+          no_focus = true;
+          no_anim = true;
+          no_blur = true;
+          max_size = "1 1";
+          opacity = 0.0;
+        }
+
+        {
+          name = "fix-xwayland-drags";
+          "match:class" = "^$";
+          "match:title" = "^$";
+          "match:xwayland" = true;
+          "match:float" = true;
+          "match:fullscreen" = false;
+          "match:pin" = false;
+          no_focus = true;
+        }
       ];
     };
   };

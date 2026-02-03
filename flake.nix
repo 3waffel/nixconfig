@@ -12,6 +12,7 @@
         ];
         config = {
           allowUnfree = true;
+          allowInsecurePredicate = _: true;
           android_sdk.accept_license = true;
         };
       };

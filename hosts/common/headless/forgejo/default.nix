@@ -7,7 +7,7 @@
     lfs.enable = true;
     database.type = "postgres";
     settings = {
-      DEFAULT.APP_NAME = "3waffel's Forgejo";
+      DEFAULT.APP_NAME = "Forgejo";
       server = {
         ROOT_URL = "https://${vhost}";
         HTTP_PORT = port;

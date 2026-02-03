@@ -15,7 +15,8 @@
 
       ./common/global
       ./common/users/wafu
-      ./common/optional/sops
+      ./common/features/sops
+      ./common/headless/dns
       ./common/headless/rpi-spi
       ./common/headless/ssh
       ./common/headless/vscode-server
@@ -37,9 +38,8 @@
       enable = true;
       pulse.enable = true;
     };
-    resolved.fallbackDns = config.networking.nameservers;
-    st7789-dev.enable = true;
 
+    st7789-dev.enable = true;
     _glances.enable = true;
     _ngrok = {
       enable = true;
@@ -81,15 +81,9 @@
   system.stateVersion = "22.05";
   networking = {
     hostName = "raspi";
-    useDHCP = false;
-    firewall.enable = false;
-    wireless.enable = false;
-    nameservers = ["100.100.100.100" "8.8.8.8" "1.1.1.1"];
     networkmanager.enable = true;
-    proxy = {
-      # allProxy = "http://127.0.0.1:7890";
-      noProxy = "127.0.0.1,localhost,internal.domain";
-    };
+    firewall.checkReversePath = "loose";
+    proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   };
 
   environment.systemPackages = with pkgs; [

@@ -1,11 +1,6 @@
 {
   config,
-  lib,
-  pkgs,
-  inputs,
   modulesPath,
-  nixpkgs,
-  nixos-hardware,
   nixos-wsl,
   ...
 }: {
@@ -15,7 +10,7 @@
 
     ./common/global
     ./common/users/wafu
-    ./common/optional/sops
+    ./common/features/sops
     ./common/headless/vscode-server
   ];
 
@@ -36,7 +31,7 @@
 
   virtualisation.docker.enable = true;
 
-  #   environment.noXlibs = lib.mkForce false;
+  # environment.noXlibs = lib.mkForce false;
 
   system.stateVersion = "22.05";
   networking.hostName = "yoshika";

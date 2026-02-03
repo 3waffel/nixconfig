@@ -48,7 +48,7 @@
       protonvpn-gui
 
       lutris
-      protonup-qt
+      protonplus
       winetricks
       wineWowPackages.waylandFull
     ];

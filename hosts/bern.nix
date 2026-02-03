@@ -19,7 +19,7 @@
     ./common/headful/steam
     ./common/headless/dns
     ./common/headless/podman
-    # ./common/optional/sops
+    # ./common/features/sops
   ];
 
   home-manager.users.wafu = import "${self}/home-manager/common/desktop";
@@ -28,7 +28,10 @@
     flavor = "mocha";
     grub.enable = true;
     plymouth.enable = true;
-    sddm.enable = true;
+    sddm = {
+      enable = true;
+      loginBackground = true;
+    };
     tty.enable = true;
   };
 
