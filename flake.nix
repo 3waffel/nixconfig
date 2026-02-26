@@ -5,9 +5,9 @@
       import inputs.nixpkgs {
         inherit system;
         overlays = [
-          inputs.nix4vscode.overlays.forVscode
-          inputs.mcp-servers-nix.overlays.default
           inputs.dolphin-overlay.overlays.default
+          inputs.mcp-servers-nix.overlays.default
+          inputs.nix4vscode.overlays.forVscode
           inputs.nur.overlays.default
         ];
         config = {

@@ -51,6 +51,7 @@
         "tfehlmann.snakefmt"
         "snakemake.snakemake-lang"
         "wakatime.vscode-wakatime"
+        "editorconfig.editorconfig"
         "dracula-theme.theme-dracula"
         "ms-vscode-remote.remote-ssh"
         "tidalcycles.vscode-tidalcycles"
@@ -81,8 +82,8 @@
         "chat.mcp.gallery.enabled" = true;
         "github.copilot.enable"."*" = false;
         "github.copilot.renameSuggestions.triggerAutomatically" = true;
-        "inlineChat.lineNaturalLanguageHint" = false;
         "python.REPL.enableREPLSmartSend" = false;
+        "terminal.integrated.initialHint" = false;
         # "wakatime.apiKey" = {};
       };
     };

@@ -16,42 +16,43 @@
     inputs.catppuccin.homeModules.catppuccin
   ];
 
-  home.packages = with pkgs;
-    [
-      brightnessctl
-      cliphist # clipboard
-      grimblast
-      networkmanagerapplet
-      networkmanager-openvpn
-      pavucontrol # volume control
-      playerctl
-      swww # animated wallpaper
-      wlsunset
-      wl-clipboard
-      xdg-terminal-exec
+  home.packages = with pkgs; [
+    brightnessctl
+    cliphist # clipboard
+    grimblast
+    networkmanagerapplet
+    networkmanager-openvpn
+    pavucontrol # volume control
+    playerctl
+    swww # animated wallpaper
+    wlsunset
+    wl-clipboard
+    xdg-terminal-exec
 
-      imv # image viewer
-      mpv # video viewer
-      sioyek # pdf viewer
-    ]
-    ++ [
-      alacritty
-      krita
-      libreoffice
-      obsidian
-      thunderbird
-      zotero
+    imv # image viewer
+    mpv # video viewer
+    sioyek # pdf viewer
 
-      discord
-      slack
-      telegram-desktop
-      protonvpn-gui
+    alacritty
+    discord
+    krita
+    libreoffice
+    obsidian
+    telegram-desktop
+    thunderbird
+    zotero
 
-      lutris
-      protonplus
-      winetricks
-      wineWowPackages.waylandFull
-    ];
+    deluge-gtk
+    rclone
+    rclone-browser
+    protonvpn-gui
+    wireshark
+
+    lutris
+    protonplus
+    winetricks
+    wineWowPackages.waylandFull
+  ];
 
   programs.kitty = {
     enable = true;

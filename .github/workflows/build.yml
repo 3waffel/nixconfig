@@ -57,9 +57,9 @@ jobs:
           skipPush: true
       - name: Build and push home-manager config
         run: |
-          nix build --no-link --print-out-paths .#homeConfigurations.${{ matrix.user }}.activationPackage \
-          | cachix push 3waffel
+          nix build --no-link --print-out-paths .#homeConfigurations.${{ matrix.user }}.activationPackage |
+          cachix push 3waffel
       - name: Build and push NixOS config
         run: |
-          nix build --no-link --print-out-paths .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
-          | cachix push 3waffel
+          nix build --no-link --print-out-paths .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel |
+          cachix push 3waffel

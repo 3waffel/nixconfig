@@ -29,6 +29,8 @@ in {
 
   programs.delta = {
     enable = true;
+    enableGitIntegration = true;
+    enableJujutsuIntegration = true;
     options = {
       features.decorations = true;
       line-numbers = true;
@@ -47,21 +49,21 @@ in {
       customCommands = [
         {
           key = "c";
-          command = "${lib.getExe pkgs.better-commits}";
-          description = "commit with better-commits";
+          command = "${lib.getExe pkgs.commitizen} commit";
+          description = "commit with commitizen";
           context = "files";
-          loadingText = "opening better-commits tool";
-          output = "terminal";
-        }
-        {
-          key = "n";
-          command = "${lib.getExe pkgs.better-commits} better-branch";
-          description = "new branch with better-branch";
-          context = "localBranches";
-          loadingText = "opening better-branch tool";
+          loadingText = "opening commitizen tool";
           output = "terminal";
         }
       ];
     };
+  };
+
+  programs.jujutsu = {
+    enable = true;
+  };
+
+  programs.jjui = {
+    enable = true;
   };
 }

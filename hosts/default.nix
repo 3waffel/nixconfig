@@ -11,14 +11,16 @@
     extraModules ? [],
   }: let
     pkgs = usePkgs system;
-    commonModules =
-      builtins.attrValues self.outputs.nixosModules
-      ++ (singleton inputs.home-manager.nixosModules.home-manager)
-      ++ (singleton inputs.sops-nix.nixosModules.sops)
-      ++ (singleton inputs.catppuccin.nixosModules.catppuccin);
+    commonModules = builtins.concatLists [
+      (singleton {nixpkgs.hostPlatform = system;})
+      (singleton inputs.catppuccin.nixosModules.catppuccin)
+      (singleton inputs.home-manager.nixosModules.home-manager)
+      (singleton inputs.sops-nix.nixosModules.sops)
+      (builtins.attrValues self.outputs.nixosModules)
+    ];
   in
     nixosSystem {
-      inherit pkgs system;
+      inherit pkgs;
       specialArgs = inputs;
       modules = extraModules ++ commonModules;
     };

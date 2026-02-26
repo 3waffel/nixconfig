@@ -5,15 +5,16 @@
 }: {
   users.users.wafu = {
     extraGroups = [
-      "wheel"
-      "disk"
-      "vboxusers"
+      "audio"
       "cdrom"
+      "disk"
       "docker"
+      "gamemode"
       "gpio"
       "networkmanager"
-      "audio"
-      "gamemode"
+      "vboxusers"
+      "wheel"
+      "wireshark"
     ];
     isNormalUser = true;
     shell = pkgs.fish;

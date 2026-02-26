@@ -10,6 +10,7 @@
       cmake-language-server
       dockerfile-language-server
       haskell-language-server
+      just-lsp
       marksman
       nil
       pyright
@@ -18,6 +19,7 @@
       tinymist
       typescript-language-server
       vscode-langservers-extracted
+      yaml-language-server
     ];
     settings = {
       theme = "catppuccin_mocha";
@@ -37,7 +39,9 @@
           display-inlay-hints = true;
           display-signature-help-docs = true;
         };
-        file-picker.hidden = false;
+        file-picker = {
+          hidden = false;
+        };
         statusline = {
           left = [
             "mode"
