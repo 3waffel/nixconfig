@@ -9,6 +9,7 @@
         binutils
         bison
         cmake
+        elan
         flutter
         gcc
         glibc

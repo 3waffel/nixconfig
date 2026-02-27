@@ -24,6 +24,7 @@
       alejandra
       cachix # Managing binary cache
       deadnix # Nix dead code locator
+      dix # diff nix
       sops # Deployment secrets tool
       statix # Nix linter
       nil

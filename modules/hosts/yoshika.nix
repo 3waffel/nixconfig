@@ -33,7 +33,7 @@ in {
     virtualisation.docker.enable = true;
 
     system.stateVersion = "22.05";
-    networking.hostName = "yoshika";
+    networking.hostName = hostname;
     networking.nameservers = ["1.1.1.1" "8.8.8.8" "101.6.6.6"];
   };
 }

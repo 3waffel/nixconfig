@@ -10,23 +10,21 @@
         ls = "exa";
         cat = "bat";
 
-        nrs = "nixos-rebuild switch --sudo --flake ~/nixconfig#$(hostname)";
-        nrt = "nixos-rebuild test --sudo --flake ~/nixconfig#$(hostname)";
-        hms = "home-manager switch --flake ~/nixconfig#$(whoami)";
-        nd = "nix develop -c $SHELL";
+        nxs = "nh os switch ~/nixconfig -H $(hostname)";
+        nxt = "nh os test ~/nixconfig -H $(hostname)";
+        hms = "nh home switch ~/nixconfig -c $(whoami)";
+        nxd = "nix develop -c $SHELL";
       };
       shellAliases = {
-        # Get ip
         getip = "curl ifconfig.me";
-        # Clear screen and scrollback
         clear = "printf '\\033[2J\\033[3J\\033[1;1H'";
       };
       functions = {
         fish_greeting = "";
         wh = "readlink -f (which $argv)";
 
-        pxy = "set -xg all_proxy socks5://(ip route | grep default | awk '{print $3}'):10810";
-        nopxy = "set -e all_proxy";
+        pxy_on = "set -xg all_proxy socks5://(ip route | grep default | awk '{print $3}'):10810";
+        pxy_off = "set -e all_proxy";
       };
       interactiveShellInit =
         # Use vim bindings and cursors
