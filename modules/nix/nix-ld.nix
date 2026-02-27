@@ -1,0 +1,63 @@
+{
+  flake.modules.nixos.nix-ld = {pkgs, ...}: {
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = with pkgs; [
+      stdenv.cc.cc
+      alsa-lib
+      at-spi2-atk
+      at-spi2-core
+      atk
+      bzip2
+      cairo
+      coreutils
+      cups
+      curl
+      dbus
+      expat
+      flac
+      fontconfig
+      freetype
+      gcc-unwrapped.lib
+      gdk-pixbuf
+      glib
+      gtk3
+      harfbuzz
+      icu
+      libcap
+      libdrm
+      liberation_ttf
+      libexif
+      libgbm
+      libglvnd
+      libkrb5
+      libpng
+      xorg.libX11
+      xorg.libxcb
+      xorg.libXcomposite
+      xorg.libXcursor
+      xorg.libXdamage
+      xorg.libXext
+      xorg.libXfixes
+      xorg.libXi
+      libxkbcommon
+      xorg.libXrandr
+      xorg.libXrender
+      xorg.libXScrnSaver
+      xorg.libxshmfence
+      xorg.libXtst
+      mesa
+      nspr
+      nss
+      pango
+      pciutils
+      pipewire
+      snappy
+      speechd-minimal
+      systemd
+      util-linux
+      vulkan-loader
+      wayland
+      wget
+    ];
+  };
+}

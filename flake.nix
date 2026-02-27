@@ -1,30 +1,14 @@
 {
-  outputs = inputs: let
-    inputs' = inputs // {inherit usePkgs;};
-    usePkgs = system:
-      import inputs.nixpkgs {
-        inherit system;
-        overlays = [
-          inputs.dolphin-overlay.overlays.default
-          inputs.mcp-servers-nix.overlays.default
-          inputs.nix4vscode.overlays.forVscode
-          inputs.nur.overlays.default
-        ];
-        config = {
-          allowUnfree = true;
-          allowInsecurePredicate = _: true;
-          android_sdk.accept_license = true;
-        };
-      };
-  in {
-    nixosModules = import ./modules/nixos;
-    homeManagerModules = import ./modules/home-manager;
-
-    nixosConfigurations = import ./hosts inputs';
-    homeConfigurations = import ./home-manager inputs';
-  };
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;}
+    (inputs.import-tree ./modules);
 
   inputs = {
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    import-tree.url = "github:vic/import-tree";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # system
     home-manager = {
