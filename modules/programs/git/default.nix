@@ -59,6 +59,7 @@
         ];
       };
     };
+
     programs.jujutsu = {
       enable = true;
     };

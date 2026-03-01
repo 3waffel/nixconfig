@@ -6,7 +6,7 @@
     ...
   }: let
     logLevel = "debug";
-    configFile = config.sops.secrets.ngrok-config.path or "";
+    configFile = config.sops.templates."ngrok.yml".path or pkgs.emptyFile;
   in {
     systemd.services.ngrok = {
       unitConfig = {

@@ -6,9 +6,9 @@
   }: {
     nix = {
       package = pkgs.nixVersions.latest;
-      registry = {
-        n.flake = inputs.nixpkgs;
-      };
+      registry =
+        lib.mapAttrs (_: flake: {inherit flake;})
+        (inputs // {n = inputs.nixpkgs;});
 
       gc = {
         automatic = true;

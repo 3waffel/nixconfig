@@ -20,7 +20,9 @@
         ];
         config = {
           allowUnfree = true;
-          allowInsecurePredicate = _: true;
+          allowInsecurePredicate = pkg:
+            builtins.elem (lib.getName pkg)
+            ["librewolf-bin" "librewolf-bin-unwrapped"];
           android_sdk.accept_license = true;
         };
       };

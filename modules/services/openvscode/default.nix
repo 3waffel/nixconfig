@@ -1,15 +1,21 @@
-let
-  port = 3000;
-in {
-  flake.modules.nixos.openvscode = {pkgs, ...}: {
+{
+  flake.modules.nixos.openvscode = {
+    config,
+    pkgs,
+    ...
+  }: let
+    user = "wafu";
+    inherit (config.users.users.${user}) home;
+    connectionTokenFile = config.sops.secrets.openvscode-token.path or null;
+  in {
     services.openvscode-server = {
       enable = true;
-      package = pkgs.openvscode-server;
-      user = "wafu";
-      userDataDir = "/home/wafu/.vscode_server";
+      port = 3000;
       host = "0.0.0.0";
-      port = port;
-      # withoutConnectionToken = true;
+      inherit user;
+      group = "users";
+      userDataDir = "${home}/.vscode_server";
+      inherit connectionTokenFile;
     };
   };
 }

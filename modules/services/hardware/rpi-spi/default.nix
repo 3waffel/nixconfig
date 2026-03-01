@@ -1,9 +1,11 @@
 {
-  flake.modules.nixos.rpi-spi = {
-    pkgs,
-    lib,
-    ...
-  }: let
+  flake.modules.nixos.rpi-spi = {system, ...}: let
+    pkgs = import (builtins.fetchTarball {
+      url = "https://github.com/NixOS/nixpkgs/archive/c04d5652cfa9742b1d519688f65d1bbccea9eb7e.tar.gz";
+      sha256 = "0sgr1aka3fpihq2z6clkfbix1kly4bxlxgwy419z26lhc7zjnr9y";
+    }) {inherit system;};
+    inherit (pkgs) lib;
+
     smbus-cffi = with pkgs.python3Packages;
       buildPythonPackage rec {
         name = "${pname}-${version}";
@@ -84,7 +86,7 @@
   in {
     environment.systemPackages = [
       (pkgs.python3.buildEnv.override {
-        extraLibs = with pkgs.python3Packages; [
+        extraLibs = [
           brickpi3
 
           # Not required, but we may need them later.

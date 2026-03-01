@@ -18,11 +18,13 @@ in {
         "${inputs.nixos-hardware}/common/pc/ssd"
       ]
       ++ (with inputs.self.modules.nixos; [
+        cli
         desktop
-        steam
         dns
         podman
-        cli
+        sops
+        steam
+        tailscale
         wafu
       ]);
 
