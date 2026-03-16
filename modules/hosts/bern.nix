@@ -9,7 +9,6 @@ in {
   flake.modules.nixos.${hostname} = {
     imports =
       [
-        inputs.catppuccin.nixosModules.catppuccin
         inputs.nixpkgs.nixosModules.notDetected
         "${inputs.nixos-hardware}/common/cpu/intel"
         "${inputs.nixos-hardware}/common/gpu/nvidia/prime.nix"
@@ -27,18 +26,6 @@ in {
         tailscale
         wafu
       ]);
-
-    catppuccin = {
-      accent = "green";
-      flavor = "mocha";
-      grub.enable = true;
-      plymouth.enable = true;
-      sddm = {
-        enable = true;
-        loginBackground = true;
-      };
-      tty.enable = true;
-    };
 
     console.earlySetup = true;
     boot = {

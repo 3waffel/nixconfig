@@ -12,13 +12,14 @@
     home.packages = with pkgs; [
       bat
       bottom # System viewer
+      btop
       chafa
       eza # Better ls
+      fastfetch
       fd # Better find
       httpie # Better curl
       jq
       ncdu # TUI disk usage
-      neofetch
       tree
 
       alejandra

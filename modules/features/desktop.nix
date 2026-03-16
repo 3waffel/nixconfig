@@ -1,29 +1,32 @@
 {inputs, ...}: {
-  flake.modules.homeManager.desktop = {pkgs, ...}: {
-    imports =
-      [inputs.catppuccin.homeModules.catppuccin]
-      ++ (with inputs.self.modules.homeManager; [
-        browser
-        dunst
-        fuzzel
-        hyprland
-        noctalia
-        vscode
-        waybar
-        xdg
-      ]);
+  flake.modules.homeManager.desktop = {
+    pkgs,
+    lib,
+    ...
+  }: {
+    imports = with inputs.self.modules.homeManager; [
+      browser
+      # dunst
+      # fuzzel
+      hyprland
+      noctalia
+      theme
+      vscode
+      waybar
+      xdg
+    ];
 
     home.packages = with pkgs; [
       brightnessctl
       cliphist # clipboard
-      grimblast
+      # grimblast
       networkmanagerapplet
       networkmanager-openvpn
       pavucontrol # volume control
       playerctl
-      swww # animated wallpaper
-      wlsunset
-      wl-clipboard
+      # swww # animated wallpaper
+      # wlsunset
+      # wl-clipboard
       xdg-terminal-exec
 
       imv # image viewer
@@ -58,42 +61,19 @@
         enable_audio_bell = false;
         bell_on_tab = false;
       };
-      themeFile = "Catppuccin-Mocha";
     };
 
     home.sessionVariables = {
       QT_IM_MODULE = "fcitx";
     };
-
-    home.pointerCursor = {
-      gtk.enable = true;
-      hyprcursor.enable = true;
-      package = pkgs.bibata-cursors;
-      name = "Bibata-Modern-Classic";
-      size = 30;
-    };
-
-    catppuccin = {
-      accent = "green";
-      flavor = "mocha";
-      gtk.icon.enable = true;
-      hyprland.enable = true;
-      kvantum.enable = true;
-    };
-
-    gtk = {
-      enable = true;
-      colorScheme = "dark";
-    };
-
-    qt = {
-      enable = true;
-      platformTheme.name = "gtk3";
-      style.name = "kvantum";
-    };
   };
 
   flake.modules.nixos.desktop = {pkgs, ...}: {
+    imports = with inputs.self.modules.nixos; [
+      hyprland
+      theme
+    ];
+
     fonts = {
       enableDefaultPackages = true;
       packages = with pkgs;
@@ -160,24 +140,6 @@
       xserver.xkb.layout = "us";
     };
 
-    programs.hyprland = {
-      enable = true;
-      withUWSM = true;
-    };
-
-    security.pam.services = {
-      hyprlock = {};
-      login.kwallet.enable = true;
-    };
-
-    # No password for wheel
-    security.polkit.extraConfig = ''
-      polkit.addRule(function(action, subject) {
-        if (subject.isInGroup("wheel"))
-          return polkit.Result.YES;
-      });
-    '';
-
     environment.plasma6.excludePackages = with pkgs.kdePackages; [
       discover
       elisa
@@ -185,10 +147,11 @@
       kate
       khelpcenter
       konsole
+      ktexteditor
       okular
       plasma-browser-integration
+      plasma-workspace-wallpapers
       spectacle
-      systemsettings
     ];
   };
 }

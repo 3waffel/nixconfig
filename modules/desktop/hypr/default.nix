@@ -35,18 +35,20 @@
     ];
 
     home.packages = with pkgs; [
-      hyprpolkitagent
+      # hyprpolkitagent
       hyprshade
       grimblast
-      swww
+      # swww
       wf-recorder
       wlsunset
       wl-clipboard
     ];
 
+    services.hyprpolkitagent.enable = true;
+
     wayland.windowManager.hyprland = {
       enable = true;
-      # avoid conflicts with uwsm
+      # https://wiki.hypr.land/Useful-Utilities/Systemd-start/#uwsm
       systemd.enable = false;
       plugins = with pkgs.hyprlandPlugins; [hypr-dynamic-cursors];
       settings = {
@@ -60,9 +62,9 @@
           "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         ];
         exec-once = [
-          "systemctl --user enable --now hyprpolkitagent.service"
-          "systemctl --user enable --now hypridle.service"
-          "uwsm app -- noctalia-shell"
+          # "systemctl --user enable --now hyprpolkitagent.service"
+          # "systemctl --user enable --now hypridle.service"
+          # "uwsm app -- noctalia-shell"
           # "uwsm app -- waybar"
           # "uwsm app -- swww-daemon"
           # "uwsm app -- wl-paste --watch cliphist store"
@@ -289,5 +291,12 @@
     };
   };
 
-  flake.modules.nixos.hyprland = {};
+  flake.modules.nixos.hyprland = {
+    services.hypridle.enable = true;
+    programs.hyprlock.enable = true;
+    programs.hyprland = {
+      enable = true;
+      withUWSM = true;
+    };
+  };
 }

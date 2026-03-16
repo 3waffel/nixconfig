@@ -71,6 +71,7 @@
           "toolkit.telemetry.unified" = false;
           "toolkit.telemetry.updatePing.enabled" = false;
         };
+        # https://github.com/MrOtherGuy/firefox-csshacks/blob/master/chrome/overlay_fullscreen_toolbars.css
         userChrome = ''
           @media (-moz-bool-pref: "browser.fullscreen.autohide"),
                   -moz-pref("browser.fullscreen.autohide") {
