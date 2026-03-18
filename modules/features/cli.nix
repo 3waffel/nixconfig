@@ -6,6 +6,7 @@
       helix
       nh
       nix-index
+      starship
       yazi
     ];
 
@@ -29,11 +30,17 @@
       sops # Deployment secrets tool
       statix # Nix linter
       nil
+      nixd
       nix-inspect
 
       flyctl
       gh
     ];
+
+    programs.tmux = {
+      enable = true;
+      mouse = true;
+    };
   };
 
   flake.modules.nixos.cli = {pkgs, ...}: {

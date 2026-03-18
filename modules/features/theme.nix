@@ -33,16 +33,18 @@
       hyprland.enable = true;
       kitty.enable = true;
       kvantum.enable = true;
+      starship.enable = true;
       yazi.enable = true;
     };
   };
 
-  flake.modules.nixos.theme = {pkgs, ...}: {
+  flake.modules.nixos.theme = {
     imports = [inputs.catppuccin.nixosModules.catppuccin];
 
     catppuccin = {
       accent = "green";
       flavor = "mocha";
+
       grub.enable = true;
       plymouth.enable = true;
       sddm = {

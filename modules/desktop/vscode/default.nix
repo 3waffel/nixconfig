@@ -1,18 +1,21 @@
 {inputs, ...}: {
   flake.modules.homeManager.vscode = {pkgs, ...}: {
-    programs.vscode = {
+    programs.vscode = let
+      vsc = pkgs.vscodium;
+      # https://nix-community.github.io/nix4vscode
+      withExtensions = pkgs.nix4vscode.forVscodeVersion vsc.version;
+    in {
       enable = true;
-      package = pkgs.vscode;
+      package = vsc;
       mutableExtensionsDir = false;
       profiles.default = {
         enableUpdateCheck = false;
         enableExtensionUpdateCheck = false;
-        # https://nix-community.github.io/nix4vscode
-        extensions = pkgs.nix4vscode.forVscode [
+        enableMcpIntegration = true;
+        extensions = withExtensions [
           # Nix
           "mkhl.direnv"
           "jnoortheen.nix-ide"
-          "kamadorueda.alejandra"
           # C++
           "ms-vscode.cpptools"
           # Rust
@@ -27,6 +30,7 @@
           "ms-toolsai.jupyter"
           "charliermarsh.ruff"
           "ms-python.vscode-pylance"
+          "ms-python.vscode-python-envs"
           # Haskell
           "haskell.haskell"
           "justusadam.language-haskell"
@@ -38,7 +42,6 @@
           # Shell
           "timonwong.shellcheck"
           # Misc
-          "github.copilot"
           "github.copilot-chat"
           "github.vscode-github-actions"
           "stkb.rewrap"
@@ -61,6 +64,7 @@
           "extensions.autoCheckUpdates" = false;
           "extensions.autoUpdate" = false;
           "extensions.ignoreRecommendations" = true;
+          "security.workspace.trust.enabled" = false;
           "update.mode" = "none";
           "update.showReleaseNotes" = false;
           "workbench.colorTheme" = "Default High Contrast";
@@ -76,32 +80,36 @@
           "[typst]"."editor.defaultFormatter" = "myriad-dreamin.tinymist";
 
           # Extension
+          "chat.disableAIFeatures" = false;
           "chat.mcp.gallery.enabled" = true;
           "github.copilot.enable"."*" = false;
           "github.copilot.renameSuggestions.triggerAutomatically" = true;
-          "nix.enableLanguageServer" = true;
           "python.REPL.enableREPLSmartSend" = false;
           "terminal.integrated.initialHint" = false;
+          # TODO walkaround for fish shell
+          "terminal.integrated.enableKittyKeyboardProtocol" = false;
           # "wakatime.apiKey" = {};
+
+          "[nix]"."editor.defaultFormatter" = "jnoortheen.nix-ide";
+          "nix.enableLanguageServer" = true;
+          "nix.serverSettings" = {
+            nil.formatting.command = ["alejandra"];
+          };
         };
       };
     };
 
-    # FIXME The servers are configured with system-wide dependency, while it may
-    # not be compatible with per project environment, e.g. Python libs.
-    home.file.".config/Code/User/mcp.json".source = inputs.mcp-servers-nix.lib.mkConfig pkgs {
-      fileName = "mcp.json";
-      flavor = "vscode-workspace";
+    imports = [inputs.mcp-servers-nix.homeManagerModules.default];
+
+    programs.mcp.enable = true;
+
+    mcp-servers = {
       programs = {
         context7 = {
           enable = true;
           env.CONTEXT7_API_KEY = ''''${input:CONTEXT7_API_KEY}'';
         };
         nixos.enable = true;
-        serena = {
-          enable = true;
-          context = "ide-assistant";
-        };
       };
       settings.inputs = [
         {

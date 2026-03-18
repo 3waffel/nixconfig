@@ -44,7 +44,7 @@
       # Add glibc, clang, glib, and other headers to bindgen search path
       BINDGEN_EXTRA_CLANG_ARGS =
         lib.concatStringsSep " "
-        ((builtins.map (a: ''-I"${a}/include"'') [glibc.dev])
+        ((map (a: ''-I"${a}/include"'') [glibc.dev])
           ++ [
             ''-I"${llvmPackages.libclang.lib}/lib/clang/${llvmPackages.libclang.version}/include"''
             ''-I"${glib.dev}/include/glib-2.0"''

@@ -14,6 +14,7 @@
         just-lsp
         marksman
         nil
+        nixd
         pyright
         ruff
         taplo

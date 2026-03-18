@@ -32,9 +32,9 @@
         enable = true;
         createDirectories = true;
         extraConfig = {
-          XDG_NOTES_DIR = "${homeDirectory}/Notes";
-          XDG_SOURCES_DIR = "${homeDirectory}/Sources";
-          XDG_PROJECTS_DIR = "${homeDirectory}/Projects";
+          NOTES = "${homeDirectory}/Notes";
+          SOURCES = "${homeDirectory}/Sources";
+          PROJECTS = "${homeDirectory}/Projects";
         };
       };
 

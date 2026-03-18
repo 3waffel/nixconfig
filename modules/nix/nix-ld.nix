@@ -31,20 +31,20 @@
       libglvnd
       libkrb5
       libpng
-      xorg.libX11
-      xorg.libxcb
-      xorg.libXcomposite
-      xorg.libXcursor
-      xorg.libXdamage
-      xorg.libXext
-      xorg.libXfixes
-      xorg.libXi
+      libx11
+      libxcb
+      libxcomposite
+      libxcursor
+      libxdamage
+      libxext
+      libxfixes
+      libxi
       libxkbcommon
-      xorg.libXrandr
-      xorg.libXrender
-      xorg.libXScrnSaver
-      xorg.libxshmfence
-      xorg.libXtst
+      libxrandr
+      libxrender
+      libxscrnsaver
+      libxshmfence
+      libxtst
       mesa
       nspr
       nss

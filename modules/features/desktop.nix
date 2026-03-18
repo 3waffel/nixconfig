@@ -1,9 +1,5 @@
 {inputs, ...}: {
-  flake.modules.homeManager.desktop = {
-    pkgs,
-    lib,
-    ...
-  }: {
+  flake.modules.homeManager.desktop = {pkgs, ...}: {
     imports = with inputs.self.modules.homeManager; [
       browser
       # dunst
@@ -51,7 +47,7 @@
       lutris
       protonplus
       winetricks
-      wineWowPackages.waylandFull
+      wineWow64Packages.waylandFull
     ];
 
     programs.kitty = {
@@ -64,7 +60,8 @@
     };
 
     home.sessionVariables = {
-      QT_IM_MODULE = "fcitx";
+      LANG = "zh_CN.UTF-8";
+      LANGUAGE = "zh_CN:de_DE:en_US:en:C";
     };
   };
 
@@ -102,18 +99,8 @@
     };
 
     i18n = {
-      defaultLocale = "zh_CN.UTF-8";
-      extraLocaleSettings = {
-        LC_ADDRESS = "de_DE.UTF-8";
-        LC_IDENTIFICATION = "de_DE.UTF-8";
-        LC_MEASUREMENT = "de_DE.UTF-8";
-        LC_MONETARY = "de_DE.UTF-8";
-        LC_NAME = "de_DE.UTF-8";
-        LC_NUMERIC = "de_DE.UTF-8";
-        LC_PAPER = "de_DE.UTF-8";
-        LC_TELEPHONE = "de_DE.UTF-8";
-        LC_TIME = "de_DE.UTF-8";
-      };
+      defaultLocale = "de_DE.UTF-8";
+      extraLocales = ["zh_CN.UTF-8/UTF-8"];
       inputMethod = {
         enable = true;
         type = "fcitx5";
@@ -138,6 +125,10 @@
       desktopManager.plasma6.enable = true;
       xserver.enable = true;
       xserver.xkb.layout = "us";
+    };
+
+    security.pam.services = {
+      sddm.kwallet.enable = true;
     };
 
     environment.plasma6.excludePackages = with pkgs.kdePackages; [

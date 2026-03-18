@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.browser = {
-    pkgs,
-    lib,
-    ...
-  }: {
+  flake.modules.homeManager.browser = {pkgs, ...}: {
     home.file = {
       ".mozilla/firefox/ignore-dev-edition-profile".text = "";
     };

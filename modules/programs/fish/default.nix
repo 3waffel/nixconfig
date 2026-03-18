@@ -1,9 +1,5 @@
 {
   flake.modules.homeManager.fish = {
-    pkgs,
-    lib,
-    ...
-  }: {
     programs.fish = {
       enable = true;
       shellAbbrs = {
