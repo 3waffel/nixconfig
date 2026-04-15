@@ -18,9 +18,9 @@ in {
       ]
       ++ (with inputs.self.modules.nixos; [
         cli
+        container
         desktop
         dns
-        podman
         sops
         steam
         tailscale
@@ -118,6 +118,13 @@ in {
       fwupd.enable = true;
       # temperature management daemon
       thermald.enable = true;
+    };
+
+    services.earlyoom = {
+      enable = true;
+      enableNotifications = true;
+      freeSwapThreshold = 2;
+      freeMemThreshold = 2;
     };
   };
 }

@@ -1,10 +1,11 @@
 {
-  flake.modules.nixos.podman = {pkgs, ...}: {
+  flake.modules.nixos.container = {pkgs, ...}: {
     virtualisation = {
       containers.enable = true;
       podman = {
         enable = true;
         dockerCompat = true;
+        dockerSocket.enable = true;
         defaultNetwork.settings.dns_enabled = true;
       };
     };
@@ -15,5 +16,10 @@
       docker-compose # start group of containers for dev
       podman-compose # start group of containers for dev
     ];
+
+    programs.singularity = {
+      enable = true;
+      package = pkgs.apptainer;
+    };
   };
 }

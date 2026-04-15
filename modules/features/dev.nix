@@ -7,6 +7,7 @@
     home.packages = with pkgs;
       [
         binutils
+        biome
         bison
         cmake
         elan

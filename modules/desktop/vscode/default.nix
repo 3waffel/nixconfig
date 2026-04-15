@@ -25,6 +25,7 @@
           "dart-code.flutter"
           "dart-code.dart-code"
           # Python
+          "astral-sh.ty"
           "ms-python.python"
           "ms-python.debugpy"
           "ms-toolsai.jupyter"
@@ -35,23 +36,26 @@
           "haskell.haskell"
           "justusadam.language-haskell"
           # JavaScript
+          "biomejs.biome"
           "vitest.explorer"
-          "esbenp.prettier-vscode"
           "astro-build.astro-vscode"
           "styled-components.vscode-styled-components"
           # Shell
           "timonwong.shellcheck"
+          # Authoring
+          "quarto.quarto"
+          "ntluong95.quarto-wingman"
+          "james-yu.latex-workshop"
+          "myriad-dreamin.tinymist"
+          "dnut.rewrap-revived"
           # Misc
           "github.copilot-chat"
           "github.vscode-github-actions"
-          "stkb.rewrap"
+          "leanprover.lean4"
           "Gruntfuggly.todo-tree"
-          "james-yu.latex-workshop"
-          "myriad-dreamin.tinymist"
           "tfehlmann.snakefmt"
           "snakemake.snakemake-lang"
           "wakatime.vscode-wakatime"
-          "editorconfig.editorconfig"
           "dracula-theme.theme-dracula"
           "ms-vscode-remote.remote-ssh"
           "tidalcycles.vscode-tidalcycles"
@@ -67,34 +71,46 @@
           "security.workspace.trust.enabled" = false;
           "update.mode" = "none";
           "update.showReleaseNotes" = false;
-          "workbench.colorTheme" = "Default High Contrast";
           "workbench.editor.empty.hint" = "hidden";
           "workbench.startupEditor" = "none";
+          "workbench.secondarySideBar.defaultVisibility" = "hidden";
 
           # Formatter
-          "editor.defaultFormatter" = "esbenp.prettier-vscode";
+          "editor.defaultFormatter" = "biomejs.biome";
+          "[bibtex]"."editor.defaultFormatter" = "James-Yu.latex-workshop";
           "[latex]"."editor.defaultFormatter" = "James-Yu.latex-workshop";
           "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
+          "[quarto]"."editor.defaultFormatter" = "quarto.quarto";
           "[snakemake]"."editor.defaultFormatter" = "tfehlmann.snakefmt";
           "[toml]"."editor.defaultFormatter" = "tamasfe.even-better-toml";
           "[typst]"."editor.defaultFormatter" = "myriad-dreamin.tinymist";
-
-          # Extension
-          "chat.disableAIFeatures" = false;
-          "chat.mcp.gallery.enabled" = true;
-          "github.copilot.enable"."*" = false;
-          "github.copilot.renameSuggestions.triggerAutomatically" = true;
-          "python.REPL.enableREPLSmartSend" = false;
-          "terminal.integrated.initialHint" = false;
-          # TODO walkaround for fish shell
-          "terminal.integrated.enableKittyKeyboardProtocol" = false;
-          # "wakatime.apiKey" = {};
 
           "[nix]"."editor.defaultFormatter" = "jnoortheen.nix-ide";
           "nix.enableLanguageServer" = true;
           "nix.serverSettings" = {
             nil.formatting.command = ["alejandra"];
           };
+
+          "json.schemaDownload.trustedDomains" = {
+            "https://schemastore.azurewebsites.net/" = true;
+            "https://raw.githubusercontent.com/microsoft/vscode/" = true;
+            "https://raw.githubusercontent.com/devcontainers/spec/" = true;
+            "https://www.schemastore.org/" = true;
+            "https://json.schemastore.org/" = true;
+            "https://json-schema.org/" = true;
+            "https://developer.microsoft.com/json-schemas/" = true;
+            "https://biomejs.dev" = true;
+          };
+
+          # Extension
+          "chat.disableAIFeatures" = false;
+          "github.copilot.enable"."*" = false;
+          "github.copilot.renameSuggestions.triggerAutomatically" = false;
+          "python.REPL.enableREPLSmartSend" = false;
+          "terminal.integrated.initialHint" = false;
+          # FIXME walkaround for fish shell
+          "terminal.integrated.enableKittyKeyboardProtocol" = false;
+          # "wakatime.apiKey" = {};
         };
       };
     };

@@ -28,6 +28,13 @@
       *Shutdown) systemctl poweroff ;;
       esac
     '';
+    minimize = pkgs.writeShellScript "minimize" ''
+      if [[ -z $(hyprctl workspaces | grep special:magic) ]]; then
+        hyprctl dispatch movetoworkspacesilent special:magic
+      else
+        hyprctl --batch 'dispatch togglespecialworkspace magic;dispatch movetoworkspace +0'
+      fi
+    '';
   in {
     imports = [
       ./_hypridle.nix
@@ -191,6 +198,7 @@
             "$mod, P, exec, noctalia-shell ipc call controlCenter toggle"
             # "$mod SHIFT, Escape, exec, ${powerMenu}"
             "$mod SHIFT, Escape, exec, noctalia-shell ipc call sessionMenu toggle"
+            "$mod, S, exec, ${minimize}"
 
             # Focus windows.
             "$mod, up, movefocus, u"

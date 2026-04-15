@@ -24,6 +24,7 @@
     catppuccin = {
       accent = "green";
       flavor = "mocha";
+      cache.enable = true;
 
       alacritty.enable = true;
       bat.enable = true;
@@ -34,6 +35,7 @@
       kitty.enable = true;
       kvantum.enable = true;
       starship.enable = true;
+      vscode.profiles.default.enable = true;
       yazi.enable = true;
     };
   };
@@ -44,6 +46,7 @@
     catppuccin = {
       accent = "green";
       flavor = "mocha";
+      cache.enable = true;
 
       grub.enable = true;
       plymouth.enable = true;

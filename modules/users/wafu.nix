@@ -49,6 +49,7 @@ in {
         "gamemode"
         "gpio"
         "networkmanager"
+        "podman"
         "vboxusers"
         "wheel"
         "wireshark"

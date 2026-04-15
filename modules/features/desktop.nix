@@ -131,6 +131,14 @@
       sddm.kwallet.enable = true;
     };
 
+    # https://wiki.nixos.org/wiki/Polkit
+    security.polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (subject.isInGroup("wheel"))
+          return polkit.Result.YES;
+      });
+    '';
+
     environment.plasma6.excludePackages = with pkgs.kdePackages; [
       discover
       elisa
