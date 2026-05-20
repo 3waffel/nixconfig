@@ -6,7 +6,8 @@
 
     programs.noctalia-shell = {
       enable = true;
-      systemd.enable = true;
+      # should be started by the compositor
+      systemd.enable = false;
       settings = {
         bar = {
           density = "default";
@@ -42,6 +43,10 @@
               }
             ];
           };
+        };
+        notifications = {
+          density = "compact";
+          enableBatteryToast = false;
         };
         brightness = {
           enforceMinimum = true;

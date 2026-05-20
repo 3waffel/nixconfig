@@ -71,11 +71,11 @@
         exec-once = [
           # "systemctl --user enable --now hyprpolkitagent.service"
           # "systemctl --user enable --now hypridle.service"
-          # "uwsm app -- noctalia-shell"
-          # "uwsm app -- waybar"
-          # "uwsm app -- swww-daemon"
-          # "uwsm app -- wl-paste --watch cliphist store"
-          # "uwsm app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
+          "uwsm-app -- noctalia-shell"
+          # "uwsm-app -- waybar"
+          # "uwsm-app -- swww-daemon"
+          # "uwsm-app -- wl-paste --watch cliphist store"
+          # "uwsm-app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
           # "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${wallpaperSwitcher}"
           "wpctl set-mute @DEFAULT_AUDIO_SINK@ 1"
           "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1"
@@ -122,6 +122,9 @@
           no_update_news = true;
           no_donation_nag = true;
         };
+        binds = {
+          allow_pin_fullscreen = true;
+        };
 
         input = {
           kb_layout = "us";
@@ -147,7 +150,10 @@
             sensitivity = -0.8;
           }
         ];
-        cursor.no_hardware_cursors = true;
+        cursor = {
+          # use hw cursors if possible
+          no_hardware_cursors = 0;
+        };
 
         decoration = {
           rounding = 0;
