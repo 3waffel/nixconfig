@@ -31,6 +31,7 @@
       userDirs = {
         enable = true;
         createDirectories = true;
+        setSessionVariables = true;
         extraConfig = {
           NOTES = "${homeDirectory}/Notes";
           SOURCES = "${homeDirectory}/Sources";

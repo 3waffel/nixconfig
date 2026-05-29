@@ -13,10 +13,15 @@
       import inputs.nixpkgs {
         inherit system;
         overlays = [
-          inputs.dolphin-overlay.overlays.default
           inputs.mcp-servers-nix.overlays.default
           inputs.nix4vscode.overlays.forVscode
           inputs.nur.overlays.default
+          (_: prev: {
+            # https://github.com/NixOS/nixpkgs/issues/513245
+            openldap = prev.openldap.overrideAttrs {
+              doCheck = !prev.stdenv.hostPlatform.isi686;
+            };
+          })
         ];
         config = {
           allowUnfree = true;

@@ -26,7 +26,6 @@
 
     programs.librewolf = {
       enable = true;
-      package = pkgs.librewolf-bin;
       profiles.default = {
         extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           bitwarden

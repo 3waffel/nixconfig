@@ -1,5 +1,9 @@
 {inputs, ...}: {
-  flake.modules.homeManager.noctalia = {pkgs, ...}: {
+  flake.modules.homeManager.noctalia = {
+    pkgs,
+    lib,
+    ...
+  }: {
     imports = [
       inputs.noctalia.homeModules.default
     ];
@@ -25,21 +29,18 @@
             ];
             right = [
               {id = "Tray";}
-              {id = "WiFi";}
+              {id = "Network";}
               {id = "Bluetooth";}
               {id = "Volume";}
               {id = "Brightness";}
               {
                 id = "Battery";
                 alwaysShowPercentage = false;
-                warningThreshold = 30;
               }
               {
                 id = "Clock";
                 formatHorizontal = "HH:mm";
                 formatVertical = "HH mm";
-                useMonospacedFont = true;
-                usePrimaryColor = true;
               }
             ];
           };
@@ -62,21 +63,17 @@
           lockOnSuspend = true;
         };
         location = {
-          monthBeforeDay = false;
           name = "Munich, Germany";
         };
         wallpaper = {
           enabled = true;
-          randomEnabled = true;
+          automationEnabled = true;
         };
         appLauncher = {
-          customLaunchPrefix = "uwsm-app --";
-          customLaunchPrefixEnabled = true;
-          enableClipPreview = true;
           enableClipboardHistory = true;
+          enableClipPreview = true;
           sortByMostUsed = true;
-          terminalCommand = "${pkgs.lib.getExe pkgs.xdg-terminal-exec} -e";
-          useApp2Unit = false;
+          terminalCommand = "${lib.getExe pkgs.xdg-terminal-exec} -e";
         };
         nightLight = {
           enabled = true;

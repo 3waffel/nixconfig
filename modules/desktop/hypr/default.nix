@@ -2,39 +2,11 @@
   flake.modules.homeManager.hyprland = {
     pkgs,
     lib,
-    config,
     ...
   }: let
     inherit (lib) getExe;
-    wallpaperSwitcher = let
-      wallpapersDir = "${config.xdg.userDirs.pictures}/Wallpapers";
-    in
-      pkgs.writeShellScript "wallpaperSwitcher" ''
-        if ! [ -d "${wallpapersDir}" ]; then exit 1; fi
-        image=$( (find -L "${wallpapersDir}" -type f) | shuf -n 1)
-
-        pidof swww-daemon || uwsm app -- swww-daemon
-        if [ -e "$image" ]; then swww img "$image"; fi
-      '';
-    powerMenu = pkgs.writeShellScript "powerMenu" ''
-      entries="󰷛 Lock\n Logout\n󰒲 Suspend\n󰑓 Reboot\n⏻ Shutdown"
-      selected=$(echo -e $entries | fuzzel --dmenu -p "Power Menu: ")
-
-      case $selected in
-      *Lock) loginctl lock-session ;;
-      *Logout) uwsm stop ;;
-      *Suspend) systemctl suspend ;;
-      *Reboot) systemctl reboot ;;
-      *Shutdown) systemctl poweroff ;;
-      esac
-    '';
-    minimize = pkgs.writeShellScript "minimize" ''
-      if [[ -z $(hyprctl workspaces | grep special:magic) ]]; then
-        hyprctl dispatch movetoworkspacesilent special:magic
-      else
-        hyprctl --batch 'dispatch togglespecialworkspace magic;dispatch movetoworkspace +0'
-      fi
-    '';
+    inherit (lib.generators) mkLuaInline;
+    mkArgs = _args: {inherit _args;};
   in {
     imports = [
       ./_hypridle.nix
@@ -42,10 +14,8 @@
     ];
 
     home.packages = with pkgs; [
-      # hyprpolkitagent
       hyprshade
       grimblast
-      # swww
       wf-recorder
       wlsunset
       wl-clipboard
@@ -57,87 +27,117 @@
       enable = true;
       # https://wiki.hypr.land/Useful-Utilities/Systemd-start/#uwsm
       systemd.enable = false;
-      plugins = with pkgs.hyprlandPlugins; [hypr-dynamic-cursors];
+      configType = "lua";
+      # FIXME https://github.com/nixos/nixpkgs/issues/521241
+      # plugins = with pkgs.hyprlandPlugins; [hypr-dynamic-cursors];
       settings = {
-        monitor = [",preferred,auto,1"];
-        xwayland.force_zero_scaling = true;
         env = [
-          "NIXOS_OZONE_WL,1"
-          "XDG_SESSION_TYPE,wayland"
+          (mkArgs ["NIXOS_OZONE_WL" "1"])
+          (mkArgs ["XDG_SESSION_TYPE" "wayland"])
           # https://wiki.hyprland.org/Nvidia/
-          "LIBVA_DRIVER_NAME,nvidia"
-          "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+          (mkArgs ["LIBVA_DRIVER_NAME" "nvidia"])
+          (mkArgs ["__GLX_VENDOR_LIBRARY_NAME" "nvidia"])
         ];
-        exec-once = [
-          # "systemctl --user enable --now hyprpolkitagent.service"
-          # "systemctl --user enable --now hypridle.service"
-          "uwsm-app -- noctalia-shell"
-          # "uwsm-app -- waybar"
-          # "uwsm-app -- swww-daemon"
-          # "uwsm-app -- wl-paste --watch cliphist store"
-          # "uwsm-app -- ${getExe pkgs.wlsunset} -S 8:00 -s 19:00"
-          # "systemd-run --user --on-startup=60 --on-unit-active=60 -u wallpaper-switcher ${wallpaperSwitcher}"
-          "wpctl set-mute @DEFAULT_AUDIO_SINK@ 1"
-          "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1"
+        monitor = [
+          {
+            output = "";
+            mode = "preferred";
+            position = "auto";
+            scale = 1;
+          }
+        ];
+        on = mkArgs [
+          "hyprland.start"
+          (mkLuaInline
+            /*
+            lua
+            */
+            ''
+              function()
+                hl.exec_cmd("uwsm-app -- noctalia-shell")
+                hl.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ 1")
+                hl.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1")
+              end
+            '')
         ];
 
-        general = {
-          layout = "dwindle";
-          gaps_in = 0;
-          gaps_out = 0;
-          border_size = 2;
-          resize_on_border = true;
-          allow_tearing = false;
-          # color variables from catppuccin
-          "col.active_border" = "$lavender $green 45deg";
-          "col.inactive_border" = "$surface0";
-        };
-        master = {
-          new_status = "inherit";
-          new_on_active = "before";
-          new_on_top = true;
-          drop_at_cursor = false;
-          smart_resizing = false;
-          orientation = "left";
-          slave_count_for_center_master = 0;
-        };
-        dwindle = {
-          pseudotile = true;
-          force_split = 2;
-          preserve_split = true;
-        };
-        workspace = [
-          "1, persistent:true"
-          "2, persistent:true"
-          "3, persistent:true"
-          "4, persistent:true"
-        ];
-        misc = {
-          disable_hyprland_logo = true;
-          disable_splash_rendering = true;
-          animate_manual_resizes = true;
-          middle_click_paste = false;
-        };
-        ecosystem = {
-          no_update_news = true;
-          no_donation_nag = true;
-        };
-        binds = {
-          allow_pin_fullscreen = true;
-        };
-
-        input = {
-          kb_layout = "us";
-          sensitivity = 0;
-          touchpad = {
-            natural_scroll = true;
-            disable_while_typing = true;
-            clickfinger_behavior = true;
-            scroll_factor = 0.4;
+        config = {
+          general = {
+            border_size = 2;
+            gaps_in = 0;
+            gaps_out = 0;
+            col = {
+              # color variables from catppuccin
+              active_border = {
+                colors = mkLuaInline "{colors.lavender, colors.green}";
+                angle = 45;
+              };
+              inactive_border = mkLuaInline "colors.surface0";
+            };
+            layout = "dwindle";
+            resize_on_border = true;
+            allow_tearing = false;
+          };
+          dwindle = {
+            force_split = 0;
+            preserve_split = true;
+          };
+          decoration = {
+            rounding = 0;
+            active_opacity = 1.0;
+            inactive_opacity = 1.0;
+            dim_inactive = false;
+            dim_strength = 0.1;
+            dim_special = 0;
+            blur.enabled = false;
+            shadow.enabled = false;
+          };
+          input = {
+            kb_layout = "us";
+            sensitivity = 0;
+            touchpad = {
+              natural_scroll = true;
+              disable_while_typing = true;
+              clickfinger_behavior = true;
+              scroll_factor = 0.4;
+            };
+          };
+          misc = {
+            disable_hyprland_logo = true;
+            disable_splash_rendering = true;
+            animate_manual_resizes = true;
+            middle_click_paste = false;
+          };
+          binds = {
+            allow_pin_fullscreen = true;
+          };
+          xwayland = {
+            enabled = true;
+            force_zero_scaling = true;
+          };
+          ecosystem = {
+            no_update_news = true;
+            no_donation_nag = true;
           };
         };
+
+        gesture = [
+          {
+            fingers = 3;
+            direction = "horizontal";
+            action = "workspace";
+          }
+          {
+            fingers = 2;
+            direction = "pinch";
+            action = "cursorZoom";
+            zoom_level = 1;
+            mode = "live";
+          }
+        ];
         device = [
           {
+            # wireless
             name = "logitech-g-pro--1";
             sensitivity = -0.8;
           }
@@ -150,154 +150,170 @@
             sensitivity = -0.8;
           }
         ];
-        cursor = {
-          # use hw cursors if possible
-          no_hardware_cursors = 0;
-        };
-
-        decoration = {
-          rounding = 0;
-          active_opacity = 1.0;
-          inactive_opacity = 1.0;
-          blur.enabled = false;
-          shadow.enabled = false;
-          dim_inactive = false;
-          dim_strength = 0.1;
-          dim_special = 0;
-        };
-
-        bezier = [
+        curve = [
           # https://easings.net/
-          "ease_out_quint, 0.22, 1, 0.36, 1"
+          (mkArgs [
+            "easeOutQuint"
+            {
+              type = "bezier";
+              points = [[0.22 1] [0.36 1]];
+            }
+          ])
         ];
         animation = [
-          "workspaces, 1, 5, ease_out_quint, slide"
-          "windows, 0"
-          "layers, 0"
-          "fade, 0"
-          "border, 0"
-          "borderangle, 0"
-        ];
-        gesture = [
-          "3, horizontal, workspace"
+          {
+            leaf = "workspaces";
+            enabled = true;
+            speed = 5;
+            bezier = "easeOutQuint";
+            style = "slide";
+          }
+          {
+            leaf = "windows";
+            enabled = false;
+          }
+          {
+            leaf = "layers";
+            enabled = false;
+          }
+          {
+            leaf = "fade";
+            enabled = false;
+          }
+          {
+            leaf = "border";
+            enabled = false;
+          }
+          {
+            leaf = "borderangle";
+            enabled = false;
+          }
         ];
 
-        "$mod" = "SUPER";
-        "$launcher" = getExe pkgs.fuzzel;
-        "$terminal" = getExe pkgs.xdg-terminal-exec;
-        bind =
+        bind = let
+          mkBind = keys: dispatcher: mkArgs [keys dispatcher];
+          mkBindM = keys: dispatcher: mkArgs [keys dispatcher {mouse = true;}];
+          mkBindL = keys: dispatcher: mkArgs [keys dispatcher {locked = true;}];
+          mkBindEL = keys: dispatcher:
+            mkArgs [
+              keys
+              dispatcher
+              {
+                repeating = true;
+                locked = true;
+              }
+            ];
+          exec = cmd: mkLuaInline ''hl.dsp.exec_cmd("${cmd}")'';
+        in
           [
-            # Launch programs.
-            "$mod, Return, exec, $terminal"
-            # "$mod, Space, exec, pkill $launcher || $launcher"
-            "$mod, Space, exec, noctalia-shell ipc call launcher toggle"
-
-            # Compositor
-            "$mod, F, fullscreen"
-            "$mod SHIFT, F, togglefloating"
-            "$mod CONTROL, F, pin"
-            "$mod, Escape, killactive"
-            # "$mod, L, exec, loginctl lock-session"
-            "$mod, L, exec, noctalia-shell ipc call lockScreen lock"
-            # "$mod, V, exec, cliphist list | $launcher --dmenu | cliphist decode | wl-copy"
-            "$mod, V, exec, noctalia-shell ipc call launcher clipboard"
-            "$mod, P, exec, noctalia-shell ipc call controlCenter toggle"
-            # "$mod SHIFT, Escape, exec, ${powerMenu}"
-            "$mod SHIFT, Escape, exec, noctalia-shell ipc call sessionMenu toggle"
-            "$mod, S, exec, ${minimize}"
-
-            # Focus windows.
-            "$mod, up, movefocus, u"
-            "$mod, down, movefocus, d"
-            "$mod, left, movefocus, l"
-            "$mod, right, movefocus, r"
-
-            # Screenshot
-            ", Print, exec, grimblast copy area"
+            (mkBind "SUPER + F" (mkLuaInline "hl.dsp.window.fullscreen()"))
+            (mkBind "SUPER + SHIFT + F" (mkLuaInline "hl.dsp.window.float()"))
+            (mkBind "SUPER + CONTROL + F" (mkLuaInline "hl.dsp.window.pin()"))
+            (mkBind "SUPER + Escape" (mkLuaInline "hl.dsp.window.close()"))
+            (mkBind "SUPER + up" (mkLuaInline ''hl.dsp.focus({direction = "u"})''))
+            (mkBind "SUPER + down" (mkLuaInline ''hl.dsp.focus({direction = "d"})''))
+            (mkBind "SUPER + left" (mkLuaInline ''hl.dsp.focus({direction = "l"})''))
+            (mkBind "SUPER + right" (mkLuaInline ''hl.dsp.focus({direction = "r"})''))
+            (mkBind "SUPER + S" (mkLuaInline
+              /*
+              lua
+              */
+              ''
+                function()
+                  hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+                  hl.dispatch(hl.dsp.window.move({workspace = "+0"}))
+                  hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+                  hl.dispatch(hl.dsp.window.move({workspace = "special:minimize"}))
+                  hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+                end
+              ''))
+          ]
+          ++ [
+            (mkBind "SUPER + Return" (exec "${getExe pkgs.xdg-terminal-exec}"))
+            (mkBind "SUPER + Space" (exec "noctalia-shell ipc call launcher toggle"))
+            (mkBind "SUPER + L" (exec "noctalia-shell ipc call lockScreen lock"))
+            (mkBind "SUPER + V" (exec "noctalia-shell ipc call launcher clipboard"))
+            (mkBind "SUPER + P" (exec "noctalia-shell ipc call controlCenter toggle"))
+            (mkBind "SUPER + SHIFT + Escape" (exec "noctalia-shell ipc call sessionMenu toggle"))
+            (mkBind "Print" (exec "${getExe pkgs.grimblast} copy area"))
           ]
           ++ (
             # Move workspace
             with builtins; let
-              makeWorkspace = ws: [
-                "$mod, ${ws}, workspace, ${ws}"
-                "$mod SHIFT, ${ws}, movetoworkspace, ${ws}"
+              mkWorkspace = ws: [
+                (mkBind "SUPER + ${ws}" (mkLuaInline ''hl.dsp.focus({workspace = "${ws}"})''))
+                (mkBind "SUPER + SHIFT + ${ws}" (mkLuaInline ''hl.dsp.window.move({workspace = "${ws}"})''))
               ];
             in
               concatLists
-              (genList (i: makeWorkspace (toString (i + 1))) 9)
-          );
+              (genList (i: mkWorkspace (toString (i + 1))) 9)
+          )
+          ++ [
+            (mkBindEL "XF86AudioRaiseVolume" (exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"))
+            (mkBindEL "XF86AudioLowerVolume" (exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
+            (mkBindEL "XF86MonBrightnessUp" (exec "${getExe pkgs.brightnessctl} s 5%+"))
+            (mkBindEL "XF86MonBrightnessDown" (exec "${getExe pkgs.brightnessctl} s 5%-"))
+          ]
+          ++ [
+            (mkBindL "XF86AudioMute" (exec "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
+            (mkBindL "XF86AudioPlay" (exec "${getExe pkgs.playerctl} play-pause"))
+            (mkBindL "XF86AudioPrev" (exec "${getExe pkgs.playerctl} previous"))
+            (mkBindL "XF86AudioNext" (exec "${getExe pkgs.playerctl} next"))
+          ]
+          ++ [
+            (mkBindM "SUPER + mouse:272" (mkLuaInline "hl.dsp.window.drag()"))
+          ];
 
-        # repeat when held and work for lockscreen
-        bindel = [
-          # Volume
-          ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-          # Brightness
-          ", XF86MonBrightnessUp, exec, ${getExe pkgs.brightnessctl} s 5%+"
-          ", XF86MonBrightnessDown, exec, ${getExe pkgs.brightnessctl} s 5%-"
+        workspace_rule = [
+          {
+            workspace = "r[1-4]";
+            persistent = true;
+          }
         ];
-
-        # work for lockscreen
-        bindl = [
-          # Media
-          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          ", XF86AudioPlay, exec, ${getExe pkgs.playerctl} play-pause"
-          ", XF86AudioPrev, exec, ${getExe pkgs.playerctl} previous"
-          ", XF86AudioNext, exec, ${getExe pkgs.playerctl} next"
-        ];
-
-        # mouse movement
-        bindm = [
-          "$mod, mouse:272, movewindow"
-        ];
-
-        windowrule = [
+        window_rule = [
           {
             name = "suppress-maximize-events";
-            "match:class" = ".*";
+            match.class = ".*";
             suppress_event = "maximize";
           }
-
           {
             name = "terminal-opacity";
-            "match:class" = "^(Alacritty|kitty|Code|code)$";
+            match.class = "^(Alacritty|kitty|Code|code)$";
             opacity = "0.95 0.95";
           }
-
           {
             name = "picture-in-picture";
-            "match:title" = "^(Picture-in-Picture|画中画)$";
+            match.title = "^(Picture-in-Picture|画中画)$";
             float = true;
             pin = true;
-            move = "max(monitor_w-window_w,0) max(monitor_h-window_h,0)";
+            move = ["max(monitor_w-window_w,0)" "max(monitor_h-window_h,0)"];
           }
-
           {
             name = "steam-app";
-            "match:class" = "^(steam_app_.*)$";
+            match.class = "^(steam_app_.*)$";
             immediate = true;
             suppress_event = "fullscreen";
           }
-
           {
             name = "xwayland-video-bridge-fixes";
-            "match:class" = "xwaylandvideobridge";
+            match.class = "xwaylandvideobridge";
             no_initial_focus = true;
             no_focus = true;
             no_anim = true;
             no_blur = true;
-            max_size = "1 1";
+            max_size = [1 1];
             opacity = 0.0;
           }
-
           {
             name = "fix-xwayland-drags";
-            "match:class" = "^$";
-            "match:title" = "^$";
-            "match:xwayland" = true;
-            "match:float" = true;
-            "match:fullscreen" = false;
-            "match:pin" = false;
+            match = {
+              class = "^$";
+              title = "^$";
+              xwayland = true;
+              float = true;
+              fullscreen = false;
+              pin = false;
+            };
             no_focus = true;
           }
         ];

@@ -1,5 +1,9 @@
 {inputs, ...}: {
-  flake.modules.homeManager.desktop = {pkgs, ...}: {
+  flake.modules.homeManager.desktop = {
+    lib,
+    pkgs,
+    ...
+  }: {
     imports = with inputs.self.modules.homeManager; [
       browser
       # dunst
@@ -41,7 +45,7 @@
       deluge-gtk
       rclone
       rclone-browser
-      protonvpn-gui
+      proton-vpn
       wireshark
 
       lutris
@@ -62,6 +66,22 @@
     home.sessionVariables = {
       LANG = "zh_CN.UTF-8";
       LANGUAGE = "zh_CN:de_DE:en_US:en:C";
+    };
+
+    home.activation = {
+      # rebuild KDE service database on activation
+      kdeBuildMimeCache =
+        lib.hm.dag.entryAfter ["writeBoundary"]
+        ''${pkgs.kdePackages.kservice}/bin/kbuildsycoca6 --noincremental'';
+    };
+
+    xdg = {
+      systemDirs.data = ["${pkgs.kdePackages.kservice}/etc/xdg"];
+      # https://github.com/NixOS/nixpkgs/issues/409986
+      configFile."menus/applications.menu" = {
+        source = "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
+        recursive = true;
+      };
     };
   };
 

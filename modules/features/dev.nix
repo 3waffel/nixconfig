@@ -4,35 +4,29 @@
     lib,
     ...
   }: {
-    home.packages = with pkgs;
-      [
-        binutils
-        biome
-        bison
-        cmake
-        elan
-        flutter
-        gcc
-        glibc
-        gnumake
-        jdk
-        llvmPackages.libclang
-        llvmPackages.lld
-        ninja
-        poetry
-        rustup
-        trunk
-        typst
-        wasm-pack
-      ]
-      ++ (with pkgs.nodePackages; [
-        npm
-        yarn
-        pnpm
-      ])
-      ++ (with pkgs.haskellPackages; [
-        stack
-      ]);
+    home.packages = with pkgs; [
+      binutils
+      biome
+      bison
+      cmake
+      elan
+      flutter
+      gcc
+      glibc
+      gnumake
+      jdk
+      libclang
+      lld
+      ninja
+      pnpm
+      poetry
+      rustup
+      stack
+      trunk
+      typst
+      wasm-pack
+      yarn
+    ];
 
     home.sessionVariables = with pkgs; {
       OPENSSL_DIR = "${openssl.dev}";
@@ -41,13 +35,13 @@
       PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";
 
       # https://github.com/rust-lang/rust-bindgen#environment-variables
-      LIBCLANG_PATH = lib.makeLibraryPath [llvmPackages.libclang.lib];
+      LIBCLANG_PATH = lib.makeLibraryPath [libclang.lib];
       # Add glibc, clang, glib, and other headers to bindgen search path
       BINDGEN_EXTRA_CLANG_ARGS =
         lib.concatStringsSep " "
         ((map (a: ''-I"${a}/include"'') [glibc.dev])
           ++ [
-            ''-I"${llvmPackages.libclang.lib}/lib/clang/${llvmPackages.libclang.version}/include"''
+            ''-I"${libclang.lib}/lib/clang/${libclang.version}/include"''
             ''-I"${glib.dev}/include/glib-2.0"''
             ''-I"${glib.out}/lib/glib-2.0/include"''
           ]);
@@ -66,6 +60,18 @@
       ".stack/config.yaml".text = ''
         recommend-stack-upgrade: false
       '';
+
+      ".config/biome.json".text = builtins.toJSON {
+        linter = {
+          enabled = true;
+          rules.recommended = true;
+        };
+        formatter = {
+          enabled = true;
+          indentStyle = "space";
+          indentWidth = 2;
+        };
+      };
     };
 
     programs.direnv = {

@@ -1,6 +1,6 @@
 {inputs, ...}: {
   flake.modules.homeManager.vscode = {pkgs, ...}: {
-    programs.vscode = let
+    programs.vscodium = let
       vsc = pkgs.vscodium;
       # https://nix-community.github.io/nix4vscode
       withExtensions = pkgs.nix4vscode.forVscodeVersion vsc.version;

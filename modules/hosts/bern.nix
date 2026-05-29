@@ -6,7 +6,7 @@ in {
     "x86_64-linux"
     hostname;
 
-  flake.modules.nixos.${hostname} = {
+  flake.modules.nixos.${hostname} = {pkgs, ...}: {
     imports =
       [
         inputs.nixpkgs.nixosModules.notDetected
@@ -77,7 +77,10 @@ in {
     system.stateVersion = "24.11";
     networking = {
       hostName = hostname;
-      networkmanager.enable = true;
+      networkmanager = {
+        enable = true;
+        plugins = [pkgs.networkmanager-openvpn];
+      };
       firewall.checkReversePath = "loose";
     };
 
