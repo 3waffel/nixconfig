@@ -51,6 +51,11 @@
 
     security.sudo.wheelNeedsPassword = false;
 
+    services.envfs = {
+      enable = true;
+      extraFallbackPathCommands = "ln -s ${pkgs.bash}/bin/bash $out/bash";
+    };
+
     environment.systemPackages = with pkgs; [
       curl
       coreutils

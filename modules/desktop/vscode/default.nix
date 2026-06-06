@@ -59,6 +59,7 @@
           "dracula-theme.theme-dracula"
           "ms-vscode-remote.remote-ssh"
           "tidalcycles.vscode-tidalcycles"
+          "onnovalkering.vscode-singularity"
         ];
         userSettings = {
           # Interface

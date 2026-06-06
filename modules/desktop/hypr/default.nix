@@ -110,6 +110,7 @@
           };
           binds = {
             allow_pin_fullscreen = true;
+            scroll_event_delay = 50;
           };
           xwayland = {
             enabled = true;
@@ -262,6 +263,36 @@
           ]
           ++ [
             (mkBindM "SUPER + mouse:272" (mkLuaInline "hl.dsp.window.drag()"))
+            (mkBindM "SUPER + mouse:273" (mkLuaInline "hl.dsp.window.resize()"))
+            (mkBind "SUPER + mouse:274" (mkLuaInline
+              /*
+              lua
+              */
+              ''
+                function()
+                  hl.config({["cursor.zoom_factor"] = 1})
+                end
+              ''))
+            (mkBind "SUPER + mouse_down" (mkLuaInline
+              /*
+              lua
+              */
+              ''
+                function()
+                  local f = hl.get_config("cursor.zoom_factor") * 1.5
+                  hl.config({["cursor.zoom_factor"] = f})
+                end
+              ''))
+            (mkBind "SUPER + mouse_up" (mkLuaInline
+              /*
+              lua
+              */
+              ''
+                function()
+                  local f = hl.get_config("cursor.zoom_factor") / 1.5
+                  hl.config({["cursor.zoom_factor"] = f < 1 and 1 or f})
+                end
+              ''))
           ];
 
         workspace_rule = [

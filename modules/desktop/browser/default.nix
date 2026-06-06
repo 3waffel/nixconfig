@@ -67,46 +67,52 @@
           "toolkit.telemetry.updatePing.enabled" = false;
         };
         # https://github.com/MrOtherGuy/firefox-csshacks/blob/master/chrome/overlay_fullscreen_toolbars.css
-        userChrome = ''
-          @media (-moz-bool-pref: "browser.fullscreen.autohide"),
-                  -moz-pref("browser.fullscreen.autohide") {
-            :root{
-              --uc-fullscreen-overlay-duration: 82ms;
-              --uc-fullscreen-overlay-delay: 0ms;
-            }
-            :root[sizemode="fullscreen"]{
-              &[sessionrestored]{
-                #urlbar[popover]{
-                  pointer-events: none;
-                  opacity: 0;
-                  transition: transform var(--uc-fullscreen-overlay-duration) ease-in-out var(--uc-fullscreen-overlay-delay), opacity 0ms calc(var(--uc-fullscreen-overlay-delay) + 82ms);
-                  transform: translateY(calc(0px - var(--tab-min-height) - (var(--tab-block-margin) * 2) - var(--urlbar-container-height)));
+        userChrome =
+          /*
+          css
+          */
+          ''
+            @media -moz-pref("browser.fullscreen.autohide") {
+              :root{
+                --uc-fullscreen-overlay-duration: 82ms;
+                --uc-fullscreen-overlay-delay: 0ms;
+              }
+              :root[sizemode="fullscreen"]{
+                &[sessionrestored]{
+                  #searchbar-new,
+                  #urlbar[popover]{
+                    pointer-events: none;
+                    opacity: 0;
+                    transition: transform var(--uc-fullscreen-overlay-duration) ease-in-out var(--uc-fullscreen-overlay-delay), opacity 0ms calc(var(--uc-fullscreen-overlay-delay) + 82ms);
+                    transform: translateY(calc(0px - var(--tab-min-height) - (var(--tab-block-margin) * 2) - var(--urlbar-container-height)));
+                  }
+                }
+                #navigator-toolbox{
+                  position: fixed !important;
+                  width: 100vw;
+                  z-index: 10 !important;
+                  transition: transform var(--uc-fullscreen-overlay-duration) ease-in-out var(--uc-fullscreen-overlay-delay) !important;
+                  margin-top: 0 !important;
+                  transform: translateY(-100%);
+                  background: inherit;
+                }
+                #navigator-toolbox:is(:hover,:focus-within,[style=""]),
+                #mainPopupSet:has(> [panelopen]:not(#ask-chat-shortcuts,#selection-shortcut-action-panel,#chat-shortcuts-options-panel,#tab-preview-panel)) ~ #navigator-toolbox{
+                  transition-delay: 0ms !important;
+                  transform: translateY(0);
+                }
+                #mainPopupSet:has(> [panelopen]:not(#ask-chat-shortcuts,#selection-shortcut-action-panel,#chat-shortcuts-options-panel,#tab-preview-panel)) ~ toolbox :is(#searchbar-new,#urlbar[popover]),
+                #navigator-toolbox:is(:hover,:focus-within,[style=""]) :is(#searchbar-new,#urlbar[popover]),
+                #search-container > #searchbar-new:is([focused],[open]),
+                #urlbar-container > #urlbar[popover]:is([focused],[open]){
+                  pointer-events: auto;
+                  opacity: 1;
+                  transition-delay: 0ms;
+                  transform: translateY(0);
                 }
               }
-              #navigator-toolbox{
-                position: fixed !important;
-                width: 100vw;
-                z-index: 10 !important;
-                transition: transform var(--uc-fullscreen-overlay-duration) ease-in-out var(--uc-fullscreen-overlay-delay) !important;
-                margin-top: 0 !important;
-                transform: translateY(-100%);
-              }
-              #navigator-toolbox:is(:hover,:focus-within,[style=""]),
-              #mainPopupSet:has(> [panelopen]:not(#ask-chat-shortcuts,#selection-shortcut-action-panel,#chat-shortcuts-options-panel,#tab-preview-panel)) ~ #navigator-toolbox{
-                transition-delay: 0ms !important;
-                transform: translateY(0);
-              }
-              #mainPopupSet:has(> [panelopen]:not(#ask-chat-shortcuts,#selection-shortcut-action-panel,#chat-shortcuts-options-panel,#tab-preview-panel)) ~ toolbox #urlbar[popover],
-              #navigator-toolbox:is(:hover,:focus-within,[style=""]) #urlbar[popover],
-              #urlbar-container > #urlbar[popover]:is([focused],[open]){
-                pointer-events: auto;
-                opacity: 1;
-                transition-delay: 0ms;
-                transform: translateY(0);
-              }
             }
-          }
-        '';
+          '';
       };
     };
   };
