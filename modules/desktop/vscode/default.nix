@@ -49,15 +49,16 @@
           "myriad-dreamin.tinymist"
           "dnut.rewrap-revived"
           # Misc
-          "github.copilot-chat"
-          "github.vscode-github-actions"
           "leanprover.lean4"
-          "Gruntfuggly.todo-tree"
+          "redhat.vscode-yaml"
           "tfehlmann.snakefmt"
+          "github.copilot-chat"
+          "Gruntfuggly.todo-tree"
           "snakemake.snakemake-lang"
           "wakatime.vscode-wakatime"
           "dracula-theme.theme-dracula"
           "ms-vscode-remote.remote-ssh"
+          "github.vscode-github-actions"
           "tidalcycles.vscode-tidalcycles"
           "onnovalkering.vscode-singularity"
         ];
@@ -85,9 +86,11 @@
           "[snakemake]"."editor.defaultFormatter" = "tfehlmann.snakefmt";
           "[toml]"."editor.defaultFormatter" = "tamasfe.even-better-toml";
           "[typst]"."editor.defaultFormatter" = "myriad-dreamin.tinymist";
+          "[yaml]"."editor.defaultFormatter" = "redhat.vscode-yaml";
 
           "[nix]"."editor.defaultFormatter" = "jnoortheen.nix-ide";
           "nix.enableLanguageServer" = true;
+          "nix.serverPath" = "nil";
           "nix.serverSettings" = {
             nil.formatting.command = ["alejandra"];
           };
@@ -108,7 +111,9 @@
           "github.copilot.enable"."*" = false;
           "github.copilot.renameSuggestions.triggerAutomatically" = false;
           "python.REPL.enableREPLSmartSend" = false;
+          "python.terminal.activateEnvironment" = false;
           "terminal.integrated.initialHint" = false;
+          "terminal.integrated.stickyScroll.enabled" = false;
           # FIXME walkaround for fish shell
           "terminal.integrated.enableKittyKeyboardProtocol" = false;
           # "wakatime.apiKey" = {};

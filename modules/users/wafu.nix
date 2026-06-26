@@ -31,6 +31,7 @@ in {
       useGlobalPkgs = true;
       useUserPackages = true;
       backupFileExtension = "bak";
+      overwriteBackup = true;
       users.${username}.imports = [
         inputs.self.modules.homeManager.${username}
       ];

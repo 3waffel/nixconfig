@@ -109,12 +109,16 @@
             middle_click_paste = false;
           };
           binds = {
+            scroll_event_delay = 0;
+            movefocus_cycles_fullscreen = true;
             allow_pin_fullscreen = true;
-            scroll_event_delay = 50;
           };
           xwayland = {
             enabled = true;
             force_zero_scaling = true;
+          };
+          cursor = {
+            zoom_detached_camera = false;
           };
           ecosystem = {
             no_update_news = true;

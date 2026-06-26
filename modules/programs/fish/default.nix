@@ -6,10 +6,9 @@
         ls = "exa";
         cat = "bat";
 
-        nxs = "nh os switch ~/nixconfig -H $(hostname)";
-        nxt = "nh os test ~/nixconfig -H $(hostname)";
+        nhs = "nh os switch ~/nixconfig -H $(hostname)";
+        nht = "nh os test ~/nixconfig -H $(hostname)";
         hms = "nh home switch ~/nixconfig -c $(whoami)";
-        nxd = "nix develop -c $SHELL";
       };
       shellAliases = {
         getip = "curl ifconfig.me";
