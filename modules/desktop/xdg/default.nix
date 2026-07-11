@@ -83,8 +83,13 @@
           // genDefaultApp "imv.desktop" mimeTypes.images
           // genDefaultApp "mpv.desktop" mimeTypes.media
           // {
-            "inode/directory" = ["yazi.desktop" "org.kde.dolphin.desktop"];
-            "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
+            "inode/directory" = [
+              "yazi.desktop"
+              # "org.kde.dolphin.desktop"
+            ];
+            "x-scheme-handler/tg" = [
+              "org.telegram.desktop.desktop"
+            ];
           };
       };
     };
