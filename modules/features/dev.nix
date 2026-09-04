@@ -62,7 +62,7 @@
         recommend-stack-upgrade: false
       '';
 
-      ".config/biome.json".text = builtins.toJSON {
+      ".config/biome/biome.json".text = builtins.toJSON {
         linter = {
           enabled = true;
           rules.recommended = true;

@@ -34,12 +34,13 @@
       sioyek # pdf viewer
 
       alacritty
-      discord
       krita
       libreoffice
       obsidian
+      readest
       telegram-desktop
       thunderbird
+      vesktop
       zotero
 
       deluge-gtk
