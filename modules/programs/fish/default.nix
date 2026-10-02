@@ -18,8 +18,8 @@
         fish_greeting = "";
         wh = "readlink -f (which $argv)";
 
-        pxy_on = "set -xg all_proxy socks5://(ip route | grep default | awk '{print $3}'):10810";
-        pxy_off = "set -e all_proxy";
+        vpn-on = "sudo systemctl start mihomo";
+        vpn-off = "sudo systemctl stop mihomo";
       };
       interactiveShellInit =
         # Use vim bindings and cursors

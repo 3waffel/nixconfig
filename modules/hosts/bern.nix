@@ -20,11 +20,13 @@ in {
         cli
         container
         desktop
-        dns
+        # dns
         sops
         steam
         tailscale
         wafu
+        mihomo
+        mirror
       ]);
 
     console.earlySetup = true;

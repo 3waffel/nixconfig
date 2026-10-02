@@ -53,6 +53,7 @@
           "redhat.vscode-yaml"
           "tfehlmann.snakefmt"
           "github.copilot-chat"
+          "alefragnani.bookmarks"
           "Gruntfuggly.todo-tree"
           "snakemake.snakemake-lang"
           "wakatime.vscode-wakatime"

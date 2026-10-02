@@ -1,8 +1,10 @@
 let
+  # port for unbound (the resolver)
   port = 5335;
 in {
   flake.modules.nixos.dns = {
     networking = {
+      # use as local DNS
       nameservers = ["127.0.0.1" "::1"];
       dhcpcd.extraConfig = "nohook resolv.conf";
       networkmanager.dns = "none";
@@ -63,7 +65,7 @@ in {
     # DNS filter
     services.blocky = let
       # use the unbound resolver
-      upstream = "127.0.0.1:${builtins.toString port}";
+      upstream = "127.0.0.1:${toString port}";
     in {
       enable = true;
       settings = {

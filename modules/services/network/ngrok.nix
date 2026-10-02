@@ -29,5 +29,18 @@
 
       wantedBy = ["multi-user.target"];
     };
+
+    sops = {
+      secrets.ngrok-authtoken = {};
+      templates."ngrok.yml".content = ''
+        version: 3
+        agent:
+          authtoken: ${config.sops.placeholder.ngrok-authtoken}
+        endpoints:
+          - name: ssh
+            upstream:
+              url: 22
+      '';
+    };
   };
 }

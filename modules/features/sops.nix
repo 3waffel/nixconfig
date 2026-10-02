@@ -24,19 +24,9 @@ in {
       inherit defaultSopsFile;
       age.keyFile = "${home}/.config/sops/age/keys.txt";
       secrets = {
-        ngrok-authtoken = {};
         openvscode-token.owner = user;
         tailscale-authkey = {};
       };
-      templates."ngrok.yml".content = ''
-        version: 3
-        agent:
-          authtoken: ${config.sops.placeholder.ngrok-authtoken}
-        endpoints:
-          - name: ssh
-            upstream:
-              url: 22
-      '';
     };
   };
 }
