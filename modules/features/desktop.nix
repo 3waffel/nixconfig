@@ -162,6 +162,7 @@
 
     environment.plasma6.excludePackages = with pkgs.kdePackages; [
       discover
+      dolphin
       elisa
       gwenview
       kate
@@ -173,5 +174,21 @@
       plasma-workspace-wallpapers
       spectacle
     ];
+
+    programs = {
+      xfconf.enable = true; # preference
+      thunar = {
+        enable = true;
+        plugins = with pkgs; [
+          thunar-archive-plugin
+          thunar-volman
+        ];
+      };
+    };
+
+    services = {
+      gvfs.enable = true; # filesystem
+      tumbler.enable = true; # thumbnail
+    };
   };
 }
