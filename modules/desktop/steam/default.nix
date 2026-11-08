@@ -1,5 +1,7 @@
 {
   flake.modules.nixos.steam = {pkgs, ...}: {
+    hardware.steam-hardware.enable = true;
+
     programs.gamemode.enable = true;
 
     programs.steam = {

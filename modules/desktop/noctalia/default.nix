@@ -1,82 +1,82 @@
 {inputs, ...}: {
   flake.modules.homeManager.noctalia = {
-    pkgs,
-    lib,
-    ...
-  }: {
     imports = [
       inputs.noctalia.homeModules.default
     ];
 
-    programs.noctalia-shell = {
+    programs.noctalia = {
       enable = true;
-      # should be started by the compositor
-      systemd.enable = false;
+      systemd.enable = true;
       settings = {
-        bar = {
-          density = "default";
-          position = "bottom";
-          showCapsule = false;
-          widgets = {
-            left = [
-              {
-                id = "ControlCenter";
-                useDistroLogo = true;
-              }
-            ];
-            center = [
-              {id = "Workspace";}
-            ];
-            right = [
-              {id = "Tray";}
-              {id = "Network";}
-              {id = "Bluetooth";}
-              {id = "Volume";}
-              {id = "Brightness";}
-              {
-                id = "Battery";
-                alwaysShowPercentage = false;
-              }
-              {
-                id = "Clock";
-                formatHorizontal = "HH:mm";
-                formatVertical = "HH mm";
-              }
-            ];
-          };
-        };
-        notifications = {
-          density = "compact";
-          enableBatteryToast = false;
+        theme = {
+          builtin = "Kanagawa";
         };
         brightness = {
-          enforceMinimum = true;
+          minimum_brightness = 0.01;
         };
-        colorSchemes = {
-          darkMode = true;
-          predefinedScheme = "Kanagawa";
-        };
-        general = {
-          scaleRatio = 1.2;
-          radiusRatio = 0.2;
-          animationSpeed = 2;
-          lockOnSuspend = true;
+        nightlight = {
+          enabled = true;
         };
         location = {
-          name = "Munich, Germany";
+          custom_schedule = true;
+          sunset = "19:00";
+          sunrise = "07:00";
         };
-        wallpaper = {
-          enabled = true;
-          automationEnabled = true;
+
+        shell = {
+          polkit_agent = true;
+          launch_apps_as_systemd_services = true;
+          panel = {
+            open_near_click_control_center = true;
+          };
+          launcher = {
+            categories = false;
+            category_icons_only = true;
+            layout = "simple";
+          };
         };
-        appLauncher = {
-          enableClipboardHistory = true;
-          enableClipPreview = true;
-          sortByMostUsed = true;
-          terminalCommand = "${lib.getExe pkgs.xdg-terminal-exec} -e";
+
+        bar.main = {
+          position = "bottom";
+          radius = 0;
+          margin_edges = 0;
+          margin_ends = 0;
+          padding = 14;
+          widget_spacing = 12;
+          start = ["launcher"];
+          center = ["workspaces"];
+          end = [
+            "tray"
+            "network"
+            "bluetooth"
+            "volume"
+            "brightness"
+            "battery"
+            "clock"
+          ];
         };
-        nightLight = {
-          enabled = true;
+
+        widget = {
+          battery = {
+            display_mode = "graphic";
+            scale = 0.8;
+            show_label = false;
+          };
+          brightness = {
+            show_label = false;
+          };
+          launcher = {
+            glyph = "lambda";
+          };
+          network = {
+            show_label = false;
+          };
+          volume = {
+            show_label = false;
+          };
+          workspaces = {
+            style = "minimal";
+          };
         };
       };
     };

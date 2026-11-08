@@ -15,10 +15,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
@@ -26,10 +22,7 @@
     };
     # modules
     sops-nix.url = "github:mic92/sops-nix";
-    vscode-server = {
-      url = "github:msteen/nixos-vscode-server";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    vscode-server.url = "github:msteen/nixos-vscode-server";
     # tools
     nix4vscode = {
       url = "github:nix-community/nix4vscode";
@@ -40,10 +33,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
+      url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "";
+    };
     # custom inputs
     st7789-dev.url = "github:3waffel/st7789-dev";
   };

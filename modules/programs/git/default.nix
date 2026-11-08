@@ -47,8 +47,8 @@
     programs.difftastic = {
       enable = true;
       git = {
-        diffToolMode = true;
         enable = true;
+        mode = "difftool";
       };
       jujutsu.enable = true;
       options = {
@@ -86,10 +86,10 @@
           }
         ];
         git = {
-          pagers = [
-            {useExternalDiffGitConfig = true;}
+          diffRenderers = [
+            {type = "extDiff";}
             {
-              pager =
+              command =
                 lib.concatStringsSep " "
                 [
                   "delta"

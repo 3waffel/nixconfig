@@ -42,7 +42,6 @@ in {
       };
       plymouth.enable = true;
       consoleLogLevel = 3;
-      initrd.verbose = false;
       initrd.availableKernelModules = [
         "xhci_pci"
         "ahci"
@@ -112,9 +111,9 @@ in {
         alsa.enable = true;
         alsa.support32Bit = true;
         pulse.enable = true;
-        jack.enable = true;
       };
     };
+    environment.systemPackages = [pkgs.pipewire.jack];
 
     services = {
       blueman.enable = true;

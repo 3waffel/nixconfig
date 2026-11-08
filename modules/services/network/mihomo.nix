@@ -70,6 +70,7 @@
           - name: default
             type: select
             proxies: [auto,DIRECT]
+            use: [provider1]
           - name: auto
             type: url-test
             use: [provider1]

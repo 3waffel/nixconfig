@@ -54,7 +54,7 @@
             */
             ''
               function()
-                hl.exec_cmd("uwsm-app -- noctalia-shell")
+                -- hl.exec_cmd("noctalia")
                 hl.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ 1")
                 hl.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1")
               end
@@ -96,9 +96,9 @@
             kb_layout = "us";
             sensitivity = 0;
             touchpad = {
-              natural_scroll = true;
-              disable_while_typing = true;
               clickfinger_behavior = true;
+              disable_while_typing = true;
+              natural_scroll = true;
               scroll_factor = 0.4;
             };
           };
@@ -135,7 +135,7 @@
           {
             fingers = 2;
             direction = "pinch";
-            action = "cursorZoom";
+            action = "cursor_zoom";
             zoom_level = 1;
             mode = "live";
           }
@@ -158,7 +158,7 @@
         curve = [
           # https://easings.net/
           (mkArgs [
-            "easeOutQuint"
+            "ease_out_quint"
             {
               type = "bezier";
               points = [[0.22 1] [0.36 1]];
@@ -170,7 +170,7 @@
             leaf = "workspaces";
             enabled = true;
             speed = 5;
-            bezier = "easeOutQuint";
+            bezier = "ease_out_quint";
             style = "slide";
           }
           {
@@ -235,11 +235,11 @@
           ]
           ++ [
             (mkBind "SUPER + Return" (exec "${getExe pkgs.xdg-terminal-exec}"))
-            (mkBind "SUPER + Space" (exec "noctalia-shell ipc call launcher toggle"))
-            (mkBind "SUPER + L" (exec "noctalia-shell ipc call lockScreen lock"))
-            (mkBind "SUPER + V" (exec "noctalia-shell ipc call launcher clipboard"))
-            (mkBind "SUPER + P" (exec "noctalia-shell ipc call controlCenter toggle"))
-            (mkBind "SUPER + SHIFT + Escape" (exec "noctalia-shell ipc call sessionMenu toggle"))
+            (mkBind "SUPER + Space" (exec "noctalia msg panel-toggle launcher"))
+            (mkBind "SUPER + L" (exec "noctalia msg session lock"))
+            (mkBind "SUPER + V" (exec "noctalia msg panel-toggle clipboard"))
+            (mkBind "SUPER + P" (exec "noctalia msg panel-toggle control-center"))
+            (mkBind "SUPER + SHIFT + Escape" (exec "noctalia msg panel-toggle session"))
             (mkBind "Print" (exec "${getExe pkgs.grimblast} copy area"))
           ]
           ++ (
@@ -254,16 +254,16 @@
               (genList (i: mkWorkspace (toString (i + 1))) 9)
           )
           ++ [
-            (mkBindEL "XF86AudioRaiseVolume" (exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"))
-            (mkBindEL "XF86AudioLowerVolume" (exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
-            (mkBindEL "XF86MonBrightnessUp" (exec "${getExe pkgs.brightnessctl} s 5%+"))
-            (mkBindEL "XF86MonBrightnessDown" (exec "${getExe pkgs.brightnessctl} s 5%-"))
+            (mkBindEL "XF86AudioRaiseVolume" (exec "noctalia msg volume-up"))
+            (mkBindEL "XF86AudioLowerVolume" (exec "noctalia msg volume-down"))
+            (mkBindEL "XF86MonBrightnessUp" (exec "noctalia msg brightness-up"))
+            (mkBindEL "XF86MonBrightnessDown" (exec "noctalia msg brightness-down"))
           ]
           ++ [
-            (mkBindL "XF86AudioMute" (exec "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
-            (mkBindL "XF86AudioPlay" (exec "${getExe pkgs.playerctl} play-pause"))
-            (mkBindL "XF86AudioPrev" (exec "${getExe pkgs.playerctl} previous"))
-            (mkBindL "XF86AudioNext" (exec "${getExe pkgs.playerctl} next"))
+            (mkBindL "XF86AudioMute" (exec "noctalia msg volume-mute"))
+            (mkBindL "XF86AudioPlay" (exec "noctalia msg media toggle"))
+            (mkBindL "XF86AudioPrev" (exec "noctalia msg media previous"))
+            (mkBindL "XF86AudioNext" (exec "noctalia msg media next"))
           ]
           ++ [
             (mkBindM "SUPER + mouse:272" (mkLuaInline "hl.dsp.window.drag()"))
@@ -277,17 +277,17 @@
                   hl.config({["cursor.zoom_factor"] = 1})
                 end
               ''))
-            (mkBind "SUPER + mouse_down" (mkLuaInline
+            (mkBind "SUPER + mouse_up" (mkLuaInline
               /*
               lua
               */
               ''
                 function()
                   local f = hl.get_config("cursor.zoom_factor") * 1.5
-                  hl.config({["cursor.zoom_factor"] = f})
+                  hl.config({["cursor.zoom_factor"] = f > 10 and 10 or f})
                 end
               ''))
-            (mkBind "SUPER + mouse_up" (mkLuaInline
+            (mkBind "SUPER + mouse_down" (mkLuaInline
               /*
               lua
               */

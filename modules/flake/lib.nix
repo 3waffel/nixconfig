@@ -15,7 +15,7 @@
         overlays = [
           inputs.mcp-servers-nix.overlays.default
           inputs.nix4vscode.overlays.forVscode
-          inputs.nur.overlays.default
+          inputs.firefox-addons.overlays.default
           (_: prev: {
             # https://github.com/NixOS/nixpkgs/issues/513245
             openldap = prev.openldap.overrideAttrs {
@@ -25,6 +25,10 @@
         ];
         config = {
           allowUnfree = true;
+          # insecure dependencies of zotero
+          permittedInsecurePackages = [
+            "firefox-esr-140-bin-unwrapped-140.17.0esr"
+          ];
           android_sdk.accept_license = true;
         };
       };

@@ -3,6 +3,7 @@
     imports = [inputs.catppuccin.homeModules.catppuccin];
 
     home.pointerCursor = {
+      enable = true;
       gtk.enable = true;
       hyprcursor.enable = true;
       package = pkgs.bibata-cursors;
@@ -22,9 +23,11 @@
     };
 
     catppuccin = {
+      enable = true;
+      autoEnable = false;
+      cache.enable = true;
       accent = "green";
       flavor = "mocha";
-      cache.enable = true;
 
       alacritty.enable = true;
       bat.enable = true;
@@ -44,9 +47,11 @@
     imports = [inputs.catppuccin.nixosModules.catppuccin];
 
     catppuccin = {
+      enable = true;
+      autoEnable = false;
+      cache.enable = true;
       accent = "green";
       flavor = "mocha";
-      cache.enable = true;
 
       grub.enable = true;
       plymouth.enable = true;

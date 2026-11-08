@@ -4,10 +4,10 @@
   ...
 }: let
   inherit (lib) getExe;
-  inherit (config.programs) noctalia-shell;
+  inherit (config.programs) noctalia;
   lock_cmd =
-    if noctalia-shell.enable
-    then "${getExe noctalia-shell.package} ipc call lockScreen lock"
+    if noctalia.enable
+    then "${getExe noctalia.package} ipc call lockScreen lock"
     else "pidof hyprlock || hyprlock";
 in {
   services.hypridle = {

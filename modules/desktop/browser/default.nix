@@ -1,9 +1,5 @@
 {
   flake.modules.homeManager.browser = {pkgs, ...}: {
-    home.file = {
-      ".mozilla/firefox/ignore-dev-edition-profile".text = "";
-    };
-
     programs.qutebrowser = {
       enable = true;
       settings = {
@@ -27,12 +23,13 @@
     programs.librewolf = {
       enable = true;
       profiles.default = {
-        extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
+        extensions.packages = with pkgs.firefox-addons; [
           bitwarden
           canvasblocker
           darkreader
           sponsorblock
-          ublock-origin
+          ublock-origin-upstream
+          # ubolite
           zotero-connector
         ];
         settings = {

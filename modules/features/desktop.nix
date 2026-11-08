@@ -49,11 +49,27 @@
       proton-vpn
       wireshark
 
-      lutris
+      bottles
       protonplus
-      winetricks
-      wineWow64Packages.waylandFull
     ];
+
+    programs.lutris = {
+      enable = true;
+      steamPackage = pkgs.steam;
+      extraPackages = with pkgs; [
+        winetricks
+        gamemode
+        umu-launcher
+      ];
+      defaultWinePackage = pkgs.dwproton-bin;
+      protonPackages = with pkgs; [
+        dwproton-bin
+      ];
+      winePackages = with pkgs; [
+        wineWow64Packages.staging
+        wineWow64Packages.waylandFull
+      ];
+    };
 
     programs.kitty = {
       enable = true;
@@ -189,6 +205,15 @@
     services = {
       gvfs.enable = true; # filesystem
       tumbler.enable = true; # thumbnail
+      udev.extraRules = ''
+        # Nuphy Node75 LP
+        SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="19f5", ATTR{idProduct}=="1030", MODE="0666"
+        KERNEL=="hidraw*", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="1030", MODE="0666"
+
+        # Nuphy Node75 LP Upgrader
+        SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="19f5", ATTR{idProduct}=="0730", MODE="0666"
+        KERNEL=="hidraw*", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="0730", MODE="0666"
+      '';
     };
   };
 }
