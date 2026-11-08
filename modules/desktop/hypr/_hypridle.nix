@@ -7,7 +7,7 @@
   inherit (config.programs) noctalia;
   lock_cmd =
     if noctalia.enable
-    then "${getExe noctalia.package} ipc call lockScreen lock"
+    then "${getExe noctalia.package} msg session lock"
     else "pidof hyprlock || hyprlock";
 in {
   services.hypridle = {

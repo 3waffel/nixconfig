@@ -39,6 +39,7 @@
       kvantum.enable = true;
       starship.enable = true;
       vscode.profiles.default.enable = true;
+      vscodium.profiles.default.enable = true;
       yazi.enable = true;
     };
   };

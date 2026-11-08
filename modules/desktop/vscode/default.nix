@@ -54,7 +54,6 @@
           "tfehlmann.snakefmt"
           "github.copilot-chat"
           "alefragnani.bookmarks"
-          "Gruntfuggly.todo-tree"
           "snakemake.snakemake-lang"
           "wakatime.vscode-wakatime"
           "dracula-theme.theme-dracula"
@@ -69,7 +68,7 @@
           "explorer.confirmDelete" = false;
           "explorer.confirmDragAndDrop" = false;
           "extensions.autoCheckUpdates" = false;
-          "extensions.autoUpdate" = false;
+          "extensions.autoUpdate" = "off";
           "extensions.ignoreRecommendations" = true;
           "security.workspace.trust.enabled" = false;
           "update.mode" = "none";
@@ -111,8 +110,6 @@
           "chat.disableAIFeatures" = false;
           "github.copilot.enable"."*" = false;
           "github.copilot.renameSuggestions.triggerAutomatically" = false;
-          "python.REPL.enableREPLSmartSend" = false;
-          "python.terminal.activateEnvironment" = false;
           "terminal.integrated.initialHint" = false;
           "terminal.integrated.stickyScroll.enabled" = false;
           # FIXME walkaround for fish shell
