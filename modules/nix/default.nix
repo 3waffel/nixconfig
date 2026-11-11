@@ -14,10 +14,18 @@
         automatic = true;
         dates = "weekly";
         options = "--delete-older-than 7d";
+        persistent = true;
       };
 
       settings = {
         auto-optimise-store = true;
+        warn-dirty = false;
+        trusted-users = ["root" "@wheel"];
+        extra-experimental-features = [
+          "flakes"
+          "nix-command"
+          "pipe-operators"
+        ];
         # append to the system-level substituters
         extra-substituters = [
           "https://nix-community.cachix.org"
@@ -29,10 +37,6 @@
           "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
           "3waffel.cachix.org-1:Tm5oJGJA8klOLa4dYRJvoYWQIpItX+0w9KvoRP8Z2mc="
         ];
-        trusted-users = ["root" "@wheel"];
-        experimental-features = ["nix-command" "flakes" "pipe-operators"];
-        warn-dirty = false;
-        system-features = ["kvm" "big-parallel"];
       };
     };
   };

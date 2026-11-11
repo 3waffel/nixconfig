@@ -81,4 +81,23 @@
       };
     };
   };
+
+  flake.modules.nixos.noctalia = {
+    imports = [
+      inputs.noctalia-greeter.nixosModules.default
+    ];
+
+    services.displayManager.noctalia-greeter = {
+      enable = true;
+      settings = {
+        appearance = {
+          scheme = "Synced";
+          hide_logo = true;
+          password_style = "default";
+          power_buttons_position = "bottom-right";
+          scheme_selector_position = "top-right";
+        };
+      };
+    };
+  };
 }

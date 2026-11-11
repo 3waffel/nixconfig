@@ -8,9 +8,9 @@ in {
 
   config.flake.modules.homeManager.${username} = args: {
     imports = with inputs.self.modules.homeManager;
-      if (args.system != "x86_64-linux" || (args ? hostname && args.hostname != "bern"))
-      then [cli dev]
-      else [cli dev desktop];
+      if (args.system == "x86_64-linux" && args ? hostname && args.hostname == "bern")
+      then [cli dev desktop]
+      else [cli dev];
 
     home = {
       inherit username;
